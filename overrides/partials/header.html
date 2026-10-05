@@ -1,0 +1,68 @@
+{#- Minimal top bar: pixel badge + mono wordmark, Part 1 / 2 / 3 switch, theme toggle and search. -#}
+<header class="md-header lab-nav" data-md-component="header">
+  <nav class="md-header__inner lab-nav__inner" aria-label="{{ lang.t('header') }}">
+    <a href="{{ '' | url }}" class="lab-nav__brand" title="{{ config.site_name | e }}">
+      {#- Arcade "player 1" portrait of the red-cap avatar: blinks, glances, sparkles (lab.css). -#}
+      <svg class="pxg avatar-badge" viewBox="0 0 18 18" shape-rendering="crispEdges" aria-hidden="true" focusable="false">
+      <g>
+      <path fill="#1b1a18" d="M1 0h16v1h-16zM1 17h16v1h-16zM0 1h1v15h-1zM17 1h1v15h-1zM6 2h6v1h-6zM5 3h1v1h-1zM5 13h1v1h-1zM12 3h1v1h-1zM12 13h1v1h-1zM4 4h1v2h-1zM4 7h1v6h-1zM13 4h1v2h-1zM13 7h1v6h-1zM3 6h1v1h-1zM3 14h1v1h-1zM14 6h1v1h-1zM14 14h1v1h-1zM6 11h1v1h-1zM6 14h1v1h-1zM11 11h1v1h-1zM11 14h1v1h-1zM7 12h4v1h-4zM2 15h1v1h-1zM15 15h1v1h-1zM0 16h2v1h-2zM16 16h2v1h-2z"/>
+      <path fill="#d97757" d="M1 1h16v1h-16zM1 2h5v1h-5zM12 2h5v1h-5zM1 3h4v1h-4zM1 13h4v1h-4zM13 3h4v1h-4zM13 13h4v1h-4zM1 4h3v2h-3zM1 7h3v6h-3zM14 4h3v2h-3zM14 7h3v6h-3zM1 6h2v1h-2zM1 14h2v1h-2zM15 6h2v1h-2zM15 14h2v1h-2zM1 15h1v1h-1zM16 15h1v1h-1z"/>
+      <path fill="#c8312b" d="M6 3h6v1h-6zM5 4h3v1h-3zM10 4h3v1h-3zM5 5h8v1h-8z"/>
+      <path fill="#faf9f5" d="M8 4h2v1h-2z"/>
+      <path fill="#9e2420" d="M4 6h10v1h-10z"/>
+      <path fill="#1b1a18" d="M5 7h8v1h-8zM5 8h1v1h-1zM8 8h1v1h-1zM12 8h1v1h-1z"/>
+      <path fill="#f2d4ad" d="M6 8h2v1h-2zM9 8h3v1h-3zM5 9h2v2h-2zM5 12h2v1h-2zM8 9h2v2h-2zM11 9h2v2h-2zM11 12h2v1h-2zM7 11h4v1h-4zM6 13h6v1h-6z"/>
+      <path fill="#1b1a18" d="M7 9h1v2h-1zM10 9h1v2h-1z"/>
+      <path fill="#e8b48f" d="M5 11h1v1h-1zM12 11h1v1h-1z"/>
+      <path fill="#c8312b" d="M4 14h2v1h-2zM12 14h2v1h-2zM3 15h2v1h-2zM6 15h1v2h-1zM11 15h1v2h-1zM13 15h2v1h-2zM2 16h3v1h-3zM13 16h3v1h-3z"/>
+      <path fill="#f4f1ea" d="M7 14h4v3h-4z"/>
+      <path fill="#9e2420" d="M5 15h1v2h-1zM12 15h1v2h-1z"/>
+      </g>
+      <g opacity=".12">
+      <path fill="#1b1a18" d="M1 2h5v1h-5zM12 2h5v1h-5zM1 4h3v1h-3zM1 8h3v1h-3zM1 10h3v1h-3zM1 12h3v1h-3zM14 4h3v1h-3zM14 8h3v1h-3zM14 10h3v1h-3zM14 12h3v1h-3zM1 6h2v1h-2zM1 14h2v1h-2zM15 6h2v1h-2zM15 14h2v1h-2z"/>
+      </g>
+      <g class="badge-look">
+      <path fill="#f2d4ad" d="M7 9h1v2h-1zM10 9h1v2h-1z"/>
+      </g>
+      <g class="badge-look">
+      <path fill="#1b1a18" d="M8 9h1v2h-1zM11 9h1v2h-1z"/>
+      </g>
+      <g class="badge-blink">
+      <path fill="#f2d4ad" d="M7 9h1v1h-1zM10 9h1v1h-1z"/>
+      </g>
+      <g class="badge-sparkle">
+      <path fill="#f2c14e" d="M14 2h1v1h-1zM14 4h1v1h-1zM13 3h3v1h-3z"/>
+      </g>
+      </svg>
+      <span class="lab-nav__name">AI BY DESIGN</span>
+    </a>
+    {% set url = (page.url if page and page.url else "") %}
+    {% set on_part2 = url.startswith("part-2") %}
+    {% set on_part3 = url.startswith("part-3") %}
+    <div class="lab-nav__parts">
+      <a {% if not (on_part2 or on_part3) %}class="on" aria-current="page"{% endif %} href="{{ '' | url }}">PART 1 <span>WEBEX AI</span></a>
+      <a {% if on_part2 %}class="on" aria-current="page"{% endif %} href="{{ 'part-2/' | url }}">PART 2 <span>MCP</span></a>
+      <a {% if on_part3 %}class="on" aria-current="page"{% endif %} href="{{ 'part-3/' | url }}">PART 3 <span>GENAI</span></a>
+    </div>
+    <div class="lab-nav__tools">
+      {% if config.theme.palette %}
+        {% if not config.theme.palette is mapping %}
+          {% include "partials/palette.html" %}
+        {% endif %}
+      {% endif %}
+      {% if not config.theme.palette is mapping %}
+        {% include "partials/javascripts/palette.html" %}
+      {% endif %}
+      {% if "material/search" in config.plugins %}
+        {% set search = config.plugins["material/search"] | attr("config") %}
+        {% if search.enabled %}
+          <label class="md-header__button md-icon" for="__search" title="Search">
+            {% set icon = config.theme.icon.search or "material/magnify" %}
+            {% include ".icons/" ~ icon ~ ".svg" %}
+          </label>
+          {% include "partials/search.html" %}
+        {% endif %}
+      {% endif %}
+    </div>
+  </nav>
+</header>

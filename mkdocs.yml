@@ -1,0 +1,92 @@
+site_name: "AI by Design for Collaboration"
+site_description: "LTRCOL-2011 hands-on lab guide. Part 1: AI across Webex Control Hub, Messaging, Calling and Meetings. Part 2: Webex Messaging MCP with an AI client. Part 3: building AI-powered Webex messaging with LangChain."
+site_author: Omer Ilyas
+site_url: https://omerilyas.github.io/AibyDesignforCollab/
+copyright: "LTRCOL-2011 · AI by Design for Collaboration · WebexOne 2026"
+
+theme:
+  name: material
+  custom_dir: overrides
+  language: en
+  font: false # fonts are loaded in overrides/main.html
+  favicon: assets/favicon.svg
+  palette:
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-night
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to light mode
+  features:
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+
+extra:
+  generator: false
+  # Default links at the bottom of the left rail (a page can override with `links:` in its front matter).
+  # Internal links are site-relative: "" is Part 1, "part-2/" is Part 2, "part-3/" is Part 3.
+  rail_links:
+    - title: "Part 2 · MCP lab guide"
+      url: "part-2/"
+    - title: "Part 3 · GenAI lab guide"
+      url: "part-3/"
+    - title: "Token assignment tool"
+      url: https://aibydesign-token-assignment.vercel.app/
+    - title: "dCloud"
+      url: https://dcloud.cisco.com
+    - title: "Webex Control Hub"
+      url: https://admin.webex.com
+    - title: "Webex Help Center"
+      url: https://help.webex.com
+
+markdown_extensions:
+  - toc:
+      toc_depth: 3
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - pymdownx.details
+  - pymdownx.blocks.caption
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
+  - pymdownx.superfences
+  - pymdownx.keys
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
+
+extra_css:
+  - css/lab.css
+
+extra_javascript:
+  - js/lab.js
+
+plugins:
+  - search
+  - glightbox:
+      skip_classes:
+        - icon
+      zoomable: true
+      draggable: false
+
+validation:
+  anchors: warn
+
+nav:
+  - "Part 1 · Webex AI": index.md
+  - "Part 2 · MCP": part-2/index.md
+  - "Part 3 · GenAI": part-3/index.md

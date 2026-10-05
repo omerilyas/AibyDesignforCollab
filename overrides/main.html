@@ -1,0 +1,115 @@
+{#-
+  Single-page lab layout:
+  hero (chip, title, standfirst, meta) on top, then a 12-column grid with a
+  sticky "TREE" rail on the left (built from the page TOC) and the article on
+  the right. Used by all three parts (index.md, part-2/, part-3/); the
+  hero text and rail links come from each page's front matter. Rail behaviour (active section, scroll progress, task ticks,
+  J/K keys, notes) lives in docs/js/lab.js.
+-#}
+{% extends "base.html" %}
+
+{% block fonts %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap">
+{% endblock %}
+
+{% block site_nav %}{% endblock %}
+
+{% block container %}
+  {% set m = page.meta or {} %}
+  {% set headline = m.headline or page.title %}
+  <div class="md-content lab" data-md-component="content">
+
+    <section class="hero">
+      <div class="hero-arts">
+        <div class="hero-art hero-art--ascii" aria-hidden="true">
+          <pre> █████╗ ██╗    ██████╗ ██╗   ██╗
+██╔══██╗██║    ██╔══██╗╚██╗ ██╔╝
+███████║██║    ██████╔╝ ╚████╔╝
+██╔══██║██║    ██╔══██╗  ╚██╔╝
+██║  ██║██║    ██████╔╝   ██║
+╚═╝  ╚═╝╚═╝    ╚═════╝    ╚═╝
+██████╗ ███████╗███████╗██╗ ██████╗ ███╗   ██╗
+██╔══██╗██╔════╝██╔════╝██║██╔════╝ ████╗  ██║
+██║  ██║█████╗  ███████╗██║██║  ███╗██╔██╗ ██║
+██║  ██║██╔══╝  ╚════██║██║██║   ██║██║╚██╗██║
+██████╔╝███████╗███████║██║╚██████╔╝██║ ╚████║
+╚═════╝ ╚══════╝╚══════╝╚═╝ ╚═════╝ ╚═╝  ╚═══╝</pre>
+        </div>
+      </div>
+      <div class="hd">
+        {% if m.chip %}<span class="cat-chip">{{ m.chip }}</span>{% endif %}
+        <h1 id="top">{{ headline }}</h1>
+        {% if m.standfirst %}<p class="standfirst">{{ m.standfirst }}</p>{% endif %}
+        {% if m.meta %}
+          <div class="meta">
+            {% for item in m.meta %}
+              <div><div class="lb">{{ item.label }}</div><div class="vv">{{ item.value }}</div></div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </section>
+
+    <div class="body-grid">
+      <aside class="rail" aria-label="Lab sections">
+        <div class="rail-title" id="railTitle">{{ headline }}</div>
+        <div class="th">TREE</div>
+        <nav id="tree">
+          {% for item in page.toc %}
+            <div class="tree-group" data-id="{{ item.id }}">
+              <a href="{{ item.url }}" class="lvl-2" data-id="{{ item.id }}"><span class="br">└</span><span class="lb">{{ item.title }}</span></a>
+              {% if item.children %}
+                <div class="tree-kids">
+                  {% for child in item.children %}
+                    <a href="{{ child.url }}" class="lvl-3" data-id="{{ child.id }}"><span class="br">├</span><span class="lb">{{ child.title }}</span></a>
+                  {% endfor %}
+                </div>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </nav>
+        <div class="prog" id="prog" aria-hidden="true"><b></b><i>░░░░░░░░░░░░░░░░░░░░░░░░</i><span class="pct">00%</span></div>
+        <div class="tasks" id="tasks">TASKS <span class="n">00/00</span> COMPLETE</div>
+        <div class="hint">PRESS <span class="arr">J</span> / <span class="arr">K</span> TO JUMP SECTIONS</div>
+        <div class="rail-foot">
+          <div class="rail-art" id="railArt" aria-hidden="true">
+            <div class="rail-art__frame">
+              <div class="rail-art__img">{% include "partials/hero-scene.html" %}</div>
+              <div class="rail-art__scan"></div>
+            </div>
+            <div class="rail-art__cap">LOADING AVATAR<span class="dots">…</span></div>
+          </div>
+          {% set rail_links = m.links or config.extra.rail_links %}
+          {% if rail_links %}
+            <div class="share">
+              <div class="th">LINKS</div>
+              {% for link in rail_links %}
+                {% if link.url.startswith("http") %}
+                  <a href="{{ link.url }}" target="_blank" rel="noopener">{{ link.title }} ↗</a>
+                {% else %}
+                  <a href="{{ link.url | url }}">{{ link.title }}</a>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </div>
+      </aside>
+
+      <article class="prose md-content__inner md-typeset">
+        {{ page.content }}
+      </article>
+    </div>
+  </div>
+  <div class="scroll-line" aria-hidden="true"><span id="scrollLine"></span></div>
+{% endblock %}
+
+{% block footer %}
+  <footer class="lab-footer">
+    <div class="lab-footer__inner">
+      <span>{{ config.copyright }}</span>
+      <a href="#top">BACK TO TOP ↑</a>
+    </div>
+  </footer>
+{% endblock %}
