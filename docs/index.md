@@ -10,7 +10,7 @@ meta:
   - label: EVENT
     value: AI by Design
   - label: LAB TIME
-    value: ~115 min
+    value: ~114 min
   - label: UPDATED
     value: September 2026
 ---
@@ -39,7 +39,7 @@ Throughout this lab, you will gain practical experience in the following areas:
 | 2 | [Enhancing Messaging with Webex AI](#module-2) | 20 min |
 | 3 | [AI-powered features in Webex Calling](#module-3) | 25 min |
 | 4 | [AI-powered Webex Meetings](#module-4) | 35 min |
-| | **Total** | **~115 min** |
+| | **Total** | **~114 min** |
 
 </div>
 
