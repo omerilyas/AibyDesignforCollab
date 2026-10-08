@@ -10,6 +10,8 @@
  * - J / K jump to the next / previous section.
  * - Notes: a small scratchpad (bottom-right) saved in localStorage and
  *   shared by all parts.
+ * - Report an issue: a short form that posts to the feedback-api Vercel
+ *   function, which files a GitHub issue. Hidden until FEEDBACK_ENDPOINT is set.
  */
 (function () {
   // Task ticks are stored per part (several parts have a "1a"); notes are shared.
@@ -17,6 +19,9 @@
   var DONE_KEY = partMatch ? "ltrcol2011:done:part-" + partMatch[1] : "ltrcol2011:done";
   var NOTES_KEY = "ltrcol2011:notes";
   var BAR_CHARS = 26;
+  // URL of the deployed feedback-api function, e.g. https://<project>.vercel.app/api/report
+  var FEEDBACK_ENDPOINT = "";
+  var activeId = null;   // section currently in view, kept by setupScroll
 
   var store = {
     get: function (key, fallback) {
@@ -49,6 +54,7 @@
     setupKeys(heads);
     setupRailTitle();
     setupNotes();
+    setupReport(links);
   }
 
   // ── Active section + progress ────────────────────────────────────────
@@ -94,6 +100,7 @@
       if (p >= 0.999) active = heads[heads.length - 1];
       if (active && active !== current) {
         current = active;
+        activeId = active.id;
         Object.keys(linkById).forEach(function (id) {
           linkById[id].classList.toggle("on", id === active.id);
         });
@@ -280,6 +287,99 @@
     });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && !panel.hidden) close();
+    });
+  }
+
+  // ── Report an issue ──────────────────────────────────────────────────
+  function setupReport(links) {
+    if (!FEEDBACK_ENDPOINT || document.querySelector(".report-fab")) return;
+
+    var fab = document.createElement("button");
+    fab.type = "button";
+    fab.className = "report-fab";
+    fab.setAttribute("aria-label", "Report an issue with this lab");
+    fab.innerHTML = '<span aria-hidden="true">⚑</span> REPORT ISSUE';
+
+    var options = links.map(function (a) {
+      var lb = a.querySelector(".lb");
+      var text = (lb ? lb.textContent : a.textContent).trim();
+      return '<option value="' + a.dataset.id + '">' + text.replace(/</g, "&lt;") + "</option>";
+    }).join("");
+
+    var panel = document.createElement("section");
+    panel.className = "notes-panel report-panel";
+    panel.hidden = true;
+    panel.setAttribute("aria-label", "Report an issue");
+    panel.innerHTML =
+      '<header><span>REPORT AN ISSUE</span><button type="button" data-act="close" aria-label="Close report form">CLOSE ✕</button></header>' +
+      '<form novalidate>' +
+        '<label>SECTION<select name="section">' + options + '<option value="">Other / not sure</option></select></label>' +
+        '<label>WHAT HAPPENED?<textarea name="message" required minlength="10" maxlength="4000" placeholder="Which step, what you expected, and what you saw instead…"></textarea></label>' +
+        '<label><span>YOUR NAME OR EMAIL <em>(optional)</em></span><input name="contact" maxlength="200" autocomplete="email"></label>' +
+        '<label class="hp" aria-hidden="true">Website<input name="website" tabindex="-1" autocomplete="off"></label>' +
+        '<footer><span class="st">GOES TO THE LAB AUTHOR · PUBLIC ON GITHUB</span><button type="submit">SEND</button></footer>' +
+      '</form>';
+
+    document.body.appendChild(fab);
+    document.body.appendChild(panel);
+
+    var form = panel.querySelector("form");
+    var select = form.elements.section;
+    var status = panel.querySelector(".st");
+    var send = form.querySelector('[type="submit"]');
+    var idle = status.textContent;
+
+    function open() {
+      if (activeId && select.querySelector('option[value="' + activeId + '"]')) select.value = activeId;
+      panel.hidden = false; fab.hidden = true;
+      form.elements.message.focus();
+    }
+    function close() { panel.hidden = true; fab.hidden = false; }
+
+    fab.addEventListener("click", open);
+    panel.querySelector('[data-act="close"]').addEventListener("click", close);
+    form.elements.message.addEventListener("input", function () {
+      if (!send.disabled) status.textContent = idle;
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && !panel.hidden) close();
+    });
+
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
+      var message = form.elements.message.value.trim();
+      if (message.length < 10) {
+        status.textContent = "PLEASE ADD A LITTLE MORE DETAIL";
+        form.elements.message.focus();
+        return;
+      }
+      var opt = select.options[select.selectedIndex];
+      var base = window.location.href.split("#")[0];
+      send.disabled = true;
+      status.textContent = "SENDING…";
+      fetch(FEEDBACK_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          section: select.value ? opt.textContent : "Other / not sure",
+          page: document.title,
+          url: select.value ? base + "#" + select.value : base,
+          contact: form.elements.contact.value,
+          message: message,
+          website: form.elements.website.value
+        })
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (data) {
+          if (!r.ok) throw new Error(data.error || "Something went wrong");
+          return data;
+        });
+      }).then(function (data) {
+        form.elements.message.value = "";
+        status.textContent = data.number ? "THANKS · FILED AS #" + data.number : "THANKS · REPORT SENT";
+        setTimeout(function () { status.textContent = idle; close(); }, 2500);
+      }).catch(function (err) {
+        status.textContent = String(err.message || err).toUpperCase();
+      }).then(function () { send.disabled = false; });
     });
   }
 

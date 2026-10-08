@@ -1014,6 +1014,60 @@ body {
   color: var(--ink-3);
 }
 .notes-panel footer button.warn { color: var(--accent); }
+.notes-panel footer button[type="submit"] { color: var(--accent); font-weight: 600; }
+.notes-panel footer button:disabled { opacity: .5; cursor: default; }
+
+/* Report an issue: same look as Notes, stacked just above it */
+.report-fab {
+  position: fixed;
+  right: 1.2rem;
+  bottom: 3.6rem;
+  z-index: 5;
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-family: var(--mono);
+  font-size: .6rem;
+  letter-spacing: .05em;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  padding: .55rem .85rem;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .12);
+  transition: transform .2s var(--ease-out);
+}
+.report-fab:hover { transform: translateY(-2px); }
+.report-fab[hidden] { display: none; }
+.report-panel form { display: flex; flex-direction: column; margin: 0; }
+.report-panel label {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  padding: .7rem .9rem 0;
+  font-size: .55rem;
+  letter-spacing: .05em;
+  color: var(--ink-3);
+}
+.report-panel label em { font-style: normal; color: var(--ink-4); }
+.report-panel select,
+.report-panel input,
+.report-panel textarea {
+  font-family: var(--mono);
+  font-size: .64rem;
+  color: var(--ink);
+  background: var(--bg-raised);
+  border: 1px solid var(--line-soft);
+  border-radius: 0;
+  outline: none;
+  padding: .5rem .6rem;
+}
+.report-panel textarea { min-height: 8rem; resize: vertical; }
+.report-panel select:focus,
+.report-panel input:focus,
+.report-panel textarea:focus { border-color: var(--accent); }
+.report-panel footer { margin-top: .8rem; }
+.report-panel .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 /* ---------- Footer ------------------------------------------------------- */
 .lab-footer { border-top: 1px solid var(--line-soft); margin-top: 5rem; }
