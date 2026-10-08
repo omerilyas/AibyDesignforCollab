@@ -298,7 +298,8 @@
     fab.type = "button";
     fab.className = "report-fab";
     fab.setAttribute("aria-label", "Report an issue with this lab");
-    fab.innerHTML = '<span aria-hidden="true">⚑</span> REPORT ISSUE';
+    fab.title = "Report an issue with this lab";
+    fab.innerHTML = '<span aria-hidden="true">⚑</span><span class="tx">REPORT ISSUE</span>';
 
     var options = links.map(function (a) {
       var lb = a.querySelector(".lb");
@@ -322,6 +323,17 @@
 
     document.body.appendChild(fab);
     document.body.appendChild(panel);
+
+    // Sit on the same row as NOTES, just to its left, so the pair covers as
+    // little of the page as possible.
+    var notesFab = document.querySelector(".notes-fab");
+    function dock() {
+      if (!notesFab || notesFab.hidden) return;
+      var gap = window.innerWidth - notesFab.getBoundingClientRect().left;
+      fab.style.right = (gap + 8) + "px";
+    }
+    dock();
+    window.addEventListener("resize", dock);
 
     var form = panel.querySelector("form");
     var select = form.elements.section;

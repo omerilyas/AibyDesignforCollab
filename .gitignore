@@ -5,3 +5,6 @@ __pycache__/
 .DS_Store
 Helpfiles/
 *.docx
+
+# Private admin notes (Omer only)
+ADMIN-README.md
