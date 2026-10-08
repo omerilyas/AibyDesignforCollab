@@ -20,7 +20,7 @@
   var NOTES_KEY = "ltrcol2011:notes";
   var BAR_CHARS = 26;
   // URL of the deployed feedback-api function, e.g. https://<project>.vercel.app/api/report
-  var FEEDBACK_ENDPOINT = "";
+  var FEEDBACK_ENDPOINT = "https://aibydesignforcollab.vercel.app/api/report";
   var activeId = null;   // section currently in view, kept by setupScroll
 
   var store = {
