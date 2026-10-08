@@ -1,5 +1,5 @@
 site_name: "AI by Design for Collaboration"
-site_description: "LTRCOL-2011 hands-on lab guide. Part 1: AI across Webex Control Hub, Messaging, Calling and Meetings. Part 2: Webex Messaging MCP with an AI client. Part 3: building AI-powered Webex messaging with LangChain."
+site_description: "LTRCOL-2011 hands-on lab guide. Part 1: AI across Collaboration Control Hub, Messaging, Calling and Meetings. Part 2: Webex Messaging MCP with an AI client. Part 3: building AI-powered Webex messaging with LangChain."
 site_author: Omer Ilyas
 site_url: https://omerilyas.github.io/AibyDesignforCollab/
 copyright: "LTRCOL-2011 · AI by Design for Collaboration · WebexOne 2026"
@@ -43,7 +43,7 @@ extra:
       url: https://aibydesign-token-assignment.vercel.app/
     - title: "dCloud"
       url: https://dcloud.cisco.com
-    - title: "Webex Control Hub"
+    - title: "Collaboration Control Hub"
       url: https://admin.webex.com
     - title: "Webex Help Center"
       url: https://help.webex.com

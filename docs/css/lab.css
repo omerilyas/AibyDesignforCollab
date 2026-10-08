@@ -17,14 +17,15 @@
   --ink-rgb: 20, 20, 19;
   --line: #14141338;
   --line-soft: #1414131c;
-  --accent: #c15f3c;
+  --accent: #0b72b0;
   --ok: #3e7a3e;
   --info: #3f6fa8;
+  --tagline: var(--accent);
   --img-edge: #1414131f;
   --danger: #b23b3b;
   --syn-kw: #8e3f7e;
   --syn-str: #3e7a3e;
-  --syn-num: #b0531c;
+  --syn-num: #0f7d7d;
   --syn-fn: #2f62a8;
   --syn-cm: #8c8b84;
 
@@ -47,14 +48,15 @@
   --ink-rgb: 250, 249, 245;
   --line: #faf9f529;
   --line-soft: #faf9f517;
-  --accent: #d97757;
+  --accent: #4cc3f0;
   --ok: #9ac29a;
   --info: #8fb3dd;
+  --tagline: var(--accent);
   --img-edge: #faf9f51f;
   --danger: #e07a7a;
   --syn-kw: #cf9bd0;
   --syn-str: #a9cc9a;
-  --syn-num: #e3a873;
+  --syn-num: #7fcfc6;
   --syn-fn: #93b8e2;
   --syn-cm: #75746c;
 }
@@ -578,6 +580,23 @@ body {
   margin: -.3rem 0 1.4rem;
   text-wrap: balance;
 }
+
+/* Bold section tagline with a struck-through lead-in */
+.md-typeset.prose .tagline {
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+  margin: -.2rem 0 1.4rem;
+  text-wrap: balance;
+}
+.md-typeset.prose .tagline del {
+  font-weight: 500;
+  color: var(--ink-3);
+  text-decoration-thickness: 2px;
+  text-decoration-color: var(--ink);
+}
+.md-typeset.prose .tagline span { color: var(--tagline); }
 
 /* Lists */
 .md-typeset.prose ol,

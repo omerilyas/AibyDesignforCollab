@@ -67,7 +67,7 @@ This lab is designed to provide a practical and approachable introduction to the
 
 ### How to use this guide { #how-to data-toc-label="How to use this guide" }
 
-The whole lab lives on this one page. Scroll down and work through it in order.
+The whole lab lives on this **one page**. Scroll down and work through it in order.
 
 - The **TREE** on the left shows where you are. The progress bar under it fills up as you scroll.
 - Press <kbd>J</kbd> / <kbd>K</kbd> to jump to the next or previous section.

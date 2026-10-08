@@ -20,7 +20,7 @@ links:
     url: "part-3/"
   - title: "Token assignment tool"
     url: https://aibydesign-token-assignment.vercel.app/
-  - title: "Webex Control Hub"
+  - title: "Collaboration Control Hub"
     url: https://admin.webex.com
   - title: "Webex MCP docs"
     url: https://developer.webex.com/mcp/docs/ai-in-webex
@@ -95,7 +95,7 @@ Webex MCP servers bring Webex Meetings, Messaging, Workspaces, Vidcast and Slido
 
 ### How to use this guide { #how-to data-toc-label="How to use this guide" }
 
-The whole lab lives on this one page. Scroll down and work through it in order.
+The whole lab lives on this **one page**. Scroll down and work through it in order.
 
 - The **TREE** on the left shows where you are. The progress bar under it fills up as you scroll.
 - Press <kbd>J</kbd> / <kbd>K</kbd> to jump to the next or previous section.

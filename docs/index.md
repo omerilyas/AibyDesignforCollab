@@ -1,6 +1,6 @@
 ---
 title: Webex AI Lab Guide
-description: "LTRCOL-2011 Part 1: hands-on lab exploring AI across Webex Control Hub, Messaging, Calling and Meetings."
+description: "LTRCOL-2011 Part 1: hands-on lab exploring AI across Collaboration Control Hub, Messaging, Calling and Meetings."
 chip: "Part 1 of 3"
 headline: "AI by Design for Collaboration"
 standfirst: "Turn on the Cisco AI Assistant, then try AI in Webex Messaging, Calling and Meetings, one hands-on module at a time."
@@ -16,6 +16,8 @@ meta:
 ---
 
 ## About this lab { #about data-toc-label="About this lab" }
+
+<p class="tagline"><del>From using AI</del> <span>to working with AI.</span></p>
 
 In this hands-on lab, you will unlock the potential of **Artificial Intelligence (AI)** across the entire **Webex Suite**. As **AI** continues to redefine the modern workplace, this lab shows you how these technologies transform collaboration, communication, and customer interactions. You will explore how **Webex AI** gives administrators better oversight, makes employees more productive through smarter workflows, and delights customers with more personalized experiences.
 
@@ -43,7 +45,7 @@ Throughout this lab, you will gain practical experience in the following areas:
 
 ### How to use this guide { #how-to data-toc-label="How to use this guide" }
 
-The whole lab lives on this one page. Scroll down and work through it in order.
+The whole lab lives on this **one page**. Scroll down and work through it in order.
 
 - The **TREE** on the left shows where you are. The progress bar under it fills up as you scroll.
 - Press <kbd>J</kbd> / <kbd>K</kbd> to jump to the next or previous section.
@@ -108,7 +110,7 @@ In this lab you will sign in to the Webex clients as two users, **Charles Hollan
     Session_Info.txt on the Workstation 2 desktop.
     ///
 
-4. While you are on **Anita Perez's** workstation, copy the credentials from `Session_Info.txt`. You only need the **Webex Control Hub Username**, **Webex Control Hub Password** and **Domain**. For **Charles Holland**, the **Webex Control Hub** and **Webex App** credentials are the same. We will save these credentials on the physical/attendee workstation for easier access.
+4. While you are on **Anita Perez's** workstation, copy the credentials from `Session_Info.txt`. You only need the **Collaboration Control Hub Username**, **Collaboration Control Hub Password** and **Domain**. For **Charles Holland**, the **Collaboration Control Hub** and **Webex App** credentials are the same. We will save these credentials on the physical/attendee workstation for easier access.
 
     ![Copy the Control Hub username, password and domain](img/access-05.png){ loading=lazy }
 
@@ -116,10 +118,10 @@ In this lab you will sign in to the Webex clients as two users, **Charles Hollan
     Copy the Control Hub username, password and domain.
     ///
 
-5. Now, on the physical/attendee workstation, open a text editor, paste the copied credentials, and save the file with any name, for example `Session_Info.txt`.
+    !!! tip "Tip: save them in the Notes panel"
+        Once you have copied the credentials, you can also paste them into this guide's **Notes** panel (the **NOTES** button in the bottom-right corner) for easy access as you work through the lab.
 
-!!! tip "Tip: use the Notes panel"
-    You can also paste these credentials into this guide's **Notes** panel (bottom-right) so they stay with you as you scroll.
+5. Now, on the physical/attendee workstation, open a text editor, paste the copied credentials, and save the file with any name, for example `Session_Info.txt`.
 
 <p class="eyebrow">Module 1 · ≈ 30 min</p>
 
@@ -127,20 +129,20 @@ In this lab you will sign in to the Webex clients as two users, **Charles Hollan
 
 Before you can experience the transformative power of AI-driven collaboration, administrators must first lay the groundwork. This module focuses on the essential steps:
 
-- Activating and configuring the **Cisco AI Assistant** and its associated features within **Webex Control Hub**
+- Activating and configuring the **Cisco AI Assistant** and its associated features within **Collaboration Control Hub**
 - The **AI Assistant** in Control Hub
-- Ordering phone numbers (DIDs) for users with the **Cisco Calling Plan** in Webex Control Hub
+- Ordering phone numbers (DIDs) for users with the **Cisco Calling Plan** in Collaboration Control Hub
 - Assigning a **Webex Calling license** and a phone number to users
 - Signing in to the **Webex** clients
 
 <p class="eyebrow sub">Module 1a · ≈ 5 min</p>
 
-### Activating and configuring the Cisco AI Assistant and its associated features within Webex Control Hub { #module-1a data-toc-label="1a · Activate AI features" data-task="1a" }
+### Activating and configuring the Cisco AI Assistant and its associated features within Collaboration Control Hub { #module-1a data-toc-label="1a · Activate AI features" data-task="1a" }
 
-Webex Control Hub is the central command center for **Webex AI**. As an administrator, you decide which AI capabilities are enabled, so they align with your organization's policies while maximizing productivity. In this module, you will learn how to navigate the AI settings to enable the suite-wide features that power the rest of this lab.
+Collaboration Control Hub is the central command center for **Webex AI**. As an administrator, you decide which AI capabilities are enabled, so they align with your organization's policies while maximizing productivity. In this module, you will learn how to navigate the AI settings to enable the suite-wide features that power the rest of this lab.
 
 1. Open a new browser tab on your physical/attendee workstation and go to [https://admin.webex.com](https://admin.webex.com){:target="_blank" rel="noopener"}.
-2. Log in to Webex Control Hub with the **Charles Holland** credentials. These are the credentials you saved on the physical/attendee workstation in the previous section. Refer to the screenshot below.
+2. Log in to Collaboration Control Hub with the **Charles Holland** credentials. These are the credentials you saved on the physical/attendee workstation in the previous section. Refer to the screenshot below.
 
     !!! warning "Very important"
         Every session/pod has its own credentials. The screenshot below is for **reference** only. Use the credentials from your own session/pod.
@@ -151,7 +153,7 @@ Webex Control Hub is the central command center for **Webex AI**. As an administ
     Example Session_Info.txt. Use the Control Hub credentials from your own pod.
     ///
 
-3. For security reasons, **Webex Control Hub** signs you out after 20 minutes of inactivity by default. For this lab, make the idle timeout longer so Control Hub doesn't keep signing you out. Go to **MANAGEMENT > Organization Settings > Control Hub's idle timeout**. Open the **Control Hub idle timeout** drop-down, select **12 hours** or **No timeout**, and click **Save**.
+3. For security reasons, **Collaboration Control Hub** signs you out after 20 minutes of inactivity by default. For this lab, make the idle timeout longer so Control Hub doesn't keep signing you out. Go to **MANAGEMENT > Organization Settings > Control Hub's idle timeout**. Open the **Control Hub idle timeout** drop-down, select **12 hours** or **No timeout**, and click **Save**.
 
     ![Organization Settings: set Control Hub's idle timeout to 12 hours](img/module-1a-02.png){ loading=lazy }
 
@@ -167,7 +169,7 @@ Webex Control Hub is the central command center for **Webex AI**. As an administ
     Cisco AI Assistant & AI features: Customize AI Assistant & AI features.
     ///
 
-5. Make sure all the toggles are turned **ON** except **AI Assistant Integrations**, **External sources (General AI Settings)** and **AI Assistant workflow automations**. Click **Save** at the bottom right.
+5. Make sure all the toggles are turned **ON** except **AI Assistant Integrations**, **External sources (General AI Settings)** and **AI Assistant workflow automations**.
 
     ![Calling AI features: all toggles on](img/module-1a-04.png){ loading=lazy }
 
@@ -193,7 +195,12 @@ Webex Control Hub is the central command center for **Webex AI**. As an administ
     General AI settings: leave the external sources off, then click Save.
     ///
 
-6. This completes **Activating and configuring the Cisco AI Assistant and its associated features within Webex Control Hub**.
+6. Click **Save** at the bottom right to save these settings. If you skip this step, none of the AI features you just turned on are applied.
+
+7. This completes **Activating and configuring the Cisco AI Assistant and its associated features within Collaboration Control Hub**.
+
+!!! note "AI Assistant Integrations"
+    This lab does not use the external **AI Assistant Integrations**, such as **Amazon Q**, **Glean** or **Jira**, so you can leave them turned off. You are welcome to explore them on your own, but no lab task depends on them and leaving them off has no impact on the rest of the lab.
 
 <p class="eyebrow sub">Module 1b · ≈ 5 min</p>
 
@@ -207,36 +214,75 @@ You can also see your previous conversation history, play it back, and ask follo
 
 The Cisco AI Assistant in Control Hub can answer questions about the **Webex Suite**, which includes products such as **Messaging**, **Meetings**, **Calling**, and **Contact Center**. The AI Assistant searches all of the Webex help pages to give you an accurate answer.
 
-Let's quickly explore how to use this AI Assistant in Webex Control Hub.
+Let's quickly explore how to use this AI Assistant in Collaboration Control Hub.
 
-1. Continuing on the physical/attendee workstation, go to the browser tab where you are logged in to **Webex Control Hub**.
+1. Continuing on the physical/attendee workstation, go to the browser tab where you are logged in to **Collaboration Control Hub**.
 2. Click **AI Assistant** ![Cisco AI Assistant icon](img/icon-01.png){ .icon } toward the top-right corner.
-3. The **AI Assistant** fly-out opens on the right. Ask any Webex Control Hub question, for example: **how do I configure a registration-based trunk?**
 
-    ![Asking the Control Hub AI Assistant how to configure a registration-based trunk](img/module-1b-01.png){ loading=lazy }
+    !!! note "Note"
+        You might see an **Add context** option above the question box. Don't worry about it for now: just run the example in the next step. We will look at **Add context** in the next steps.
+
+        ![The Add context option in the AI Assistant question box](img/module-1b-01.png){ loading=lazy }
+
+        /// caption
+        The Add context option in the AI Assistant question box.
+        ///
+
+3. The **AI Assistant** fly-out opens on the right. Ask any Collaboration Control Hub question, for example: **how do I configure a registration-based trunk?**
+
+    ![Asking the Control Hub AI Assistant how to configure a registration-based trunk](img/module-1b-02.png){ loading=lazy }
 
     /// caption
     Asking the Control Hub AI Assistant how to configure a registration-based trunk.
     ///
 
-4. Feel free to ask more questions. When you're done, move on to the next module.
+4. Now let's try **Add context**. With context, you can ask questions about specific data, explore reports, diagnose workspaces, and investigate issues across technology domains. This reduces the effort it takes to move from question to insight, and from issue to action. Click **Add context** above the question box to see the options: **Data**, **Reports** and **Workspaces**.
+
+    ![Add context options: Data, Reports and Workspaces](img/module-1b-03.png){ loading=lazy }
+
+    /// caption
+    Add context options: Data, Reports and Workspaces.
+    ///
+
+5. Select **Workspaces** as the context, then ask: **show me my workspaces**. The AI Assistant lists the workspaces in your organization.
+
+    ![Workspaces selected as context: asking the AI Assistant to show my workspaces](img/module-1b-04.png){ loading=lazy }
+
+    /// caption
+    Workspaces selected as context: asking the AI Assistant to show my workspaces.
+    ///
+
+    !!! note "Note"
+        The workspaces in your lab pod are placeholder workspaces created for this session, not real devices in use. Some responses, such as status or usage details, may be limited or look generic. Keep this in mind as you explore.
+
+6. Once you get a response, ask a follow-up question about one of the workspaces, for example: **tell me more about Device[1]**. This is **contextual Q&A with recall**: the AI Assistant keeps the context from your earlier questions, so you can follow up naturally without repeating details or starting your search over.
+
+7. Feel free to ask more questions. When you're done, move on to the next module.
 
 <p class="eyebrow sub">Module 1c · ≈ 10 min</p>
 
-### Ordering phone numbers (DIDs) for users using Cisco Calling Plan on Webex Control Hub { #module-1c data-toc-label="1c · Order phone numbers" data-task="1c" }
+### Ordering phone numbers (DIDs) for users using Cisco Calling Plan on Collaboration Control Hub { #module-1c data-toc-label="1c · Order phone numbers" data-task="1c" }
+
+!!! note "Note"
+    Your lab pod runs in **Cisco dCloud**. The steps and screenshots in this module come from a pod in a **US data center**, so they show US states, area codes and **+1** numbers. Apart from the phone numbers themselves, the process and configuration are exactly the same wherever you are.
+
+    Depending on your region, some resources, such as available phone numbers, may occasionally be limited. If something doesn't match what you expect, check with your proctor.
 
 In this module you will order new DID numbers with **Cisco Calling Plan**, and then assign one of them as the **Main number** for the location in Control Hub.
 
 In customer environments that already have a PSTN provider and DID numbers, you can import all your DID numbers into Control Hub and assign them as the Main number and/or to any user for Webex Calling.
 
-1. Continuing on the physical/attendee workstation, go back to the browser where you are logged in to **Webex Control Hub**.
-2. In Webex Control Hub, navigate to **SERVICES > PSTN & Routing**. Open the **Manage** drop-down and choose **Add**.
+1. Continuing on the physical/attendee workstation, go back to the browser where you are logged in to **Collaboration Control Hub**.
+2. In Collaboration Control Hub, navigate to **SERVICES > PSTN & Routing**. Open the **Manage** drop-down and choose **Add**.
 
     ![PSTN & Routing > Manage > Add](img/module-1c-01.png){ loading=lazy }
 
     /// caption
     PSTN & Routing > Manage > Add.
     ///
+
+    !!! note "Note"
+        If you don't see the **Add** option under the **Manage** drop-down, click **Add a number** instead.
 
 3. On the **Add Numbers** page, open the **Location** drop-down and choose **dCloud**. Because you are setting up this location for the first time, you first need to select its PSTN connection. Click **Edit PSTN**.
 
@@ -362,7 +408,7 @@ In customer environments that already have a PSTN provider and DID numbers, you 
     ///
 
 21. The other two numbers will be assigned to the Webex users **Charles Holland** and **Anita Perez** in a later module, for the rest of the lab.
-22. This completes **Ordering phone numbers (DIDs) for users using Cisco Calling Plan on Webex Control Hub**.
+22. This completes **Ordering phone numbers (DIDs) for users using Cisco Calling Plan on Collaboration Control Hub**.
 
 <p class="eyebrow sub">Module 1d · ≈ 5 min</p>
 
@@ -382,7 +428,7 @@ In this lab, we will explore the **Professional** license option only.
 
 #### Steps
 
-1. Continuing on the physical/attendee workstation, go back to the browser where you are logged in to Webex Control Hub.
+1. Continuing on the physical/attendee workstation, go back to the browser where you are logged in to Collaboration Control Hub.
 2. Go to **MANAGEMENT > Users**.
 3. Select the user **Charles Holland** from the list of users.
 4. On the user **Summary** page, scroll down and click **Edit Licenses**.
@@ -421,11 +467,11 @@ You have now successfully assigned a **Webex Calling** license and a phone numbe
 You're almost done setting up the lab environment and ready to explore the AI features. As a last step, sign in to the Webex clients and have them ready.
 
 !!! note "Which user goes where"
-    As explained before, sign in as **Charles Holland** in the Webex App on the physical/attendee laptop in the classroom, because that laptop has a microphone.
+    Sign in as **Charles Holland** on your own laptop, because it has a microphone. Make sure the Webex App is installed and sign in to it as **Charles Holland**. Use the Webex desktop App, not Webex in a browser: the **Cisco AI Assistant** features in this lab are only available in the app.
 
-    Sign in as **Anita Perez** in the Webex App on Workstation 2 (WKST 2), which you reach over WebRDP. **The Webex App in WebRDP has no microphone.** So for every call where you need to speak, you will speak as **Charles Holland**, signed in to the Webex App on the physical laptop in the classroom.
+    Sign in as **Anita Perez** in the Webex App on Workstation 2 (WKST 2), which you reach over WebRDP. **The Webex App in WebRDP has no microphone.** So for every call where you need to speak, you will speak as **Charles Holland** from your own laptop.
 
-1. Continuing on the physical/attendee workstation, minimize the browser and launch the Webex App on your local laptop. Click **Agree** on the **IMPORTANT NOTICES AND DISCLAIMERS** pop-up.
+1. Continuing on the physical/attendee workstation (your own laptop), minimize the browser and launch the Webex App. Click **Agree** on the **IMPORTANT NOTICES AND DISCLAIMERS** pop-up.
 2. Click **Sign in** and use the **Charles Holland** credentials from `Session_Info.txt` on your physical/attendee workstation.
 
     ![Charles Holland's credentials in Session_Info.txt](img/module-1c-04.png){ loading=lazy }
@@ -433,6 +479,9 @@ You're almost done setting up the lab environment and ready to explore the AI fe
     /// caption
     Charles Holland's credentials in Session_Info.txt.
     ///
+
+    !!! note "Note"
+        The credentials in the image above are for reference only. Your credentials will be different: enter the ones from the `Session_Info.txt` of the session assigned to you.
 
 3. Once you're signed in, a pop-up about **Emergency Calling Notification** appears. Click **OK**. Webex is now signed in and ready to use on the physical/attendee workstation.
 
@@ -442,7 +491,7 @@ You're almost done setting up the lab environment and ready to explore the AI fe
     Charles Holland signed in to the Webex App.
     ///
 
-4. Now access Workstation 2 (WKST 2) over WebRDP. Launch the Webex App on WKST 2 and sign in as Anita Perez, using the **Anita Perez** credentials from `Session_Info.txt` on the WKST 2 desktop. Refer to the screenshot below.
+4. Now access Workstation 2 (WKST 2) over WebRDP. If the WebRDP tab for WKST 2 is still open in your browser, switch to it. If you closed it, open a new browser tab, go back to your dCloud session, and open **Remote Access > Web RDP** for Workstation 2 again, as described in [Accessing Anita Perez's workstation](#access-wkst2). Launch the Webex App on WKST 2 and sign in as Anita Perez, using the **Anita Perez** credentials from `Session_Info.txt` on the WKST 2 desktop. Refer to the screenshot below.
 
     ![Anita Perez's Webex credentials in Session_Info.txt on WKST 2](img/module-1e-02.png){ loading=lazy }
 
@@ -450,11 +499,7 @@ You're almost done setting up the lab environment and ready to explore the AI fe
     Anita Perez's Webex credentials in Session_Info.txt on WKST 2.
     ///
 
-5. Before you continue, make sure both Webex clients are signed in: Charles Holland on the physical laptop and Anita Perez on virtual Workstation 2.
-
-!!! info "From now on"
-    - **Charles Holland's Webex App** runs on the classroom laptop, which we call the **physical/attendee workstation**.
-    - **Anita Perez** uses the **virtual workstation** (WKST 2, accessed over WebRDP, with no microphone).
+5. Before you continue, make sure both your Webex clients are signed in: **Charles Holland** and **Anita Perez**.
 
 <p class="eyebrow">Module 2 · ≈ 20 min</p>
 
@@ -471,10 +516,17 @@ The **Ask Me Anything** (AMA) feature in Webex Messaging is part of the **Cisco 
 !!! note
     The Webex App for **Charles Holland** on the physical/attendee workstation may already be preloaded with some chat. If not, have a short back-and-forth chat with Anita Perez (the Webex App on virtual Workstation 2).
 
+    **Can't see the other user?** Before you start chatting, check that **Charles Holland** and **Anita Perez** can see each other in the Webex App:
+
+    - In **Charles Holland's** Webex App, look for **Anita Perez** in your spaces list. If Anita isn't listed, use the search bar at the top to search for **Anita Perez** by name or email address, open a direct space, and send a first message.
+    - In **Anita Perez's** Webex App, do the same for **Charles Holland**.
+
+    Once each user can see the other, continue with the chat and the steps below.
+
 1. Continuing on the physical/attendee workstation, bring up the Webex App (signed in as **Charles Holland**).
 2. In the app header (top-right corner), click **AI Assistant** ![Cisco AI Assistant icon](img/icon-01.png){ .icon }. Then select a space from your spaces list.
 3. In the Cisco AI Assistant panel, select:
-    - **Ask me anything about recent activity.** Ask the AI Assistant questions to search for, or find out more about, conversations and content discussed in the space.
+    - **Ask AI Assistant.** Ask the AI Assistant questions to search for, or find out more about, conversations and content discussed in the space.
     - Answers come with highlighted citation links. Click one to go directly to the source message and get more detail.
     - Click **More** ![More options button](img/icon-02.png){ .icon } and select **Copy** ![Copy icon](img/icon-03.png){ .icon } to copy the answer and share it elsewhere.
     - Click **Stop generating** to cancel an AI Assistant reply.
@@ -496,6 +548,9 @@ The **Ask Me Anything** (AMA) feature in Webex Messaging is part of the **Cisco 
     /// caption
     The answer, with citation links back to the source messages.
     ///
+
+    !!! note "Note"
+        The screenshots above are only an example. If your Webex App didn't have a preloaded chat and you started your own conversation, your space and messages will look different. You can ask the AI Assistant anything about what was discussed in the space, or ask it to summarize the conversation. Just make sure **Charles Holland** and **Anita Perez** have exchanged a few messages first, so the AI Assistant has something to work with.
 
 <p class="eyebrow sub">Module 2b · ≈ 5 min</p>
 
@@ -585,6 +640,9 @@ To translate messages in a space from any language into your language, first sel
 
 3. Now you can either translate an **individual** message in a space into your selected language, or translate all the messages in a space by opening the **space settings menu** and selecting **Start live translation**. See the screenshots below for reference.
 
+    !!! note "Note"
+        To translate an individual message, first hover over or select the message, then click the **More** ![More options button](img/icon-02.png){ .icon } (three dots) that appears next to it. The **Translate** option only shows up in that message menu.
+
     ![Translate a single message from its message menu](img/module-2d-03.png){ loading=lazy }
 
     /// caption
@@ -626,7 +684,7 @@ In this module you'll hear what AI audio intelligence does on a live call, then 
 
 Webex uses AI-powered audio intelligence to significantly improve call clarity. It removes background noise from both outgoing and incoming audio, and enhances narrowband audio into wideband for a richer, more natural sound. This smart audio processing reduces distractions and makes conversations clearer, even in noisy environments. Users can also adjust **AI noise removal** and **voice optimization** settings directly in the phone or Webex App for tailored audio quality. Together, these capabilities give you clearer communication and a better voice experience on every call.
 
-The Smart Audio settings give you these **AI-powered audio intelligence** options:
+The **Smart Audio** settings within the Webex App give you these **AI-powered audio intelligence** options:
 
 **Microphone audio:** 4 options to enhance the audio from your microphone (what the remote party hears).
 
@@ -738,8 +796,8 @@ Closed captions and call transcription can be enabled at:
 
 In this lab, you will enable CC and call transcription for **the user Charles Holland** in your Webex org. Proceed as follows.
 
-1. Continuing on the physical/attendee workstation, bring up the browser where you are logged in to Control Hub.
-2. In Webex Control Hub, navigate to **MANAGEMENT > Users**. Select the user **Charles Holland**, and on the user page go to the **Calling** tab.
+1. Continuing on the physical/attendee workstation, bring up the browser where you are logged in to **Collaboration Control Hub**.
+2. In Collaboration Control Hub, navigate to **MANAGEMENT > Users**. Select the user **Charles Holland**, and on the user page go to the **Calling** tab.
 
     ![Control Hub > Users > Charles Holland > Calling](img/module-3b-01.png){ loading=lazy }
 
@@ -763,7 +821,7 @@ In this lab, you will enable CC and call transcription for **the user Charles Ho
     Captions for Webex Calling: custom settings with captions and transcripts on.
     ///
 
-5. Now bring up the Webex App on the physical workstation (classroom laptop).
+5. Now bring up the Webex App on the physical/attendee workstation (your own laptop).
 6. Go to the **Calling** tab on the left and dial the Cisco TAC number: **+1 800 553 2447**.
 
     ![The Calling tab in the Webex App. Dial Cisco TAC](img/module-3b-04.png){ loading=lazy }
@@ -842,6 +900,9 @@ First, enable call recording at the user level for the user **Charles Holland** 
 
 6. On the **Recordings** page, select the available recording. Within a few seconds, the **AI-generated** summary of the recording appears. Once you have reviewed the summary, click the play button for the recording.
 
+    !!! note "Note"
+        It can take a few minutes for a recording to be processed and appear on the **Recordings** page. If you've just finished the call to Cisco TAC and don't see the recording yet, carry on with the lab and come back to this page later. The recording and its AI-generated summary will be waiting for you here.
+
     ![The recording, with AI-generated call notes](img/module-3d-04.png){ loading=lazy }
 
     /// caption
@@ -876,6 +937,9 @@ On top of this foundation, the AI Assistant adds a higher layer of intelligence.
 
 AI is also used for **Webex meeting recordings**. It analyzes the captured audio and content and converts spoken conversations into time-aligned text with neural speech-to-text engines. The system automatically detects the spoken language, identifies speakers, and enriches the recording with searchable transcripts and captions. After the meeting, large language models interpret the transcript and meeting context to understand topic flow, intent, and key moments. When the Cisco AI Assistant is enabled, these models generate summaries, highlights, action items, and chapters. This turns recordings from passive videos into searchable, contextual, and actionable meeting assets.
 
+!!! info "Learn more"
+    To learn more about the AI models and architecture behind these features, visit the [Cisco Trust Portal](https://trustportal.cisco.com/c/r/ctp/home.html){:target="_blank" rel="noopener"}.
+
 <p class="eyebrow sub">Module 4a · ≈ 10 min</p>
 
 ### Schedule your meetings with Cisco AI Assistant { #module-4a data-toc-label="4a · Schedule with AI Assistant" data-task="4a" }
@@ -901,11 +965,11 @@ In this lab you'll use the newest method to schedule a Webex meeting: the Cisco 
 3. In the **Ask AI Assistant** window, ask the Assistant to schedule a meeting for you. Here is an example of what you can type:
 
     ```text
-    Schedule a meeting with @Anita Perez on 10/1/2026 for 3:45 PM CST, for 60min. With title Project Las Vegas.
+    Schedule a meeting with @Anita Perez on XX/XX/XXXX at XX:XX, for 60min. With title Project AI by Design.
     ```
 
     !!! note
-        Replace the date and time with today's date and the current time.
+        Replace the **XX** placeholders with a date and time of your choice, for example later today. You can also change the duration and title if you like.
 
 4. The Assistant captures the information and summarizes the request. It may suggest other times if the requested time doesn't suit all attendees. Feel free to change anything by continuing the conversation, or confirm.
 
@@ -939,6 +1003,9 @@ In AI-powered Webex Meetings, Webex automatically detects the language being spo
     /// caption
     Turn on Allow real-time translation and transcription in multiple languages.
     ///
+
+    !!! info "Learn more"
+        To learn how Webex Meetings processes, stores and protects meeting data, including transcriptions and translations, see the [Webex Meetings Privacy Data Sheet](https://trustportal.cisco.com/c/r/ctp/trust-portal.html#/1554085468927155){:target="_blank" rel="noopener"} on the Cisco Trust Portal.
 
 4. Now quit the Webex App on both workstations (physical and virtual) and relaunch Webex. To quit Webex, click your **profile picture** and select **Exit Webex**. **Make sure** you exit and relaunch Webex before continuing.
 5. On your physical/attendee workstation, bring up Webex. The meeting you scheduled in the previous module shows a **One Button to Join** (OBTJ) button. Click **Start** to start the meeting. When the meeting window opens, click **Start meeting**. Once the meeting has started, click **Closed Captions** ![Closed captions icon](img/icon-06.png){ .icon } (toward the bottom left of the meeting window).
