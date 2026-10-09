@@ -1017,33 +1017,28 @@ body {
 .notes-panel footer button[type="submit"] { color: var(--accent); font-weight: 600; }
 .notes-panel footer button:disabled { opacity: .5; cursor: default; }
 
-/* Report an issue: a small ⚑ on the same row as NOTES (JS sets `right`);
-   the label only shows on hover or keyboard focus */
+/* Report an issue: same look and width as NOTES, stacked just above it
+   (JS matches the width and sets `bottom`) */
 .report-fab {
   position: fixed;
-  right: 6.4rem;
-  bottom: 1.2rem;
+  right: 1.2rem;
+  bottom: 3.6rem;
   z-index: 5;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: .5rem;
-  height: 2rem;
-  min-width: 2rem;
   font-family: var(--mono);
   font-size: .6rem;
   letter-spacing: .05em;
-  color: var(--ink);
-  background: var(--bg);
-  border: 1px solid var(--line);
-  padding: 0 .6rem;
+  color: var(--bg);
+  background: var(--ink);
+  border: 0;
+  padding: .6rem .9rem;
   cursor: pointer;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, .12);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .18);
   transition: transform .2s var(--ease-out);
 }
-.report-fab .tx { display: none; }
-.report-fab:hover .tx,
-.report-fab:focus-visible .tx { display: inline; }
 .report-fab:hover { transform: translateY(-2px); }
 .report-fab[hidden] { display: none; }
 .report-panel form { display: flex; flex-direction: column; margin: 0; }

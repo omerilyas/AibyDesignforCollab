@@ -299,7 +299,7 @@
     fab.className = "report-fab";
     fab.setAttribute("aria-label", "Report an issue with this lab");
     fab.title = "Report an issue with this lab";
-    fab.innerHTML = '<span aria-hidden="true">⚑</span><span class="tx">REPORT ISSUE</span>';
+    fab.innerHTML = '<span aria-hidden="true">⚑</span> REPORT';
 
     var options = links.map(function (a) {
       var lb = a.querySelector(".lb");
@@ -324,13 +324,14 @@
     document.body.appendChild(fab);
     document.body.appendChild(panel);
 
-    // Sit on the same row as NOTES, just to its left, so the pair covers as
-    // little of the page as possible.
+    // Stack directly above NOTES with the same width, so the pair reads as one.
     var notesFab = document.querySelector(".notes-fab");
     function dock() {
       if (!notesFab || notesFab.hidden) return;
-      var gap = window.innerWidth - notesFab.getBoundingClientRect().left;
-      fab.style.right = (gap + 8) + "px";
+      fab.style.width = notesFab.style.width = "";
+      var w = Math.max(fab.offsetWidth, notesFab.offsetWidth);
+      fab.style.width = notesFab.style.width = w + "px";
+      fab.style.bottom = (window.innerHeight - notesFab.getBoundingClientRect().top + 8) + "px";
     }
     dock();
     window.addEventListener("resize", dock);
