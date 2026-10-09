@@ -842,6 +842,78 @@ body {
 }
 .md-typeset.prose ol.flow b { display: block; color: var(--ink); font-weight: 600; font-size: .74rem; margin-bottom: .15rem; }
 
+/* Card grid for side-by-side options (Part 2: the four ways to connect) */
+.md-typeset.prose .models {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: .7rem;
+  margin: .8rem 0 1.2rem;
+}
+.md-typeset.prose .models > div {
+  position: relative;
+  padding: .7rem .75rem .75rem;
+  border: 1px solid var(--line-soft);
+  background: var(--bg-raised);
+  font-size: .68rem;
+  line-height: 1.45;
+  color: var(--ink-3);
+}
+.md-typeset.prose .models > div.on { border-color: var(--accent); box-shadow: inset 0 3px 0 var(--accent); }
+.md-typeset.prose .models span { display: block; }
+.md-typeset.prose .models b { display: block; color: var(--ink); font-weight: 600; font-size: .74rem; margin-bottom: .15rem; }
+.md-typeset.prose .models em {
+  display: block;
+  margin-top: .45rem;
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: .54rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+.md-typeset.prose .models > div.on em { color: var(--accent); }
+
+/* Reference-only sections (Part 2, Path B): red banner + faded content */
+.md-typeset.prose .ref-banner {
+  border: 1px solid var(--danger);
+  border-left-width: 4px;
+  background: color-mix(in srgb, var(--danger) 7%, var(--bg));
+  padding: .8rem 1rem;
+  margin: .6rem 0 1.2rem;
+  font-size: .74rem;
+}
+.md-typeset.prose .ref-banner p { margin: 0 0 .5rem; }
+.md-typeset.prose .ref-banner p:last-child { margin-bottom: 0; }
+.md-typeset.prose .ref-tag {
+  display: block;
+  font-family: var(--mono);
+  font-size: .58rem;
+  font-weight: 600;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--danger);
+  margin-bottom: .35rem;
+}
+.md-typeset.prose .ref-banner a.ref-skip {
+  display: inline-block;
+  margin-top: .5rem;
+  font-family: var(--mono);
+  font-size: .62rem;
+  letter-spacing: .03em;
+  color: var(--danger);
+  text-decoration: none;
+}
+.md-typeset.prose .ref-banner a.ref-skip:hover { text-decoration: underline; }
+.md-typeset.prose .reference-only {
+  opacity: .5;
+  filter: grayscale(1);
+  border-left: 2px dashed var(--danger);
+  padding-left: 1rem;
+  transition: opacity .2s;
+}
+.md-typeset.prose .reference-only:hover,
+.md-typeset.prose .reference-only:focus-within { opacity: .85; }
+
 /* Content tabs (Part 2: Option 1 / Option 2) */
 .md-typeset.prose .tabbed-set { margin: 1rem 0 1.4rem; border: 1px solid var(--line-soft); border-radius: 0; }
 .md-typeset.prose .tabbed-labels { box-shadow: inset 0 -1px 0 var(--line-soft); padding: 0 .4rem; margin: 0; max-width: 100%; } /* Material bleeds tabs past the edge on phones */
@@ -1158,6 +1230,7 @@ body {
 
   .md-typeset.prose .people { grid-template-columns: 1fr; }
   .md-typeset.prose ol.flow { grid-template-columns: 1fr 1fr; }
+  .md-typeset.prose .models { grid-template-columns: 1fr 1fr; }
   .md-typeset.prose ol.flow > li:nth-child(3)::after { display: none; }
   .md-typeset.prose .eyebrow { margin-top: 3rem; padding-top: 2rem; }
 }

@@ -718,7 +718,7 @@ First, explore **AI-powered audio intelligence** on the audio coming from the **
 
 2. The Webex **Settings** window opens. Select **Audio > Smart Audio** and go to **Microphone audio**.
 3. Select **Music mode** and click **Save**.
-4. Now, from the Webex App, call a mobile phone (it **must** be a US phone number). If you don't have a US phone number, ask one of the proctors; they will share a number you can call.
+4. Now, from the Webex App, call a mobile phone (it **must** be a US phone number). If you don't have a US phone number, ask one of the proctors, they will share a number you can call.
 
     **Or:** team up with the attendee next to you. Ask them to set **External audio** to **Original**, as shown below, and click **Save**.
 
@@ -784,7 +784,7 @@ Now explore **AI-powered audio intelligence** on **External audio** (the audio c
 
 ### AI-generated Closed Captions and Call Transcriptions { #module-3b data-toc-label="3b · Captions & transcripts setup" data-task="3b" }
 
-Closed captions (CC) display the spoken content of a live call as text. Call transcription converts speech into written text in real time; it typically includes only the spoken words, not sounds or signals, and updates instantly as participants speak. Each user on a call can turn on call transcription independently, and it appears only for that user.
+Closed captions (CC) display the spoken content of a live call as text. Call transcription converts speech into written text in real time, it typically includes only the spoken words, not sounds or signals, and updates instantly as participants speak. Each user on a call can turn on call transcription independently, and it appears only for that user.
 
 Closed captions and call transcription make live calls more accessible and inclusive for users who are hard of hearing. They also help users with different language proficiencies have more engaging and productive conversations.
 
@@ -946,9 +946,9 @@ AI is also used for **Webex meeting recordings**. It analyzes the captured audio
 
 Webex meetings can be scheduled in several ways:
 
-- directly from the app, with the **Schedule a Meeting** button;
-- from Microsoft Outlook, either through the Hybrid Calendar Service (by putting "@webex" in the meeting location) or through the Webex integration for Microsoft Outlook;
-- from the Webex site itself; or
+- directly from the app, with the **Schedule a Meeting** button,
+- from Microsoft Outlook, either through the Hybrid Calendar Service (by putting "@webex" in the meeting location) or through the Webex integration for Microsoft Outlook,
+- from the Webex site itself, or
 - through the APIs.
 
 In this lab you'll use the newest method to schedule a Webex meeting: the Cisco AI Assistant. You talk to the Assistant in natural language and tell it the meeting name, who should attend, the duration, and a suggested time. The Assistant gathers this information, looks up the attendees, and suggests three suitable times close to the one you asked for. It takes everyone's free/busy calendar status, time zone and working hours into account.
@@ -1009,7 +1009,7 @@ In AI-powered Webex Meetings, Webex automatically detects the language being spo
 
 4. Now quit the Webex App on both workstations (physical and virtual) and relaunch Webex. To quit Webex, click your **profile picture** and select **Exit Webex**. **Make sure** you exit and relaunch Webex before continuing.
 5. On your physical/attendee workstation, bring up Webex. The meeting you scheduled in the previous module shows a **One Button to Join** (OBTJ) button. Click **Start** to start the meeting. When the meeting window opens, click **Start meeting**. Once the meeting has started, click **Closed Captions** ![Closed captions icon](img/icon-06.png){ .icon } (toward the bottom left of the meeting window).
-6. Now go to the browser tab where you are connected to Anita Perez's workstation (virtual workstation) over WebRDP. A meeting reminder (notification) appears; click **Join** on it. When the meeting window opens, click **Start meeting**.
+6. Now go to the browser tab where you are connected to Anita Perez's workstation (virtual workstation) over WebRDP. A meeting reminder (notification) appears, click **Join** on it. When the meeting window opens, click **Start meeting**.
 
     ![The meeting reminder on Anita's workstation. Click Join](img/module-4b-03.png){ loading=lazy }
 
@@ -1169,7 +1169,7 @@ When a **Webex meeting** is recorded with the **AI Assistant** enabled, AI proce
 - **Improved accessibility and audio quality:** AI improves the clarity of the recorded audio and provides captions, making recordings easier for everyone to consume.
 
 !!! note
-    After the meeting ends, the meeting summary and transcript appear fairly quickly (within 2 or 3 minutes). The meeting recording and chapters take longer (up to an hour), depending on the load in the Webex cloud. For AI to create useful chapters, the meeting must be long enough, cover several different topics, and have several attendees. You may not be able to generate chapters live in this lab; the screenshots below are from other meeting recordings, for reference.
+    After the meeting ends, the meeting summary and transcript appear fairly quickly (within 2 or 3 minutes). The meeting recording and chapters take longer (up to an hour), depending on the load in the Webex cloud. For AI to create useful chapters, the meeting must be long enough, cover several different topics, and have several attendees. You may not be able to generate chapters live in this lab, the screenshots below are from other meeting recordings, for reference.
 
 1. Continuing on the attendee workstation (physical workstation) as Charles, in Webex go to **Meetings > Meeting recap**.
 
@@ -1183,7 +1183,7 @@ When a **Webex meeting** is recorded with the **AI Assistant** enabled, AI proce
     Adding chapters to a recording manually.
     ///
 
-3. If the meeting was long enough and covered several different topics, AI creates the chapters as shown below. This screenshot is not from this lab; it's for **reference** only.
+3. If the meeting was long enough and covered several different topics, AI creates the chapters as shown below. This screenshot is not from this lab, it's for **reference** only.
 
     ![AI-generated chapters and a searchable transcript (from a reference recording)](img/module-4d-02.png){ loading=lazy }
 

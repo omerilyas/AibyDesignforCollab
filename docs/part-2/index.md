@@ -35,6 +35,9 @@ Webex MCP servers provide a governed tool layer that lets an AI client discover 
 !!! note "Lab scope"
     Although Webex provides other MCP servers, this lab focuses only on **Webex Messaging MCP**. After completing the Messaging configuration, you can reuse the same general process for another Webex MCP server: confirm Control Hub access, configure the correct endpoint in the AI client, and review that server's tools, scopes, and content requirements. Always verify the product page for the server you choose.
 
+!!! note "Note"
+    This part continues from [Part 1](../index.md). Use the same dCloud session and the same credentials from `Session_Info.txt` that you saved on your physical/attendee workstation (or in the **Notes** panel) during [Accessing your lab](../index.md#access). Whenever this part asks you to sign in to **Collaboration Control Hub** or Webex, use the **Charles Holland** credentials.
+
 !!! info "Client and authentication used in this lab"
     For the hands-on exercises, we use **Codex** with a **Webex Client Identity Token (WCIT)**. Webex MCP can also be connected through other AI clients, such as Claude Code, but that setup is not part of this lab. The OAuth Integration workflow is included for reference only and is not required to complete the lab. During WCIT elicitation, Webex may still open an OAuth authorization page when a tool requires an additional scope.
 
@@ -128,8 +131,8 @@ Open [admin.webex.com](https://admin.webex.com){:target="_blank" rel="noopener"}
 The Collaboration Control Hub sign-in page.
 ///
 
-!!! note
-    Sign in with the account provided for your lab session, such as `<username>@<domain>.com`. Use the domain assigned to your lab tenant.
+!!! note "Note"
+    The account shown in the screenshot, **omer.ilyas@boldbetz.com**, is for demo purposes only. Sign in with the credentials provided for your lab session: the same **Charles Holland** credentials from `Session_Info.txt` that you used in [Part 1](../index.md#access). If you have any questions, ask your proctor.
 
 ##### Step 2: Open the Webex inventory
 
@@ -150,6 +153,82 @@ Apps > Agentic apps > Webex lists the Webex MCP servers and their access state.
 <p class="eyebrow">Overview · the servers</p>
 
 ## Webex MCP servers at a glance { #servers data-toc-label="MCP servers at a glance" }
+
+### How Webex connects AI agents { #how-it-works data-toc-label="How Webex connects AI" }
+
+Agents use approved tools, work with context, and take bounded actions toward a user's goal. MCP is one of four ways Webex connects to AI, not the whole Webex AI strategy.
+
+#### Four ways to connect
+
+<div class="models">
+<div><b>REST APIs and SDKs</b><span>Direct requests and deterministic app logic</span></div>
+<div><b>Webhooks and events</b><span>Event-driven workflows and notifications</span></div>
+<div class="on"><b>Model Context Protocol (MCP)</b><span>Agents discover and use approved tools and context</span><em>This lab</em></div>
+<div><b>Agent-to-Agent (A2A)</b><span>Specialized agents hand work to each other</span><em>Beta</em></div>
+</div>
+
+MCP connects an agent to **capabilities**, A2A connects an agent to **another agent**. Behind the scenes, an MCP server often calls the same Webex REST APIs.
+
+#### Two directions for MCP
+
+**1. Webex MCP servers → external AI clients** (what you do in this lab)
+
+<ol class="flow">
+<li><b>You</b><span>Ask for something in plain language</span></li>
+<li><b>AI client</b><span>The MCP client, for example Codex</span></li>
+<li><b>Webex MCP server</b><span>Offers approved tools, for example Messaging</span></li>
+<li><b>Webex services</b><span>Spaces, messages, meetings and more</span></li>
+</ol>
+
+The MCP server supplies the tools, the agent lives in the AI client. Example tasks: search messages, post a space update, or find a meeting and pull its transcript.
+
+**2. External MCP servers → Webex AI** (context only)
+
+<ol class="flow">
+<li><b>Caller</b><span>Talks to the contact center</span></li>
+<li><b>Webex AI Agent</b><span>The MCP client, in Webex Contact Center</span></li>
+<li><b>External MCP server</b><span>Your company's tools</span></li>
+<li><b>Business system</b><span>Orders, shipping, CRM and more</span></li>
+</ol>
+
+Here Webex is the client: the Webex AI Agent calls your own MCP server during a live customer conversation, for example to look up an order.
+
+#### Who controls what
+
+- **Tools:** each MCP server exposes a set of approved actions. The agent can only use those tools.
+- **Scopes and permissions:** a tool works only within the signed-in user's Webex permissions and the scopes they granted.
+- **Administrators:** in **Collaboration Control Hub**, admins enable or block each server for users, choose which tools are allowed, and review changes. Webex calls this governance layer **Agentic Apps**.
+
+### Security: trust before you connect { #mcp-security data-toc-label="MCP security" }
+
+An MCP server gives an AI agent real tools. Some tools only read information, others can create, update, delete, send or publish data on behalf of a user or an organization. That is why Webex's guidance is simple: **connect only to MCP servers you know and trust.**
+
+#### The risk with external MCP servers
+
+When you add an MCP server that isn't the provider's official one, for example a community or third-party version, you are trusting whoever runs it with your data and your users' actions. Before connecting, you need to know:
+
+- **What its tools can do:** read data only, or also send messages, change records, or act in other services.
+- **Where your data goes:** which systems it connects to, and whether it stores data outside Webex.
+- **Who runs it:** who owns and supports it, how they handle data, and whether it's meant for production use.
+- **What it asks for:** whether the permissions it requests match what you actually need.
+
+If any answer is unclear, don't connect yet. Whenever possible, use the **official MCP server hosted by the service provider**, such as the Webex MCP servers in this lab.
+
+#### Control Hub as your orchestration layer
+
+Webex MCP servers are managed in **Collaboration Control Hub** as **Agentic Apps**, so an administrator decides what agents can reach before any user connects:
+
+<div class="models">
+<div><b>Enable or block</b><span>Turn each MCP server on or off for your users</span></div>
+<div><b>Choose the tools</b><span>Allow only the tools your use case needs</span></div>
+<div><b>Inspect schemas</b><span>See exactly what each tool accepts and does</span></div>
+<div><b>Reauthorize changes</b><span>Review again when a server's tools change</span></div>
+</div>
+
+Every request still runs within the signed-in user's Webex permissions and the scopes they granted. With Control Hub in front of your MCP servers, you get one place to set policy for every AI client, instead of trusting each client or server separately.
+
+!!! tip "Quick checklist before connecting any MCP server"
+    Is it hosted by the official provider? If not, do you trust who hosts it? Do you understand its tools? Are the permissions appropriate? Could it access or store sensitive data? Is it meant for production? Do you know who owns and supports it?
 
 ### Webex Messaging MCP capabilities { #messaging-caps data-toc-label="Messaging MCP" }
 
@@ -208,7 +287,7 @@ The diagram below separates the main parts. They may feel like one experience wh
 Model Context Protocol key components: MCP host, MCP client, MCP server and tools, linked by the MCP protocol.
 ///
 
-- **MCP host.** The application you work in. In this lab, the MCP host is Codex; it manages the conversation and the user experience.
+- **MCP host.** The application you work in. In this lab, the MCP host is Codex, it manages the conversation and the user experience.
 - **MCP client.** The connection component inside the host. It reads the server's capability information, sends tool requests, and returns results to the host.
 - **MCP server.** The service that publishes capabilities in a standard format. In this lab, Cisco hosts the Webex Messaging and Webex Meetings MCP servers.
 - **Tools.** The actions the server makes available, such as finding a space, listing meetings, retrieving a transcript, or sending a message. Each tool describes the information it needs.
@@ -250,7 +329,10 @@ Use **Webex Messaging** for all hands-on exercises in this guide. Webex Meetings
 
 ### What scopes control { #m1-scopes data-toc-label="What scopes control" }
 
-A scope is a named permission carried by the user's authorization. A tool describes an action; the scope decides whether the signed-in identity may perform that type of action. The required `spark:mcp` scope opens the MCP connection, but it does not by itself allow the client to read a message, find a space, or make a change.
+!!! danger "Note"
+    **Where do these scopes come from?** The scopes listed in this section are the ones published by Webex for the **Webex Messaging MCP server**. You don't need to create or look them up yourself. You can find the same list in the **Scopes** section of the [Messaging MCP Server page](https://developer.webex.com/mcp/docs/messaging-mcp-server){:target="_blank" rel="noopener"} on developer.webex.com. Other Webex MCP servers, such as Meetings, use their own scopes.
+
+A scope is a named permission carried by the user's authorization. A tool describes an action, the scope decides whether the signed-in identity may perform that type of action. The required `spark:mcp` scope opens the MCP connection, but it does not by itself allow the client to read a message, find a space, or make a change.
 
 Scopes work together with the Control Hub tool policy and the user's existing Webex permissions. **All three checks must pass.** A tool may therefore be visible in the client but still fail if its required scope was not granted or the signed-in user cannot access the target space.
 
@@ -260,7 +342,7 @@ Scopes work together with the Control Hub tool policy and the user's existing We
 |---|---|---|
 | `spark:mcp` | Connect to the Webex MCP server. It is required before any MCP tool can run. | **Required** |
 | `spark:messages_read` | Get and search messages, read thread content, and retrieve file details or downloads. | Read exercises |
-| `spark:messages_write` | Create, edit, or delete messages; upload or share files; and reply in a thread. | Controlled write only |
+| `spark:messages_write` | Create, edit, or delete messages, upload or share files, and reply in a thread. | Controlled write only |
 | `spark:rooms_read` | Get and search Webex spaces. | Find the lab space |
 | `spark:rooms_write` | Create, update, or delete Webex spaces. | Not required |
 | `spark:memberships_read` | Read space membership information. | Optional |
@@ -270,7 +352,7 @@ Scopes work together with the Control Hub tool policy and the user's existing We
 
 </div>
 
-In this lab, a Webex Client Identity Token (WCIT) lets Codex begin with `spark:mcp` and request extra service scopes through **elicitation** when a selected tool needs them. For reference, a client that does not support elicitation can use a Webex OAuth Integration with its required scopes registered in advance. Grant only the scopes required for the task, and add a write scope only when you are ready for the controlled write exercise.
+In this lab, a Webex Client Identity Token (WCIT) lets Codex begin with `spark:mcp` and request extra service scopes through **elicitation** when a selected tool needs them. For reference, a client that does not support elicitation can use a Webex OAuth Integration with its required scopes registered in advance. Grant only the scopes required for the task, and add a write scope only when you are ready for the controlled write exercise. You'll set up the WCIT in [Module 2](#module-2), and [Module 3](#module-3) explains how elicitation and OAuth work, so don't worry if these terms are new for now.
 
 Reference: [Cisco Webex Messaging MCP server and scope list](https://developer.webex.com/mcp/docs/messaging-mcp-server){:target="_blank" rel="noopener"}
 
@@ -299,7 +381,7 @@ The Webex tab lists Webex Messaging and the other Webex MCP servers.
 ##### Step 3: Review the General tab and allow access
 
 !!! warning "Lab starting state"
-    By default, Webex Messaging is shown as **Blocked for all users**. This is the safe starting point. For the assigned lab, select **Allowed for all users**. Allowing the server does not bypass OAuth scopes or the signed-in user's normal Webex permissions.
+    By default, Webex Messaging is shown as **Blocked for all users**. This is the safe starting point. The **Allowed for all users** option stays greyed out until you turn on automatic server data updates and save, so follow the steps below in order. Allowing the server does not bypass OAuth scopes or the signed-in user's normal Webex permissions.
 
 ![Webex Messaging > General: blocked for all users by default](img/mcp-11.png){ loading=lazy }
 
@@ -307,7 +389,9 @@ The Webex tab lists Webex Messaging and the other Webex MCP servers.
 Webex Messaging > General: blocked for all users by default.
 ///
 
-**Authorise automatic server data updates.** This switch is shown off at the start of this lab. Enable it for the lab. When enabled, updates such as the server name, description, same-domain URL, transport type, or related server metadata can take effect without a fresh authorization. The administrator still receives an indication of the change and can reauthorize the server.
+1. **Turn on Authorise automatic server data updates.** This switch is off at the start of the lab. When enabled, updates such as the server name, description, same-domain URL, transport type, or related server metadata can take effect without a fresh authorization. The administrator still receives an indication of the change and can reauthorize the server.
+2. **Click Save.** This unlocks the access options.
+3. **Select Allowed for all users,** which is no longer greyed out, and click **Save** again.
 
 ![Allowed for all users, with automatic server data updates authorised](img/mcp-12.png){ loading=lazy }
 
@@ -326,17 +410,20 @@ Allowed for all users, with automatic server data updates authorised.
 The Authentication tab: Cisco-official servers are configured automatically.
 ///
 
-**What this tab means.** It defines how the MCP server authenticates clients. It is not where students paste their token or client secret. The required WCIT and elicitation steps appear later in this guide; the OAuth Integration method is included there for reference only. For this step, leave the official values unchanged.
+**What this tab means.** It defines how the MCP server authenticates clients. It is not where students paste their token or client secret. The required WCIT and elicitation steps appear later in this guide, the OAuth Integration method is included there for reference only. For this step, leave the official values unchanged.
 
 ##### Step 5: Review tools and their schemas
 
-Open the **Tools** tab. This page controls which Webex actions an approved client can discover and request. Start with the read tools needed for the lab, then enable **Create Webex Message** only for the controlled write exercise. A tool still remains subject to its scope, Control Hub policy, and the signed-in user's Webex access.
+Open the **Tools** tab. This page controls which Webex actions an approved client can discover and request. For this lab, **enable the tools exactly as shown in the image below**: turn on **Allow tool** and **Allow signature change** for **Create Webex Message**, **Edit Webex Message**, **Delete Webex Message**, **Get Webex Messages** and **Create Webex Space**, and leave the rest off. A tool still remains subject to its scope, Control Hub policy, and the signed-in user's Webex access.
 
 ![The Tools tab: Allow tool, Allow signature change and Review for each tool](img/mcp-14.png){ loading=lazy }
 
 /// caption
 The Tools tab: Allow tool, Allow signature change and Review for each tool.
 ///
+
+!!! note "Note"
+    You're welcome to explore the other tools and enable any of them to try your own use cases. Just leave **Get Webex Space** and **Search Webex Spaces** off for now: a later step in [Module 4](#module-4) shows what happens when Codex has no tool to find spaces, and you'll turn **Get Webex Space** on there.
 
 <div class="glance" markdown>
 
@@ -350,14 +437,14 @@ The Tools tab: Allow tool, Allow signature change and Review for each tool.
 
 #### Webex Messaging tools available
 
-The Webex Messaging MCP server currently publishes **24 tools**. Control Hub may display friendly names, while the Developer Portal uses the protocol tool names shown below. The tool catalogue describes what the server can offer; attendees can use only the tools that the administrator has allowed and for which their authorization includes the required scope.
+The Webex Messaging MCP server currently publishes **24 tools**. Control Hub may display friendly names, while the Developer Portal uses the protocol tool names shown below. The tool catalogue describes what the server can offer, attendees can use only the tools that the administrator has allowed and for which their authorization includes the required scope.
 
 <div class="glance tools" markdown>
 
 | Area | Tool | What it does |
 |---|---|---|
-| Messages | `webex-create-message` | Send a message to a space or directly to a person; supports text, markdown, HTML, file URLs, and adaptive cards. |
-| | `webex-edit-message` | Edit an existing message using its message and space IDs; supports text or markdown. |
+| Messages | `webex-create-message` | Send a message to a space or directly to a person, supports text, markdown, HTML, file URLs, and adaptive cards. |
+| | `webex-edit-message` | Edit an existing message using its message and space IDs, supports text or markdown. |
 | | `webex-delete-message` | Delete a message from a direct or group space. The deletion is irreversible. |
 | | `webex-get-message` | Retrieve one message by ID or list messages in a space with optional filters. |
 | | `webex-search-messages` | Search a space using keywords, dates, mentions, thread parent, or file filters. |
@@ -388,7 +475,7 @@ The Webex Messaging MCP server currently publishes **24 tools**. Control Hub may
 
 #### What the Review details page shows
 
-Select **Review** beside a tool to inspect the contract that the AI client uses. The example below shows **Create Webex Message**. Always scroll through the complete schema; the screenshot shows only part of the JSON definition.
+Select **Review** beside a tool to inspect the contract that the AI client uses. The example below shows **Create Webex Message**. Always scroll through the complete schema, the screenshot shows only part of the JSON definition.
 
 ![Select Review beside a tool on the Tools tab](img/mcp-15.png){ loading=lazy }
 
@@ -410,9 +497,6 @@ Review details for Create Webex Message: description, input schema and output sc
 4. **Read the annotations** for side-effect and safety hints. Treat tools that send, edit, delete, manage membership, or manage webhooks as higher risk than read-only lookups.
 5. **Choose the Allow tool and Allow signature change settings.** If Control Hub reports a schema change, review it and reauthorize the server to establish a new approved baseline, even if the tool was allowed to remain available during the change.
 
-!!! tip "Recommended lab minimum"
-    Enable the read tools needed to find the lab space and retrieve or search its messages. Enable **Create Webex Message** only when students reach the controlled write task. Leave message edit/delete, space changes, membership changes, and webhook tools off unless an instructor has added a specific exercise for them.
-
 ##### Step 6: Validate the administrator configuration
 
 ![Webex Messaging allowed, with the lab tools enabled. Select Save](img/mcp-17.png){ loading=lazy }
@@ -428,22 +512,30 @@ Webex Messaging allowed, with the lab tools enabled. Select Save.
 
 ## Create credentials { #module-2 data-toc-label="Module 2 · Create credentials" data-task="2" }
 
-Before Codex can call the Webex Messaging MCP server, it needs a credential that Webex can validate. This lab follows **Path A: WCIT with elicitation**. Path B explains an OAuth Integration **for reference only**; students do not need to complete it.
+!!! note "Note"
+    As covered in [How Webex connects AI agents](#how-it-works), MCP in Webex works in two directions:
+
+    - **Outbound:** use Cisco's own **Webex MCP servers** in external AI tools, such as Codex.
+    - **Inbound:** bring **external MCP servers** into Webex AI, for example so the Webex AI Agent in Contact Center can use your company's tools.
+
+    This lab follows the **outbound** direction. You'll connect the **Webex Messaging MCP server**, built and hosted by Cisco, to **Codex**. The credentials you create in this module are for that connection.
+
+Before Codex can call the Webex Messaging MCP server, it needs a credential that Webex can validate. This lab follows **Path A: WCIT with elicitation**. Path B explains an OAuth Integration **for reference only**, students do not need to complete it.
 
 !!! success "Required lab path: WCIT with elicitation"
     The WCIT starts with the `spark:mcp` scope. When a tool requires another Webex scope, the server asks the user to approve it during the tool call. Codex uses this path throughout the hands-on exercises.
 
 !!! note "Reference only: OAuth 2.0 Integration"
-    A client that does not support elicitation may require a Webex Integration with `spark:mcp`, the scopes required by the selected MCP server, and the exact redirect URI supplied by that client. This workflow is included to explain the alternative approach; it is not required for this lab.
+    A client that does not support elicitation may require a Webex Integration with `spark:mcp`, the scopes required by the selected MCP server, and the exact redirect URI supplied by that client. This workflow is included to explain the alternative approach, it is not required for this lab.
 
 !!! info "Important distinction"
-    Elicitation is not a separate credential type. It is the MCP interaction used to request missing authorization at runtime; the credential used to start this path is the WCIT.
+    Elicitation is not a separate credential type. It is the MCP interaction used to request missing authorization at runtime, the credential used to start this path is the WCIT.
 
 <div class="glance" markdown>
 
 | Client scenario | Credential | Runtime behavior |
 |---|---|---|
-| Hands-on lab: Codex | **WCIT** | Starts with `spark:mcp`; Webex requests additional scopes through elicitation when a tool needs them |
+| Hands-on lab: Codex | **WCIT** | Starts with `spark:mcp`, Webex requests additional scopes through elicitation when a tool needs them |
 | Reference only: client without elicitation | OAuth Integration | Uses browser sign-in and consent with the exact redirect URI supplied by that client |
 
 </div>
@@ -455,13 +547,13 @@ Webex MCP supports two authentication methods: token-based (WCIT) and OAuth 2.0.
 ///
 
 !!! warning "Lab note"
-    Path A is the required hands-on path. Generate a WCIT from the token page shown below; **do not create an Agentic App**.
+    Path A is the required hands-on path. Generate a WCIT from the token page shown below, **do not create an Agentic App**.
 
 ### Path A · Generate a WCIT (required for this lab) { #m2-path-a data-toc-label="Path A · Generate a WCIT" }
 
 ##### Step 1: Open the token page
 
-Sign in to the Webex Developer Portal and open [https://developer.webex.com/agentic-token](https://developer.webex.com/agentic-token){:target="_blank" rel="noopener"}. Select **Generate now**.
+Sign in to the Webex Developer Portal as **Charles Holland**, using the same credentials from `Session_Info.txt` that you used in [Part 1](../index.md#access). Then open [https://developer.webex.com/agentic-token](https://developer.webex.com/agentic-token){:target="_blank" rel="noopener"}. Select **Generate now**.
 
 ![Manage Webex Agentic MCP App token: select Generate now](img/mcp-19.png){ loading=lazy }
 
@@ -479,20 +571,28 @@ Enter a recognisable, temporary token name such as **Omer MCP**. Do not include 
 Generate token: enter a token name.
 ///
 
+!!! note "Note"
+    Once the token is created in the next step, keep it safe: Webex shows it only once. For convenience, you can paste it into this guide's **Notes** panel (the **NOTES** button in the bottom-right corner) so it's ready when you configure Codex later. Notes are saved only in this browser, so don't use the Notes panel on a shared computer.
+
 ##### Step 3: Create and copy the token
 
-Select **Create token**. Copy the token and store it in a password manager or a temporary environment variable. **The token is shown only once.** The WCIT starts with the `spark:mcp` scope; additional tool scopes are requested later through elicitation.
+Select **Create token**. Copy the token and store it in a password manager or a temporary environment variable. **The token is shown only once.** The WCIT starts with the `spark:mcp` scope, additional tool scopes are requested later through elicitation.
 
-![Token generated successfully. Copy it now; you won't see it again](img/mcp-21.png){ loading=lazy }
+![Token generated successfully. Copy it now, you won't see it again](img/mcp-21.png){ loading=lazy }
 
 /// caption
-Token generated successfully. Copy it now; you won't see it again.
+Token generated successfully. Copy it now, you won't see it again.
 ///
 
-!!! danger "Important: complete Path A for this lab"
-    Path B is reference information only. Do not create an OAuth Integration unless your instructor specifically asks you to test that alternative method.
-
 ### Path B · Create an OAuth Integration (reference only) { #m2-path-b data-toc-label="Path B · OAuth (reference)" }
+
+<div class="ref-banner" markdown>
+<span class="ref-tag">Optional · reference only</span>
+**You do not need to do this.** Path A (WCIT) is the lab path. Do not create an OAuth Integration unless your instructor specifically asks you to test this alternative method.<br>
+[Skip to the credentials summary →](#m2-summary){ .ref-skip }
+</div>
+
+<div class="reference-only" markdown>
 
 ##### Step 1: Start an Integration
 
@@ -521,7 +621,7 @@ The New Integration form.
 
 ##### Step 3: Enter the exact redirect URI
 
-Copy the redirect URI from the OAuth configuration page in the client being reviewed and register it exactly as shown. The Integration and client values must match, including the scheme, host, port, path, and trailing slash. Because this is a reference-only path, do not invent or reuse a redirect URI; use the value supplied by that client.
+Copy the redirect URI from the OAuth configuration page in the client being reviewed and register it exactly as shown. The Integration and client values must match, including the scheme, host, port, path, and trailing slash. Because this is a reference-only path, do not invent or reuse a redirect URI, use the value supplied by that client.
 
 ##### Step 4: Select scopes
 
@@ -548,6 +648,8 @@ meeting:recordings_read meeting:transcripts_read
 
 Select **Add Integration**. On the next page, copy the **Client ID** and **Client Secret** and store them securely. The Client Secret cannot be viewed again after you leave the page. Do not place either credential in a prompt, screenshot, repository, slide, or shared notes.
 
+</div>
+
 ### Summary { #m2-summary data-toc-label="Credentials summary" }
 
 **Required lab path: Path A, WCIT and elicitation**
@@ -573,13 +675,13 @@ Initial scope: `spark:mcp`. Webex can request additional scopes through elicitat
 Redirect URI: the callback registered in Webex must match the AI client exactly.
 
 !!! success "Validation"
-    **Required lab path:** students have a WCIT stored outside the document. **Reference only:** Path B describes the Client ID, Client Secret, redirect URI, and scope requirements of an OAuth Integration; those credentials are not required for the hands-on exercises.
+    **Required lab path:** students have a WCIT stored outside the document. **Reference only:** Path B describes the Client ID, Client Secret, redirect URI, and scope requirements of an OAuth Integration, those credentials are not required for the hands-on exercises.
 
 <p class="eyebrow">Module 3 · ≈ 10 min · optional</p>
 
 ## Understanding OAuth and elicitation { #module-3 data-toc-label="Module 3 · OAuth & elicitation" data-task="3" }
 
-This optional reference module explains the two authorization flows; there is no additional configuration to complete. The hands-on lab connects Codex with the WCIT from Module 2, Path A. When a tool needs another Webex scope, WCIT elicitation may still open a Webex OAuth authorization page for consent. Creating your own OAuth Integration, as shown in Path B, remains reference information only.
+This optional reference module explains the two authorization flows. **There is nothing to configure in this module:** you'll connect Codex to Webex Messaging with the WCIT from Module 2, Path A, in [Module 4](#module-4). When a tool needs another Webex scope, WCIT elicitation may still open a Webex OAuth authorization page for consent. Creating your own OAuth Integration, as shown in Path B, remains reference information only.
 
 !!! tip "Authentication vs authorization"
     **Authentication** proves who is connecting. **Authorization** controls what the connection can do. Effective access is the intersection of Control Hub policy, granted scopes, enabled tools, and the signed-in user's existing Webex permissions.
@@ -596,7 +698,7 @@ This optional reference module explains the two authorization flows; there is no
 1. **Connect.** Codex sends the WCIT and establishes the MCP session with `spark:mcp`.
 2. **Trigger a scoped tool.** A prompt calls a Webex Messaging tool that needs an additional Webex scope.
 3. **Review the request.** Webex returns an elicitation request with an authorization link. Verify the Webex domain, organization, account, and scope before approving.
-4. **Return and retry.** Return to Codex after approval. Retry the same prompt; the tool can now continue with the newly authorized scope.
+4. **Return and retry.** Return to Codex after approval. Retry the same prompt, the tool can now continue with the newly authorized scope.
 
 ### OAuth authorization code flow (reference only) { #m3-oauth data-toc-label="OAuth code flow (reference)" }
 
@@ -616,7 +718,7 @@ This optional reference module explains the two authorization flows; there is no
 
 ## Configure Codex { #module-4 data-toc-label="Module 4 · Configure Codex" data-task="4" }
 
-This module uses the WCIT generated and stored securely in Module 2, Path A. This is the required hands-on path; you do not need OAuth Integration credentials. Generating the WCIT was Step 1, so continue here with Step 2. Codex supports MCP elicitation, which allows tools to request additional Webex scopes at runtime.
+This module uses the WCIT generated and stored securely in Module 2, Path A. This is the required hands-on path, you do not need OAuth Integration credentials. Generating the WCIT was Step 1, so continue here with Step 2. Codex supports MCP elicitation, which allows tools to request additional Webex scopes at runtime.
 
 !!! warning "Before you start"
     In Control Hub, confirm that **Webex Messaging** is allowed for all users and that the Messaging tools required for this lab are enabled. If the server or a required tool is disabled, Codex cannot use it even when the local configuration is correct.
@@ -710,6 +812,15 @@ codex mcp list
 codex mcp list shows the Webex Messaging server enabled with a bearer token.
 ///
 
+!!! note "Note"
+    If `codex mcp list` doesn't show the list of configured MCP servers, you can ask Codex directly in the chat instead, for example:
+
+    ```text
+    Which MCP servers are configured, and is webex-messaging available?
+    ```
+
+    You can also type `/mcp` in the Codex chat to see the configured MCP servers and their tools. If `webex-messaging` still isn't listed, check your configuration in [Step 2](#m4-add) and restart Codex again.
+
 ### Step 5 · Complete WCIT elicitation { #m4-elicit data-toc-label="Complete WCIT elicitation" }
 
 Run the first read-only prompt. When the WCIT connection needs an additional Webex scope, Webex opens an authorization step as part of elicitation. Verify the Webex domain and requested scope, approve the expected request, return to Codex, and retry the same prompt.
@@ -725,6 +836,9 @@ This short exercise shows the difference between connecting an MCP server and al
     Return the space title and space ID only. This is a read-only request.
     Do not create, update, delete, or send anything.
     ```
+
+    !!! note "Note"
+        `webex-messaging` is the MCP server name you added in [Step 2](#m4-add). If you gave the server a different name there, in `[mcp_servers.<name>]` in `config.toml` or in the **Name** field in the Codex app, replace `webex-messaging` in this prompt (and the prompts that follow) with your name. This is the server name, not the name of your WCIT token.
 
 2. **Review the result.** In the example below, Codex cannot complete the request because the connected server does not expose a tool for retrieving or searching spaces. No Webex data is changed.
 
@@ -752,6 +866,22 @@ This short exercise shows the difference between connecting an MCP server and al
 
 5. **Save.** Select **Save** in Control Hub.
 6. **Restart Codex and run the prompt again.** If Webex requests an additional scope, complete the elicitation and authorization flow below.
+
+    !!! danger "Important: don't run Codex in Full access mode"
+        Before you run the prompt again, make sure Codex is set to **Ask for approval**, not **Full access** (approval policy *never*). In Full access mode, Codex can't show you the Webex authorization request, so it cancels it automatically, and you'll see an error like:
+
+        ```text
+        I couldn't list the spaces because Webex OAuth authorization was cancelled.
+        ```
+
+        **To fix it:** in the Codex app, click the approval button at the bottom left of the message box (it shows the current mode) and select **Ask for approval**, as shown below. In the Codex CLI, type `/approvals` and choose an option that asks, or start Codex with `codex -a on-request`. Then run the prompt again: this time Codex shows the **OAuth Authorization Required** request so you can approve it.
+
+        ![Codex approval modes: select Ask for approval, not Full access](img/mcp-37.png){ loading=lazy }
+
+        /// caption
+        Codex approval modes: select Ask for approval, not Full access.
+        ///
+
 7. **Review the elicitation request.** Codex displays an **OAuth Authorization Required** request. Confirm that the tool is `webex-get-space` and that the requested scope is `spark:rooms_read`.
 
     ![Codex shows OAuth Authorization Required for webex-get-space and spark:rooms_read](img/mcp-31.png){ loading=lazy }
@@ -760,7 +890,7 @@ This short exercise shows the difference between connecting an MCP server and al
     Codex shows OAuth Authorization Required for webex-get-space and spark:rooms_read.
     ///
 
-8. **Open the Webex authorization page.** Codex displays an **Authorize access through Webex** link. Select the link. A browser page opens; if you are asked to sign in, enter the lab administrator credentials provided for your environment.
+8. **Open the Webex authorization page.** Codex displays an **Authorize access through Webex** link. Select the link. A browser page opens, if you are asked to sign in, enter the lab administrator credentials provided for your environment.
 
     ![Codex links to Authorize access through Webex](img/mcp-32.png){ loading=lazy }
 
@@ -807,7 +937,7 @@ This short exercise shows the difference between connecting an MCP server and al
 
 ## Messaging prompts { #module-5 data-toc-label="Module 5 · Messaging prompts" data-task="5" }
 
-Now that the Webex Messaging MCP is configured and authorized, use the prompts below to test some common messaging tasks. These are only examples; you can also create your own prompts to explore the MCP. **Start with read-only requests**, and use only the dedicated lab space for prompts that create, edit, delete, or send content.
+Now that the Webex Messaging MCP is configured and authorized, use the prompts below to test some common messaging tasks. These are only examples, you can also create your own prompts to explore the MCP. **Start with read-only requests**, and use only the dedicated lab space for prompts that create, edit, delete, or send content.
 
 !!! note "Use your own space name"
     In every prompt, replace `MCP Lab - <your name>` with the exact title of a Webex space you can access that contains messages. It can be a space you created for the lab or another existing space.
@@ -819,7 +949,7 @@ Use Webex Messaging. Find the space named "MCP Lab - <your name>".
 Return the exact space title and its ID. Do not send, edit, or delete anything.
 ```
 
-**Expected result:** one matching lab space is identified. If several spaces match, the client asks you to choose; it must not guess.
+**Expected result:** one matching lab space is identified. If several spaces match, the client asks you to choose, it must not guess.
 
 ### Exercise 2 · Summarize recent messages { #m5-ex2 data-toc-label="Ex 2 · Summarize messages" }
 
@@ -868,7 +998,7 @@ Do not send until I explicitly confirm.
 
 This concludes the Webex Messaging MCP lab. You have approved the server in Control Hub, connected Codex with a WCIT, completed an elicitation request, and tested messaging tools. The connection is straightforward: enable the server, choose the tools, add its URL and credential to the client, then approve the scopes needed for the action you request.
 
-Control Hub is the **governance and control layer** for this MCP orchestration. Administrators decide who can use a server, which tools are available, and whether changes to tool definitions need review. Codex handles the conversation and invokes the approved tools; Webex still checks the granted scopes and the signed-in user's permissions.
+Control Hub is the **governance and control layer** for this MCP orchestration. Administrators decide who can use a server, which tools are available, and whether changes to tool definitions need review. Codex handles the conversation and invokes the approved tools, Webex still checks the granted scopes and the signed-in user's permissions.
 
 To explore Webex Meetings MCP, follow the same setup pattern with the Webex Meeting server: allow it in Control Hub, review and enable the Meeting tools you need, and use the Meeting server URL in your Codex MCP entry. When a tool needs another scope, complete the authorization request. Use the same approach for other Webex MCP servers, checking each server's own URL, tools, scopes, and prerequisites.
 
@@ -884,12 +1014,13 @@ For current server details, see the [Webex Meetings MCP Server guide](https://de
 
 | Symptom | Likely cause | Check and recovery |
 |---|---|---|
-| Server does not connect | Wrong endpoint, blocked HTTPS, or server not enabled | Compare the endpoint character for character; test network access; ask the Control Hub administrator to verify Agentic Apps policy |
-| 401 or not authenticated | Missing, expired, revoked, or malformed credential | Verify the WCIT in the configured Authorization header; never paste it into chat; restart Codex |
-| Tool asks for permission | Expected WCIT elicitation | Verify the Webex URL and requested scope; approve only the expected scope; return and retry |
-| Tools are missing | Tool disabled, scope absent, or user outside policy | Check Control Hub Tools, granted scopes, and signed-in account; reconnect after changes |
-| OAuth Integration redirect mismatch (reference only) | Integration URI differs from client callback | For the optional reference path, make the scheme, hostname, port, path, and trailing slash identical; then authenticate again |
-| Wrong space selected | Ambiguous name resolved incorrectly | Stop. Display the exact space ID; use a unique lab space; require confirmation |
+| Server does not connect | Wrong endpoint, blocked HTTPS, or server not enabled | Compare the endpoint character for character, test network access, ask the Control Hub administrator to verify Agentic Apps policy |
+| 401 or not authenticated | Missing, expired, revoked, or malformed credential | Verify the WCIT in the configured Authorization header, never paste it into chat, restart Codex |
+| Tool asks for permission | Expected WCIT elicitation | Verify the Webex URL and requested scope, approve only the expected scope, return and retry |
+| "Webex OAuth authorization was cancelled" | Codex is in **Full access** mode (approval policy *never*), so it cancels the Webex authorization request automatically | Switch Codex to **Ask for approval** (the approval button at the bottom left of the message box in the app, or `/approvals` / `codex -a on-request` in the CLI), then run the prompt again and approve the request |
+| Tools are missing | Tool disabled, scope absent, or user outside policy | Check Control Hub Tools, granted scopes, and signed-in account, reconnect after changes |
+| OAuth Integration redirect mismatch (reference only) | Integration URI differs from client callback | For the optional reference path, make the scheme, hostname, port, path, and trailing slash identical, then authenticate again |
+| Wrong space selected | Ambiguous name resolved incorrectly | Stop. Display the exact space ID, use a unique lab space, require confirmation |
 
 </div>
 

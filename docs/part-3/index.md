@@ -112,7 +112,7 @@ Need help? Raise your hand or reach out to me.
 
 ## Set up your lab environment { #module-1 data-toc-label="Module 1 · Lab setup" }
 
-Before you start building AI-powered messaging workflows, this module gets your foundation in place: a Webex API access token tied to your assigned account, a place to run Python notebooks, and an OpenAI API key for the LangChain pieces of the lab. Tasks 1d and 1e (Streamlit and ngrok) are optional background reading for future use; they are not used in this lab.
+Before you start building AI-powered messaging workflows, this module gets your foundation in place: a Webex API access token tied to your assigned account, a place to run Python notebooks, and an OpenAI API key for the LangChain pieces of the lab. Tasks 1d and 1e (Streamlit and ngrok) are optional background reading for future use, they are not used in this lab.
 
 <div class="glance time" markdown>
 
@@ -754,7 +754,7 @@ You'll also see a JSON object with details about the Webex user associated with 
 ```
 
 !!! info "Your output will look slightly different"
-    The values above are for example only. In your case, the `cb426` part of the email and site URLs will be replaced with **your own dCloud-assigned domain** (for example `cb123`, `cb789`, etc.). The shape of the response will be the same; only the IDs, emails, and domain will change.
+    The values above are for example only. In your case, the `cb426` part of the email and site URLs will be replaced with **your own dCloud-assigned domain** (for example `cb123`, `cb789`, etc.). The shape of the response will be the same, only the IDs, emails, and domain will change.
 
 If you get a `401`, your token is wrong or expired: re-do Step 3.
 
