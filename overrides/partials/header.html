@@ -39,10 +39,12 @@
     {% set url = (page.url if page and page.url else "") %}
     {% set on_part2 = url.startswith("part-2") %}
     {% set on_part3 = url.startswith("part-3") %}
+    {% set on_part4 = url.startswith("part-4") %}
     <div class="lab-nav__parts">
-      <a {% if not (on_part2 or on_part3) %}class="on" aria-current="page"{% endif %} href="{{ '' | url }}">PART 1 <span>WEBEX AI</span></a>
-      <a {% if on_part2 %}class="on" aria-current="page"{% endif %} href="{{ 'part-2/' | url }}">PART 2 <span>MCP</span></a>
-      <a {% if on_part3 %}class="on" aria-current="page"{% endif %} href="{{ 'part-3/' | url }}">PART 3 <span>GENAI</span></a>
+      <a {% if not (on_part2 or on_part3 or on_part4) %}class="on" aria-current="page"{% endif %} href="{{ '' | url }}">PART 1 <span>WEBEX AI</span></a>
+      <a {% if on_part2 %}class="on" aria-current="page"{% endif %} href="{{ 'part-2/' | url }}">PART 2 <span>AI RECEPTIONIST<b class="lab-nav__more"> &amp; CUSTOMER ASSIST</b></span></a>
+      <a {% if on_part3 %}class="on" aria-current="page"{% endif %} href="{{ 'part-3/' | url }}">PART 3 <span>MCP</span></a>
+      <a {% if on_part4 %}class="on" aria-current="page"{% endif %} href="{{ 'part-4/' | url }}">PART 4 <span>GENAI</span></a>
     </div>
     <div class="lab-nav__tools">
       {% if config.theme.palette %}

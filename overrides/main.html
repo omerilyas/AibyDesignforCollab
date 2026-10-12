@@ -2,7 +2,7 @@
   Single-page lab layout:
   hero (chip, title, standfirst, meta) on top, then a 12-column grid with a
   sticky "TREE" rail on the left (built from the page TOC) and the article on
-  the right. Used by all three parts (index.md, part-2/, part-3/); the
+  the right. Used by all four parts (index.md, part-2/, part-3/, part-4/); the
   hero text and rail links come from each page's front matter. Rail behaviour (active section, scroll progress, task ticks,
   J/K keys, notes) lives in docs/js/lab.js.
 -#}
@@ -12,6 +12,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@300..700&family=Geist+Mono:wght@400..600&display=swap">
+{% endblock %}
+
+{% block htmltitle %}
+  {% set t = (page.meta and page.meta.title) or (page.title | striptags) %}
+  <title>{% if t %}{{ t }} · {% endif %}{{ config.site_name }}</title>
 {% endblock %}
 
 {% block site_nav %}{% endblock %}

@@ -20,6 +20,9 @@
   --accent: #0b72b0;
   --ok: #3e7a3e;
   --info: #3f6fa8;
+  --tip: #7a4fa3;
+  --warn: #a8650f;
+  --success: #1f7f78;
   --tagline: var(--accent);
   --img-edge: #1414131f;
   --danger: #b23b3b;
@@ -51,6 +54,9 @@
   --accent: #4cc3f0;
   --ok: #9ac29a;
   --info: #8fb3dd;
+  --tip: #c4a3e6;
+  --warn: #e3b065;
+  --success: #7fcfc6;
   --tagline: var(--accent);
   --img-edge: #faf9f51f;
   --danger: #e07a7a;
@@ -168,6 +174,10 @@ body {
 .lab-nav__parts a.on span,
 .lab-nav__parts a:hover span { color: var(--ink-3); }
 .lab-nav__parts a.on { box-shadow: inset 0 -1px 0 var(--ink); padding-bottom: .15rem; }
+/* Extra words in a part label, shown only on wide screens */
+.lab-nav__more { font-weight: inherit; }
+@media (max-width: 79.99em) { .lab-nav__more { display: none; } }
+@media (max-width: 67.99em) { .lab-nav__parts a span { display: none; } }
 .lab-nav__tools { margin-left: auto; display: flex; align-items: center; gap: .3rem; }
 .lab-nav .md-header__button { color: var(--ink-2); margin: 0; padding: .4rem; }
 .lab-nav .md-header__button:hover { color: var(--ink); opacity: 1; }
@@ -621,11 +631,16 @@ body {
   width: auto;
   max-width: 100%;
   margin: 1.1rem 0 1.6rem;
+  padding: .8rem;
   text-align: left;
+  background: var(--panel);
+  border: 1px solid var(--line-soft);
 }
-.md-typeset.prose figure > p { margin: 0; }
+/* Every screenshot sits in the same full-width frame; smaller ones are centred */
+.md-typeset.prose figure > p { margin: 0; text-align: center; }
 .md-typeset.prose figure img {
   display: block;
+  margin: 0 auto;
   max-width: 100%;
   height: auto;
   border: 1px solid var(--img-edge);
@@ -723,13 +738,15 @@ body {
   padding: .05em .45em;
 }
 
-/* Admonitions: flat panels with a coloured rule and a mono label */
+/* Admonitions: tinted panels with a coloured rule and a mono label.
+   One colour per type: note green, tip purple, info blue, warning amber,
+   danger red, success teal. */
 .md-typeset.prose .admonition {
   --c: var(--ink-3);
   border: 0;
-  border-left: 2px solid var(--c);
+  border-left: 3px solid var(--c);
   border-radius: 0;
-  background: var(--bg-raised);
+  background: color-mix(in srgb, var(--c) 8%, var(--bg-raised));
   box-shadow: none;
   font-size: .78rem;
   line-height: 1.65;
@@ -737,11 +754,12 @@ body {
   padding: .1rem 1rem .1rem 1rem;
   margin: 1rem 0 1.4rem;
 }
+.md-typeset.prose .admonition.note { --c: var(--ok); }
+.md-typeset.prose .admonition.tip { --c: var(--tip); }
 .md-typeset.prose .admonition.info { --c: var(--info); }
-.md-typeset.prose .admonition.tip { --c: var(--ok); }
-.md-typeset.prose .admonition.warning { --c: var(--accent); }
+.md-typeset.prose .admonition.warning { --c: var(--warn); }
 .md-typeset.prose .admonition.danger { --c: var(--danger); }
-.md-typeset.prose .admonition.success { --c: var(--ok); }
+.md-typeset.prose .admonition.success { --c: var(--success); }
 .md-typeset.prose .admonition .highlight { margin-bottom: .9rem; }
 .md-typeset.prose .admonition-title {
   background: transparent;
@@ -1241,6 +1259,7 @@ body {
   .md-typeset.prose h2 { font-size: 1.3rem; }
   .md-typeset.prose h3 { font-size: 1rem; }
   .md-typeset.prose ol li, .md-typeset.prose ul li { margin-left: 1.2rem; }
+  .md-typeset.prose figure { padding: .5rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

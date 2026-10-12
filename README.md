@@ -1,12 +1,13 @@
-# AI by Design for Collaboration — LTRCOL-2011 lab guide
+# AI by Design for Collaboration: LTRCOL-2011 lab guide
 
-MkDocs site for the three-part **LTRCOL-2011** lab:
+MkDocs site for the four-part **LTRCOL-2011** lab:
 
 | Part | Page | Topic | Source |
 |---|---|---|---|
-| 1 | `/` (`docs/index.md`) | Webex AI: Cisco AI Assistant in Control Hub, AI in Messaging, Calling and Meetings (~115 min) | `Helpfiles/LTRCOL-2011 - AI Lab Guide - Published One.docx` |
-| 2 | `/part-2/` (`docs/part-2/index.md`) | MCP: Webex Messaging MCP server with Codex, a WCIT and elicitation (~90 min) | `Helpfiles/mcp.docx` |
-| 3 | `/part-3/` (`docs/part-3/index.md`) | GenAI: building Webex messaging workflows with LangChain in Google Colab (~120 min) | the earlier `CLUS26-AI-LAB` MkDocs project, merged into one page |
+| 1 | `/` (`docs/index.md`) | Webex AI: Cisco AI Assistant in Collaboration Control Hub, AI in Messaging, Calling and Meetings (~115 min) | `Helpfiles/LTRCOL-2011 - AI Lab Guide - Published One.docx` |
+| 2 | `/part-2/` (`docs/part-2/index.md`) | AI Receptionist: Webex Calling AI Receptionist, CUCM/Unity migration to Customer Assist, Calling AI features (~170 min) | `Helpfiles/AIreceptionist.pdf` |
+| 3 | `/part-3/` (`docs/part-3/index.md`) | MCP: Webex Messaging MCP server with Codex, a WCIT and elicitation (~90 min) | `Helpfiles/mcp.docx` |
+| 4 | `/part-4/` (`docs/part-4/index.md`) | GenAI: building Webex messaging workflows with LangChain in Google Colab (~120 min) | the earlier `CLUS26-AI-LAB` MkDocs project, merged into one page |
 
 Each part is **one long page**. A sticky "TREE" rail on the left tracks your position as you scroll:
 
@@ -52,11 +53,14 @@ mkdocs serve
 │   ├── index.md                  # Part 1, the whole guide
 │   ├── img/                      # Part 1 screenshots (module-1a-01.png …) and inline icons
 │   ├── part-2/
-│   │   ├── index.md              # Part 2 (MCP), the whole guide
-│   │   └── img/                  # Part 2 screenshots (mcp-02.png …)
+│   │   ├── index.md              # Part 2 (AI Receptionist), the whole guide
+│   │   └── img/                  # Part 2 screenshots (air-001.png …)
 │   ├── part-3/
-│   │   ├── index.md              # Part 3 (GenAI), the whole guide
-│   │   └── img/                  # Part 3 screenshots (module-2a-001.png …)
+│   │   ├── index.md              # Part 3 (MCP), the whole guide
+│   │   └── img/                  # Part 3 screenshots (mcp-02.png …)
+│   ├── part-4/
+│   │   ├── index.md              # Part 4 (GenAI), the whole guide
+│   │   └── img/                  # Part 4 screenshots (module-2a-001.png …)
 │   ├── css/lab.css               # theme (colour tokens at the top)
 │   └── js/lab.js                 # rail, progress, tasks, J/K keys, notes
 ├── tools/                        # pixel-art generators + one-off converters (see tools/README.md)
@@ -65,7 +69,7 @@ mkdocs serve
 
 ## Editing content
 
-Each part is a single Markdown file. The hero (chip, title, standfirst, the four meta items) and the rail **LINKS** come from the page's front matter (`links:`; Part 1 uses the default `extra.rail_links` in `mkdocs.yml`). Internal links are site-relative: `""` is Part 1, `"part-2/"` is Part 2, `"part-3/"` is Part 3.
+Each part is a single Markdown file. The hero (chip, title, standfirst, the four meta items) and the rail **LINKS** come from the page's front matter (`links:`; Part 1 uses the default `extra.rail_links` in `mkdocs.yml`). Internal links are site-relative: `""` is Part 1, `"part-2/"` is Part 2, `"part-3/"` is Part 3, `"part-4/"` is Part 4.
 
 - **Module** = `##` heading, **task** = `###` heading, with a short eyebrow line above each:
 

@@ -241,7 +241,7 @@
     panel.setAttribute("aria-label", "Lab notes");
     panel.innerHTML =
       '<header><span>LAB NOTES</span><button type="button" data-act="close" aria-label="Close notes">CLOSE ✕</button></header>' +
-      '<textarea spellcheck="false" placeholder="Pod domain, Control Hub login, Charles / Anita phone numbers…"></textarea>' +
+      '<textarea spellcheck="false" placeholder="Pod domain, Collaboration Control Hub login, Charles / Anita phone numbers…"></textarea>' +
       '<footer><span class="st">SAVED IN THIS BROWSER ONLY</span><button type="button" data-act="clear">CLEAR</button></footer>';
 
     document.body.appendChild(fab);

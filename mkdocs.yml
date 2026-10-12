@@ -1,5 +1,5 @@
 site_name: "AI by Design for Collaboration"
-site_description: "LTRCOL-2011 hands-on lab guide. Part 1: AI across Collaboration Control Hub, Messaging, Calling and Meetings. Part 2: Webex Messaging MCP with an AI client. Part 3: building AI-powered Webex messaging with LangChain."
+site_description: "LTRCOL-2011 hands-on lab guide. Part 1: AI across Collaboration Control Hub, Messaging, Calling and Meetings. Part 2: Webex Calling AI Receptionist, Customer Assist and AI features. Part 3: Webex Messaging MCP with an AI client. Part 4: building AI-powered Webex messaging with LangChain."
 site_author: Omer Ilyas
 site_url: https://omerilyas.github.io/AibyDesignforCollab/
 copyright: "LTRCOL-2011 · AI by Design for Collaboration · WebexOne 2026"
@@ -33,12 +33,14 @@ theme:
 extra:
   generator: false
   # Default links at the bottom of the left rail (a page can override with `links:` in its front matter).
-  # Internal links are site-relative: "" is Part 1, "part-2/" is Part 2, "part-3/" is Part 3.
+  # Internal links are site-relative: "" is Part 1, "part-2/" is Part 2, "part-3/" is Part 3, "part-4/" is Part 4.
   rail_links:
-    - title: "Part 2 · MCP lab guide"
+    - title: "Part 2 · AI Receptionist lab guide"
       url: "part-2/"
-    - title: "Part 3 · GenAI lab guide"
+    - title: "Part 3 · MCP lab guide"
       url: "part-3/"
+    - title: "Part 4 · GenAI lab guide"
+      url: "part-4/"
     - title: "Token assignment tool"
       url: https://aibydesign-token-assignment.vercel.app/
     - title: "dCloud"
@@ -75,6 +77,9 @@ extra_css:
 extra_javascript:
   - js/lab.js
 
+hooks:
+  - hooks/image_size.py
+
 plugins:
   - search
   - glightbox:
@@ -88,5 +93,6 @@ validation:
 
 nav:
   - "Part 1 · Webex AI": index.md
-  - "Part 2 · MCP": part-2/index.md
-  - "Part 3 · GenAI": part-3/index.md
+  - "Part 2 · AI Receptionist": part-2/index.md
+  - "Part 3 · MCP": part-3/index.md
+  - "Part 4 · GenAI": part-4/index.md

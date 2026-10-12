@@ -1,57 +1,53 @@
 ---
-title: GenAI Lab Guide
-description: "LTRCOL-2011 Part 3: build AI-powered Webex messaging workflows with LangChain, the Webex APIs and Google Colab."
-chip: "Part 3 of 3"
-headline: "Building AI-Powered Messaging with LangChain & Webex"
-standfirst: "Go from using AI to building it. Read Webex messages through the API, then build Ask Me Anything, space summaries and a rewrite assistant with LangChain."
+title: MCP Lab Guide
+description: "LTRCOL-2011 Part 3: connect Webex Messaging to an AI client with the Webex MCP server, Codex, a Webex Client Identity Token (WCIT) and MCP elicitation."
+chip: "Part 3 of 4"
+headline: "Webex MCP for AI Clients"
+standfirst: "A step-by-step lab for Webex Messaging. Connect Webex to agentic workflows using Codex, a Webex Client Identity Token (WCIT) and MCP elicitation."
 meta:
   - label: SESSION
     value: Delivered by Omer Ilyas
-  - label: STACK
-    value: Python · LangChain
+  - label: AI CLIENT
+    value: Codex + WCIT
   - label: LAB TIME
-    value: ~120 min
-  - label: RUNS IN
-    value: Google Colab
+    value: ~90 min
+  - label: REVISION
+    value: v1 · October 2026
 links:
   - title: "Part 1 · Webex AI lab guide"
     url: ""
-  - title: "Part 2 · MCP lab guide"
+  - title: "Part 2 · AI Receptionist lab guide"
     url: "part-2/"
+  - title: "Part 4 · GenAI lab guide"
+    url: "part-4/"
   - title: "Token assignment tool"
     url: https://aibydesign-token-assignment.vercel.app/
-  - title: "Webex Developer Portal"
-    url: https://developer.webex.com
-  - title: "Google Colab"
-    url: https://colab.research.google.com
-  - title: "LangChain docs"
-    url: https://python.langchain.com
+  - title: "Collaboration Control Hub"
+    url: https://admin.webex.com
+  - title: "Webex MCP docs"
+    url: https://developer.webex.com/mcp/docs/ai-in-webex
 ---
 
 ## About this lab { #about data-toc-label="About this lab" }
 
-In [Part 1](../index.md) of the Webex AI lab you explored how Cisco Webex uses Artificial Intelligence to enhance collaboration across Messaging, Calling, and Meetings. You experienced capabilities such as AI-powered message assistance, conversation summaries, smart rewrites, live translations, meeting intelligence, captions, transcriptions, and AI-generated insights. In [Part 2](../part-2/index.md) you connected Webex Messaging to an AI client through the Webex MCP server.
+<p class="tagline"><del>From chatting about Webex</del> <span>to agents that act in Webex.</span></p>
 
-While these features demonstrate what AI can do inside Webex, the next logical step is to understand how these experiences are actually built.
+Webex MCP servers provide a governed tool layer that lets an AI client discover and invoke Webex capabilities. Collaboration Control Hub policy, granted scopes, and the signed-in user's existing Webex permissions still determine what a tool can do.
 
-In this hands-on lab, we will take a step further and explore how modern AI frameworks (such as **LangChain**) can be used alongside the **Webex APIs** to build intelligent messaging workflows and agentic experiences.
+!!! note "Lab scope"
+    Although Webex provides other MCP servers, this lab focuses only on **Webex Messaging MCP**. After completing the Messaging configuration, you can reuse the same general process for another Webex MCP server: confirm Collaboration Control Hub access, configure the correct endpoint in the AI client, and review that server's tools, scopes, and content requirements. Always verify the product page for the server you choose.
 
-You will learn how developers and architects can leverage AI models, orchestration frameworks, and APIs to create real-world conversational solutions within Webex Messaging.
+!!! note "Note"
+    This part continues from [Part 1](../index.md). Use the same dCloud session and the same credentials from `Session_Info.txt` that you saved on your physical/attendee workstation (or in the **Notes** panel) during [Accessing your lab](../index.md#access). Whenever this part asks you to sign in to **Collaboration Control Hub** or Webex, use the **Charles Holland** credentials.
 
-Throughout this lab, you will explore:
+!!! info "Client and authentication used in this lab"
+    For the hands-on exercises, we use **Codex** with a **Webex Client Identity Token (WCIT)**. Webex MCP can also be connected through other AI clients, such as Claude Code, but that setup is not part of this lab. The OAuth Integration workflow is included for reference only and is not required to complete the lab. During WCIT elicitation, Webex may still open an OAuth authorization page when a tool requires an additional scope.
 
-- **Webex Messaging APIs:** Understanding how applications interact with Webex spaces, users, and messages programmatically.
-- **LangChain Fundamentals:** Learning how LangChain orchestrates prompts, memory, tools, and workflows to power AI applications.
-- **Building AI-Powered Messaging Workflows:** Creating logic that can read, process, and respond to Webex messages intelligently.
-- **Introduction to AI Agents:** Understanding how agents can reason, make decisions, and perform actions based on context and instructions.
-- **Prompt Engineering & LLM Integration:** Connecting Large Language Models (LLMs) to Webex workflows for intelligent responses.
+![Webex MCP servers bring Webex Meetings, Messaging, Workspaces, Vidcast and Slido into agentic workflows](img/mcp-02.png){ loading=lazy }
 
-By the end of this lab, you will not only understand how AI features appear inside Webex, but also gain insight into how AI-powered experiences are designed, orchestrated, and built using frameworks like LangChain and Webex APIs.
-
-!!! tip "The shift in mindset"
-    Think of this lab as moving from **"using AI"** to **"building AI."**
-
-This lab is designed to provide a practical and approachable introduction to the foundations of **agentic AI**, helping you understand the core building blocks behind intelligent collaboration experiences.
+/// caption
+Webex MCP servers bring Webex Meetings, Messaging, Workspaces, Vidcast and Slido into agentic workflows.
+///
 
 ### Lab at a glance { #glance data-toc-label="Lab at a glance" }
 
@@ -59,9 +55,46 @@ This lab is designed to provide a practical and approachable introduction to the
 
 | | Module | Time |
 |---|---|---|
-| 1 | [Set up your lab environment](#module-1) | 30 min |
-| 2 | [LangChain for Messaging Intelligence](#module-2) | 90 min |
-| | **Total** | **~120 min** |
+|  | [Start here in Collaboration Control Hub](#start) | 5 min |
+| 1 | [Understand MCP and enable a Webex MCP server](#module-1) | 10 min |
+| 2 | [Create credentials](#module-2) | 20 min |
+| 3 | [Understanding OAuth and elicitation](#module-3) *(optional)* | 10 min |
+| 4 | [Configure Codex](#module-4) | 15 min |
+| 5 | [Messaging prompts](#module-5) | 20 min |
+| 6 | [Summary and next steps](#module-6) | 5 min |
+| 7 | [Troubleshooting and cleanup](#module-7) | 10 min |
+| | **Total** (including the optional reference module) | **~90 min** |
+
+</div>
+
+<div class="glance" markdown>
+
+| Lab profile | Details |
+|---|---|
+| Primary path | Webex Messaging MCP with Codex and WCIT |
+| Audience | Developers, administrators, technical instructors, and solution engineers |
+| Revision | v1 |
+
+</div>
+
+### Learning outcomes { #outcomes data-toc-label="Learning outcomes" }
+
+- [ ] Explain how an AI client discovers and calls Webex MCP tools.
+- [ ] Enable the Cisco Webex Messaging MCP server in Collaboration Control Hub.
+- [ ] Generate a WCIT and explain how elicitation requests additional Webex scopes.
+- [ ] Connect Codex without exposing the WCIT.
+- [ ] Run read-only prompts, interpret a scope request, and perform a controlled write action.
+
+### Before you begin { #before data-toc-label="Before you begin" }
+
+<div class="glance" markdown>
+
+| Requirement | What the lab users need |
+|---|---|
+| Webex | An active account in the organization used for the lab |
+| Collaboration Control Hub | An administrator account so you can enable the selected MCP server |
+| Developer Portal | An account able to generate a WCIT. Creating an OAuth Integration is covered for reference only. |
+| AI client | **Codex** installed and signed in. Use your existing Codex account. If you don't have one, create your own free account with the email address provided for the lab, or select **Continue with Google** and use your Gmail account. Sign in and confirm that you can start a new task before continuing. The instructor will not provide shared AI-client credentials. Sign up: [chatgpt.com](https://chatgpt.com){:target="_blank" rel="noopener"} |
 
 </div>
 
@@ -71,32 +104,10 @@ The whole lab lives on this **one page**. Scroll down and work through it in ord
 
 - The **TREE** on the left shows where you are. The progress bar under it fills up as you scroll.
 - Press <kbd>J</kbd> / <kbd>K</kbd> to jump to the next or previous section.
-- When you finish a task, click **Mark complete** at the end of it. You get a ✓ in the tree, and your progress is saved in this browser.
-- Every code block has a **copy** button in its top-right corner. Paste the code into a new Colab cell and run it.
+- When you finish a module, click **Mark complete** at the end of it. You get a ✓ in the tree, and your progress is saved in this browser.
+- Every prompt and configuration block has a **copy** button in its top-right corner.
+- Click **Notes** (bottom-right) to keep lab values close at hand. Never paste your WCIT or any other secret into shared notes, prompts or screenshots.
 - Click any screenshot to zoom in.
-
-### Lab notes { #lab-notes data-toc-label="Lab notes" }
-
-Click **Notes** (bottom-right) to open a scratchpad that stays with you on both parts of the lab guide. Use it to keep the things you'll need throughout the lab close at hand:
-
-- your **Webex Bearer token** (so you don't have to re-grab it from the Developer Portal every time it expires)
-- your **Webex Space (Room) ID**
-- your **OpenAI API key**
-- your **ngrok auth token**
-- any **dCloud-assigned values** (the `cbXXX.dc-YY.com` domain, pod number, passwords)
-- snippets, scratch notes, or anything else you want to remember
-
-!!! warning "Where your notes live"
-    Notes are saved **only in your browser** (localStorage on this device). They will be **lost** if you:
-
-    - clear your browser data,
-    - use a different browser or computer,
-    - open the lab in a private/incognito window.
-
-    Treat the notepad as a temporary scratchpad for the duration of the lab. If you need notes that survive long-term, copy them to a personal note-taking app at the end of the session.
-
-!!! danger "Be mindful with secrets"
-    Even though the notepad is local to your browser, treat any **API keys, tokens, or passwords** the way you would on any shared workstation. If you're on a shared/dCloud machine, **clear your notes** before logging out so the next user can't see them.
 
 ### Your lab proctor { #proctors data-toc-label="Your lab proctor" }
 
@@ -108,2797 +119,946 @@ Need help? Raise your hand or reach out to me.
 
 </div>
 
-<p class="eyebrow">Module 1 · ≈ 30 min</p>
+<p class="eyebrow">Before you start · ≈ 5 min</p>
 
-## Set up your lab environment { #module-1 data-toc-label="Module 1 · Lab setup" }
+## Start here in Collaboration Control Hub { #start data-toc-label="Start here in Collaboration Control Hub" data-task="start" }
 
-Before you start building AI-powered messaging workflows, this module gets your foundation in place: a Webex API access token tied to your assigned account, a place to run Python notebooks, and an OpenAI API key for the LangChain pieces of the lab. Tasks 1d and 1e (Streamlit and ngrok) are optional background reading for future use, they are not used in this lab.
+##### Step 1: Sign in
 
-<div class="glance time" markdown>
+Open [admin.webex.com](https://admin.webex.com){:target="_blank" rel="noopener"} using an administrator account for your assigned lab.
 
-| | Task | Time |
+![The Collaboration Control Hub sign-in page](img/mcp-03.png){ loading=lazy }
+
+/// caption
+The Collaboration Control Hub sign-in page.
+///
+
+!!! note "Note"
+    The account shown in the screenshot, **omer.ilyas@boldbetz.com**, is for demo purposes only. Sign in with the credentials provided for your lab session: the same **Charles Holland** credentials from `Session_Info.txt` that you used in [Part 1](../index.md#access). If you have any questions, ask your proctor.
+
+##### Step 2: Open the Webex inventory
+
+Select **Apps**, then **Agentic Apps**, then the **Webex** tab.
+
+![Apps > Agentic apps > Webex lists the Webex MCP servers and their access state](img/mcp-04.png){ loading=lazy }
+
+/// caption
+Apps > Agentic apps > Webex lists the Webex MCP servers and their access state.
+///
+
+!!! note
+    The MCP servers available in your lab environment may differ from those shown above, but for this lab, confirm that **Webex Messaging** is available before continuing.
+
+!!! success "Checkpoint"
+    The class begins only after the administrator confirms the selected server is visible. Module 1 completes the policy and tool review.
+
+<p class="eyebrow">Overview · the servers</p>
+
+## Webex MCP servers at a glance { #servers data-toc-label="MCP servers at a glance" }
+
+### How Webex connects AI agents { #how-it-works data-toc-label="How Webex connects AI" }
+
+Agents use approved tools, work with context, and take bounded actions toward a user's goal. MCP is one of four ways Webex connects to AI, not the whole Webex AI strategy.
+
+#### Four ways to connect
+
+<div class="models">
+<div><b>REST APIs and SDKs</b><span>Direct requests and deterministic app logic</span></div>
+<div><b>Webhooks and events</b><span>Event-driven workflows and notifications</span></div>
+<div class="on"><b>Model Context Protocol (MCP)</b><span>Agents discover and use approved tools and context</span><em>This lab</em></div>
+<div><b>Agent-to-Agent (A2A)</b><span>Specialized agents hand work to each other</span><em>Beta</em></div>
+</div>
+
+MCP connects an agent to **capabilities**, A2A connects an agent to **another agent**. Behind the scenes, an MCP server often calls the same Webex REST APIs.
+
+#### Two directions for MCP
+
+**1. Webex MCP servers → external AI clients** (what you do in this lab)
+
+<ol class="flow">
+<li><b>You</b><span>Ask for something in plain language</span></li>
+<li><b>AI client</b><span>The MCP client, for example Codex</span></li>
+<li><b>Webex MCP server</b><span>Offers approved tools, for example Messaging</span></li>
+<li><b>Webex services</b><span>Spaces, messages, meetings and more</span></li>
+</ol>
+
+The MCP server supplies the tools, the agent lives in the AI client. Example tasks: search messages, post a space update, or find a meeting and pull its transcript.
+
+**2. External MCP servers → Webex AI** (context only)
+
+<ol class="flow">
+<li><b>Caller</b><span>Talks to the contact center</span></li>
+<li><b>Webex AI Agent</b><span>The MCP client, in Webex Contact Center</span></li>
+<li><b>External MCP server</b><span>Your company's tools</span></li>
+<li><b>Business system</b><span>Orders, shipping, CRM and more</span></li>
+</ol>
+
+Here Webex is the client: the Webex AI Agent calls your own MCP server during a live customer conversation, for example to look up an order.
+
+#### Who controls what
+
+- **Tools:** each MCP server exposes a set of approved actions. The agent can only use those tools.
+- **Scopes and permissions:** a tool works only within the signed-in user's Webex permissions and the scopes they granted.
+- **Administrators:** in **Collaboration Control Hub**, admins enable or block each server for users, choose which tools are allowed, and review changes. Webex calls this governance layer **Agentic Apps**.
+
+### Security: trust before you connect { #mcp-security data-toc-label="MCP security" }
+
+An MCP server gives an AI agent real tools. Some tools only read information, others can create, update, delete, send or publish data on behalf of a user or an organization. That is why Webex's guidance is simple: **connect only to MCP servers you know and trust.**
+
+#### The risk with external MCP servers
+
+When you add an MCP server that isn't the provider's official one, for example a community or third-party version, you are trusting whoever runs it with your data and your users' actions. Before connecting, you need to know:
+
+- **What its tools can do:** read data only, or also send messages, change records, or act in other services.
+- **Where your data goes:** which systems it connects to, and whether it stores data outside Webex.
+- **Who runs it:** who owns and supports it, how they handle data, and whether it's meant for production use.
+- **What it asks for:** whether the permissions it requests match what you actually need.
+
+If any answer is unclear, don't connect yet. Whenever possible, use the **official MCP server hosted by the service provider**, such as the Webex MCP servers in this lab.
+
+#### Collaboration Control Hub as your orchestration layer
+
+Webex MCP servers are managed in **Collaboration Control Hub** as **Agentic Apps**, so an administrator decides what agents can reach before any user connects:
+
+<div class="models">
+<div><b>Enable or block</b><span>Turn each MCP server on or off for your users</span></div>
+<div><b>Choose the tools</b><span>Allow only the tools your use case needs</span></div>
+<div><b>Inspect schemas</b><span>See exactly what each tool accepts and does</span></div>
+<div><b>Reauthorize changes</b><span>Review again when a server's tools change</span></div>
+</div>
+
+Every request still runs within the signed-in user's Webex permissions and the scopes they granted. With Collaboration Control Hub in front of your MCP servers, you get one place to set policy for every AI client, instead of trusting each client or server separately.
+
+!!! tip "Quick checklist before connecting any MCP server"
+    Is it hosted by the official provider? If not, do you trust who hosts it? Do you understand its tools? Are the permissions appropriate? Could it access or store sensitive data? Is it meant for production? Do you know who owns and supports it?
+
+### Webex Messaging MCP capabilities { #messaging-caps data-toc-label="Messaging MCP" }
+
+Webex Messaging MCP lets an authorised AI client work with spaces, messages, memberships, and files. Collaboration Control Hub policy, granted scopes, and the signed-in user's Webex permissions determine which operations are available.
+
+![Webex Messaging MCP: bringing messaging intelligence to AI agents](img/mcp-05.png){ loading=lazy }
+
+/// caption
+Webex Messaging MCP: bringing messaging intelligence to AI agents.
+///
+
+#### Capabilities used in this lab
+
+- **Space management.** Create, discover, and manage Webex spaces from an AI client.
+- **Messaging actions.** Send, retrieve, edit, and delete messages through MCP tools.
+- **Membership control.** Add, remove, and manage users within spaces and conversations.
+- **File collaboration.** Access and share files in Webex spaces as part of an agent workflow.
+
+!!! info "Access state shown"
+    The slide shows Webex Messaging **blocked for all users**. This is an example tenant state, not an instruction. An administrator must allow the intended lab users before they can connect.
+
+### Webex Meetings MCP capabilities (context only) { #meetings-caps data-toc-label="Meetings MCP (context)" }
+
+Webex Meetings MCP lets an authorised AI client work with meeting administration and available post-meeting content. The meeting configuration and the signed-in user's Webex permissions still control access.
+
+![Webex Meetings MCP: bringing meeting intelligence to AI agents](img/mcp-06.png){ loading=lazy }
+
+/// caption
+Webex Meetings MCP: bringing meeting intelligence to AI agents.
+///
+
+#### Capabilities shown for context
+
+- **Meeting lifecycle.** Schedule, update, retrieve, and cancel meetings from an AI client.
+- **Meeting intelligence.** Access available AI-generated summaries, action items, and meeting insights.
+- **Transcript access.** Search and retrieve transcripts or transcript snippets from completed meetings.
+- **Recording management.** Discover recordings and retrieve available playback information for analysis and follow-up.
+- **Standards-based access.** Webex Meetings MCP is shown for context only and is not configured in this lab.
+
+!!! info "Availability and access"
+    Summaries, recordings, and transcripts depend on the meeting settings and the user's access. Webex Meetings MCP is included for context only and is not covered in the hands-on exercises. Once you have configured Messaging MCP, you can use the same general approach to configure Meetings MCP separately.
+
+<p class="eyebrow">Module 1 · ≈ 10 min</p>
+
+## Understand MCP and enable a Webex MCP server { #module-1 data-toc-label="Module 1 · Understand & enable" data-task="1" }
+
+Before you configure Webex, take a minute to understand what MCP is doing. MCP is not another AI model and it does not replace the Webex API. It is a common way for an AI application to discover approved capabilities and call them in a structured way. In this lab, your AI client connects to a Webex MCP server, and the server works with Webex on behalf of the signed-in user.
+
+### How MCP fits together { #m1-parts data-toc-label="How MCP fits together" }
+
+The diagram below separates the main parts. They may feel like one experience when you use Codex, but each part has a different job.
+
+![Model Context Protocol key components: MCP host, MCP client, MCP server and tools, linked by the MCP protocol](img/mcp-07.png){ loading=lazy }
+
+/// caption
+Model Context Protocol key components: MCP host, MCP client, MCP server and tools, linked by the MCP protocol.
+///
+
+- **MCP host.** The application you work in. In this lab, the MCP host is Codex, it manages the conversation and the user experience.
+- **MCP client.** The connection component inside the host. It reads the server's capability information, sends tool requests, and returns results to the host.
+- **MCP server.** The service that publishes capabilities in a standard format. In this lab, Cisco hosts the Webex Messaging and Webex Meetings MCP servers.
+- **Tools.** The actions the server makes available, such as finding a space, listing meetings, retrieving a transcript, or sending a message. Each tool describes the information it needs.
+- **MCP protocol.** The agreed format the client and server use to describe capabilities, make requests, return results, and report errors.
+
+MCP can also expose resources and reusable prompts. This lab concentrates on tools because those are the capabilities you will discover and call from the AI client.
+
+### How a Webex MCP tool call works { #m1-call data-toc-label="How a tool call works" }
+
+The language model helps choose a suitable tool and prepares its inputs, but it does not bypass Webex. The MCP client carries the request, and the Webex MCP server applies authentication, granted scopes, Collaboration Control Hub policy, enabled tools, and the signed-in user's existing Webex permissions.
+
+![From a natural-language request to a Webex tool result](img/mcp-08.png){ loading=lazy }
+
+/// caption
+From a natural-language request to a Webex tool result.
+///
+
+1. **You ask.** Enter a natural-language request in the AI application, for example asking it to find a Webex space or list recent meetings.
+2. **The host interprets the request.** The application gives the model the conversation and information about the connected MCP servers.
+3. **The client discovers capabilities.** The MCP client reads the tools and their input definitions from the selected Webex MCP server.
+4. **The model chooses a tool.** The model selects the tool that matches your request and prepares the required parameters. The client can ask you to clarify a missing or ambiguous value.
+5. **Webex runs the allowed action and returns the result.** The client sends the structured tool call to the server. Webex checks access, calls the underlying Webex service, and sends the result back through the client for the application to present.
+
+!!! tip "The key point"
+    The model can **propose** a tool call, but the Webex MCP server **decides** whether that call is allowed. This is why the server must be enabled in Collaboration Control Hub and why scopes and user permissions matter.
+
+### Servers used in this lab { #m1-servers data-toc-label="Servers used in this lab" }
+
+Use **Webex Messaging** for all hands-on exercises in this guide. Webex Meetings is included only as portfolio context. Other Webex MCP servers follow the same overall pattern: confirm Collaboration Control Hub access, configure the correct endpoint, review the available tools and scopes, and begin with a read-only request.
+
+<div class="glance" markdown>
+
+| Server | Endpoint | Use in this lab |
 |---|---|---|
-| 1a | [Webex Developer Portal setup](#module-1a) | 10 min |
-| 1b | [Google Colab setup](#module-1b) | 5 min |
-| 1c | [Managing API keys in Colab](#module-1c) | 5 min |
-| 1d | [Introduction to Streamlit](#module-1d) *(optional)* | 5 min |
-| 1e | [Introduction to ngrok](#module-1e) *(optional)* | 5 min |
+| Webex Messaging | `https://mcp.webexapis.com/mcp/webex-messaging` | **Primary path:** spaces, messages, memberships, files, and related tools |
+| Webex Meetings | `https://mcp.webexapis.com/mcp/webex-meeting` | Context only: schedules, participants, recordings, transcripts, and summaries |
 
 </div>
 
-<p class="eyebrow sub">Module 1a · ≈ 10 min</p>
-
-### Webex Developer Portal Setup { #module-1a data-toc-label="1a · Webex Developer Portal" data-task="1a" }
-
-To interact with Webex programmatically (for example, to send messages), you'll need to authenticate using a **Webex API access token** (Bearer token). This token acts like a digital key that allows your script to securely access your Webex account and perform actions on your behalf, like sending messages, listing spaces, etc. Without it, any API call to Webex will be rejected.
-
-You can find more information on the [Webex Developer Portal](https://developer.webex.com/){:target="_blank" rel="noopener"}.
-
-#### Steps
-
-##### Step 1: Log in to the Webex Developer Portal { #t1a-step-1 }
-
-Go to the [Webex Developer Portal](https://developer.webex.com/){:target="_blank" rel="noopener"} and click **Log in**.
-
-!!! warning "Important: Use your assigned Charles Holland account"
-    Please use the **Charles Holland** account assigned to your demo pod throughout this lab.
-
-    The username will follow the format: `cholland@cbXXX.dc-YY.com`, where `XXX` and `YY` are unique to your dCloud environment.
-
-    **Example:** 👉 `cholland@cb123.dc-01.com`
-
-    The credentials for your assigned account for this lab can be found in the **`Session_Info.txt`** file on Workstation 1's desktop.
-
-##### Step 2: Copy your Bearer token { #t1a-step-2 }
-
-After logging in, click on your **profile picture** (top-right corner). Under **"Bearer"**, copy the displayed token. This is the one you'll use in the upcoming tasks.
-
-![Copy your Bearer token from the Webex Developer Portal](img/module-1a-001.png){ loading=lazy }
-
-/// caption
-Copy your Bearer token from the Webex Developer Portal.
-///
-
-##### Step 3: Log in to the Webex App { #t1a-step-3 }
-
-Use your assigned Charles Holland account (`cholland@cbXXX.dc-YY.com`) to log in to the **Webex App** that is pre-installed on your laptop.
-
-##### Step 4: Create a Webex Space { #t1a-step-4 }
-
-Once logged in, create a new Webex Space and name it something like **"Webex AI Lab"**.
-
-![Create a new Webex Space named "Webex AI Lab"](img/module-1a-002.png){ loading=lazy }
-
-/// caption
-Create a new Webex Space named "Webex AI Lab".
-///
-
-!!! info "You'll need this Space ID later"
-    After the space is created, we will retrieve its ID. This will be used in a later step.
-
-##### Step 5: Retrieve the Space ID via the Developer Portal { #t1a-step-5 }
-
-Go back to the [Webex Developer Portal](https://developer.webex.com/){:target="_blank" rel="noopener"} and log in again.
-
-Click on **Documentation > Webex Messaging**.
-
-![Navigate to Documentation, Webex Messaging](img/module-1a-003.png){ loading=lazy }
-
-/// caption
-Navigate to Documentation, Webex Messaging.
-///
-
-Select **All APIs**, then navigate to **Rooms > List Rooms**, and press **Run**.
-
-![Run the List Rooms API](img/module-1a-004.png){ loading=lazy }
-
-/// caption
-Run the List Rooms API.
-///
-
-In the response, you will find a list of rooms associated with your account. Locate the room you just created (e.g., **"Webex AI Lab"**) and copy its corresponding **`id`**. This will be used in a later step.
-
-![Copy the room ID for "Webex AI Lab"](img/module-1a-005.png){ loading=lazy }
-
-/// caption
-Copy the room ID for "Webex AI Lab".
-///
-
-<p class="eyebrow sub">Module 1b · ≈ 5 min</p>
-
-### Google Colab Setup { #module-1b data-toc-label="1b · Google Colab" data-task="1b" }
-
-Google Colab is a cloud-based platform for running Python notebooks. If you want to build a machine learning model but don't have a computer that can handle the workload, Google Colab is a great option. In this lab, we will use Google Colab to test and run our code. If you have your own Python environment and prefer to run the code locally, feel free to do so.
-
-Here are some reasons why Google Colab is useful for this lab:
-
-* **Free access to GPUs and TPUs:** Colab offers free access to powerful GPUs and TPUs, which can significantly speed up training and fine-tuning of machine learning models.
-* **No setup required:** Everything runs in the cloud, so you don't need to install or configure anything on your local machine.
-* **Easy collaboration:** Notebooks can be shared with team members, making it ideal for collaborative projects.
-* **Google Drive integration:** Colab saves your work directly to Google Drive.
-* **Pre-installed libraries:** Popular libraries such as TensorFlow and PyTorch come pre-installed, so you can start working right away.
-
-#### Steps
-
-##### Step 1: Sign in and open Colab { #t1b-step-1 }
-
-Log in to your Google account, then open [Google Colab](https://colab.research.google.com/){:target="_blank" rel="noopener"} in a new tab.
-
-!!! info "Use your personal Google account"
-    You can use your personal Google account (Gmail) for this lab.
-
-##### Step 2: Create a new notebook { #t1b-step-2 }
-
-From the Colab welcome screen, click **File > New notebook** to create a new Jupyter notebook.
-
-![Create a new notebook in Google Colab](img/module-1b-001.png){ loading=lazy }
-
-/// caption
-Create a new notebook in Google Colab.
-///
-
-The new notebook will be named **`Untitled0.ipynb`** by default and saved to your Google Drive in a folder called **`Colab Notebooks`**. Since it is a Jupyter notebook, all standard Jupyter notebook commands work here.
-
-![New Colab notebook titled Untitled0.ipynb](img/module-1b-002.png){ loading=lazy }
-
-/// caption
-New Colab notebook titled Untitled0.ipynb.
-///
-
-##### Step 3: Choose your runtime environment { #t1b-step-3 }
-
-!!! note "When to change the runtime"
-    There may be times when you need to fine-tune models or run tasks that benefit from a specific runtime environment. Colab lets you pick a Python version and a hardware accelerator that matches your workload.
-
-    * **Python version:** Choose the Python version that matches your code and library compatibility (Python 2 or Python 3). We will use **Python 3** for this lab.
-    * **Hardware accelerator:** Pick the option that fits your workload:
-        * **None:** No hardware acceleration. Good for basic tasks.
-        * **GPU:** Speeds up computations using a Graphics Processing Unit.
-        * **TPU:** Uses a Tensor Processing Unit for even faster performance, especially for deep learning.
-
-Click the arrow next to **Connect** to open the dropdown.
-
-![Open the Connect dropdown in Colab](img/module-1b-003.png){ loading=lazy }
-
-/// caption
-Open the Connect dropdown in Colab.
-///
-
-Then follow these steps:
-
-1. Select **Change runtime type** to open the runtime configuration dialog.
-2. From the **Runtime type** dropdown, choose **Python 3**.
-3. From the **Hardware accelerator** dropdown, choose **GPU** or **TPU**.
-4. Click **Save** to apply the changes.
-
-![Change runtime type dialog in Colab](img/module-1b-004.png){ loading=lazy }
-
-/// caption
-Change runtime type dialog in Colab.
-///
-
-##### Step 4: Add a new code cell { #t1b-step-4 }
-
-Whenever you want to copy code into Colab and run it, click **+ Code** to add a new code cell.
-
-![Add a new code cell in Colab](img/module-1b-005.png){ loading=lazy }
-
-/// caption
-Add a new code cell in Colab.
-///
-
-##### Step 5: Run your code { #t1b-step-5 }
-
-Click the **play button** to the left of the cell, or press **Command/Ctrl + Enter** while the cell is selected.
-
-![Execute a code cell in Colab](img/module-1b-006.png){ loading=lazy }
-
-/// caption
-Execute a code cell in Colab.
-///
-
-<p class="eyebrow sub">Module 1c · ≈ 5 min</p>
-
-### Managing API Keys in Google Colab { #module-1c data-toc-label="1c · API keys in Colab" data-task="1c" }
-
-When working with frameworks like **LangChain** and large language model providers like **OpenAI**, your code needs an API key to authenticate. Hard-coding keys directly inside your notebook is not safe (the key can be shared by accident or pushed to a public repo). Google Colab provides a built-in **Secrets** feature that lets you store keys securely and reference them from any notebook in your account.
-
-In this task, you will add the **OpenAI API key** to Colab Secrets so the rest of the lab can use it.
-
-#### Steps
-
-##### Step 1: Open the Secrets panel { #t1c-step-1 }
-
-Inside your existing Google Colab notebook, click the **key icon** in the left sidebar to open the **Secrets** section.
-
-![Open the Secrets panel in Google Colab](img/module-1c-001.png){ loading=lazy }
-
-/// caption
-Open the Secrets panel in Google Colab.
-///
-
-##### Step 2: Get your OpenAI API key { #t1c-step-2 }
-
-Before you can add the secret, you need an actual key to paste in.
-
-For this lab, we have set up a small webpage that will hand you a temporary OpenAI API key. Open this URL in a new tab:
-
-[https://cs.co/AiByDesign](https://cs.co/AiByDesign){:target="_blank" rel="noopener"}
-
-Enter your email address on the page and submit. The API key will be displayed on the screen, and a copy will also be sent to your email so you have it for the rest of the session.
-
-![The AI by Design key page where you enter your email to get an OpenAI API key](img/module-1c-003.png){ loading=lazy }
-
-/// caption
-The AI by Design key page where you enter your email to get an OpenAI API key.
-///
-
-Copy the key shown on screen. You will paste it into Colab in the next step.
-
-!!! note "If the page is not reachable"
-    If you cannot access [https://cs.co/AiByDesign](https://cs.co/AiByDesign){:target="_blank" rel="noopener"} from your lab pod, please ask one of your **lab proctors**. They will hand you a key directly so you can keep moving.
-
-##### Step 3: Add the key as a Colab secret { #t1c-step-3 }
-
-Back in your Colab notebook, in the **Secrets** panel from the previous step, click **+ Add new secret** and fill in the following:
-
-* **Name:** `OPENAI_API_KEY`
-* **Value:** the OpenAI API key you just copied (from `cs.co/AiByDesign` or from your proctor)
-
-!!! warning "Use the exact name `OPENAI_API_KEY`"
-    The lab code references this key by name. Make sure you enter it exactly as **`OPENAI_API_KEY`** (uppercase, with the underscore). If the name does not match, the notebook will not be able to find the key and your code will fail.
-
-##### Step 4: Grant notebook access { #t1c-step-4 }
-
-Your secrets are stored once and shared across all your notebooks. For each notebook that needs to use a secret, you have to turn on the **Notebook access** toggle next to that secret.
-
-Toggle **Notebook access** on for `OPENAI_API_KEY` so the current notebook can read it.
-
-![Grant notebook access to the OPENAI_API_KEY secret](img/module-1c-002.png){ loading=lazy }
-
-/// caption
-Grant notebook access to the OPENAI_API_KEY secret.
-///
-
-!!! note "About the lab API key"
-    The OpenAI API key provided to you is for **lab use only** and will be valid only for the duration of this session. You're welcome to continue exploring on your own after the lab by using your personal OpenAI API key in place of the one provided here.
-
-<p class="eyebrow sub">Module 1d · optional, read only · ≈ 5 min</p>
-
-### Introduction to Streamlit { #module-1d data-toc-label="1d · Streamlit (optional)" data-task="1d" }
-
-Toward the end of this lab, you'll wrap everything you've built (reading Webex messages, asking questions about a space, generating summaries, rewriting messages, and orchestrating an agent) into a small web app that you can actually click through. The framework we'll use for that web app is **Streamlit**.
-
-This task is a quick read, no clicks required. Its purpose is to give you a mental model of what Streamlit is so the later modules feel familiar when you see it appear.
-
-#### What is Streamlit?
-
-Streamlit is an open-source Python library that turns plain Python scripts into interactive web apps. Instead of writing HTML, CSS, and JavaScript, you write regular Python code and Streamlit renders it as a browser-based UI: text inputs, buttons, chat windows, charts, file uploads, and more.
-
-A typical Streamlit app is a single `.py` file. You run it with one command, and a local web app opens in your browser.
-
-```python
-import streamlit as st
-
-st.title("My First App")
-name = st.text_input("What's your name?")
-if name:
-    st.write(f"Hello, {name}!")
-```
-
-That's it. No web server boilerplate, no front-end framework, no build step.
-
-#### Why we use it in this lab
-
-Streamlit is a great fit for AI labs and proof-of-concept work because:
-
-* **Fast to build:** Most of the AI logic you'll write in this lab is already Python. Streamlit lets you put a UI on top of it without context-switching to a different language or framework.
-* **Built-in chat components:** Streamlit ships with `st.chat_input` and `st.chat_message`, which are designed exactly for LLM-powered chat experiences like the one you'll build for Webex.
-* **Live reload:** As you edit your Python file, Streamlit re-renders the app automatically. The feedback loop is short, which is ideal for experimenting with prompts and chains.
-* **Demo-friendly:** You can share your running app over the network so others can try it. Later in the lab, we'll pair Streamlit with **ngrok** to give your app a public URL that anyone can open.
-
-#### How it fits in the bigger picture
-
-Throughout the lab you will:
-
-1. Connect to Webex and pull messages (using the Webex APIs and your Bearer token from [1a](#module-1a)).
-2. Use **LangChain** plus the OpenAI key from [1c](#module-1c) to summarize, answer questions, rewrite, and run an agent over those messages.
-3. Wrap that LangChain logic in a **Streamlit** app so it feels like a real product, not a notebook.
-
-You don't need to install or configure anything for Streamlit right now. We'll install it inside Colab when we get to the UI module, and the lab will provide the starter code. For now, just remember: **Streamlit = Python, but in a browser.**
-
-!!! tip "Want to explore on your own?"
-    The official Streamlit documentation is at [docs.streamlit.io](https://docs.streamlit.io){:target="_blank" rel="noopener"}. The "Get started" and "API reference" pages are the most useful.
-
-<p class="eyebrow sub">Module 1e · optional, read only · ≈ 5 min</p>
-
-### Introduction to ngrok { #module-1e data-toc-label="1e · ngrok (optional)" data-task="1e" }
-
-When you build the Streamlit app at the end of the lab, it will run inside your Google Colab notebook. By default that app is only reachable from inside the Colab environment, which means you can't open it in your browser, share it with a teammate, or have Webex send notifications to it. To get around that, we'll use **ngrok**.
-
-This task is a quick read, no clicks required. Its purpose is to give you a mental model of what ngrok is so the later modules feel familiar when you see it appear. We'll walk through the actual login and auth-token steps in the module that uses ngrok.
-
-#### What is ngrok?
-
-ngrok is a reverse proxy service that gives any app running on your local machine (or, in our case, inside Colab) a **public URL** on the internet. You start your app, point ngrok at it, and ngrok hands you back a URL like `https://omer.ngrok-free.app` that anyone can open in their browser. Behind the scenes, ngrok forwards that traffic through a secure tunnel to your app.
-
-In short: **ngrok takes something private and makes it reachable, without you having to open firewall ports or deploy anywhere.**
-
-#### Why we use it in this lab
-
-* **Reach your Streamlit app from outside Colab.** Colab notebooks run in a sandboxed environment. ngrok puts a public URL in front of your Streamlit app so you can actually click through it in a real browser.
-* **Receive Webex webhooks.** If you want Webex to push events (like new messages) to your app, Webex needs a public URL to call. ngrok provides exactly that.
-* **No infrastructure setup.** No cloud account, no DNS, no deployment pipeline. One command and your app is reachable.
-
-#### What you'll do later (preview only)
-
-In a later module we'll walk through these steps in detail. For now, here's what to expect:
-
-1. Browse to [ngrok.com](https://ngrok.com){:target="_blank" rel="noopener"} and click **Login** (the "Login with Google" option works well, but use whichever sign-in method you prefer).
-
-    ![ngrok login page with sign-in options](img/module-1e-001.png){ loading=lazy }
-
-    /// caption
-    ngrok login page with sign-in options.
-    ///
-
-    !!! info "Reuse your Google account"
-        You can sign in with the same Google account you used for [Google Colab](#module-1b). Keeping both accounts in sync makes it easier to switch between Colab and the ngrok dashboard during the lab.
-
-2. Once logged in, copy your **ngrok auth token** from the dashboard. You'll paste this into your Colab notebook in a later step.
-
-    ![ngrok dashboard showing your auth token](img/module-1e-002.png){ loading=lazy }
-
-    /// caption
-    ngrok dashboard showing your auth token.
-    ///
-
-3. We'll start the Streamlit app in a later section and use ngrok to expose it via a public URL.
-
-!!! tip "Want to explore on your own?"
-    The official ngrok docs are at [ngrok.com/docs](https://ngrok.com/docs){:target="_blank" rel="noopener"}. The "Getting Started" section is the fastest way to see what's possible.
-
-<p class="eyebrow">Module 2 · ≈ 90 min</p>
-
-## LangChain for Messaging Intelligence { #module-2 data-toc-label="Module 2 · LangChain" }
-
-In Part 1 you explored Cisco AI Assistant features such as **Ask Me Anything**, **Space Summaries**, **Smart Rewrite**, and **Translation**. These features show how AI can help users understand conversations, catch up quickly, improve communication, and work across languages.
-
-In this module, we will take a step further and explore how AI frameworks like **LangChain** can be used to build simplified versions of these experiences using the **Webex Messaging APIs**.
-
-Rather than treating AI as magic or a black box, we will break the experience down into building blocks:
-
-- how to connect to Webex
-- how to authenticate using an API token
-- how to retrieve messages from a Webex space
-- how to convert those messages into LangChain documents
-- how those documents can later be used for RAG, summaries, rewrite, and agents
-
-By the end of this module, you will understand how prompts, chains, retrievers, vector databases, tools, and agents come together to create intelligent messaging experiences.
-
-#### What you will build
-
-You will build a simplified **Webex Messaging Intelligence Assistant** using LangChain. Each task stacks on the last, until you have a real, working AI assistant for your Webex spaces.
-
-<div class="glance build time" markdown>
-
-| | Task | You'll learn | Time |
-|---|---|---|---|
-| 2a | [Read Webex messages](#module-2a) | API access, authentication, data ingestion, LangChain documents | 15 min |
-| 2b | [Ask Me Anything for Webex spaces](#module-2b) | RAG, embeddings, vector database | 30 min |
-| 2c | [Generate space summaries](#module-2c) | Prompt templates, chains | 20 min |
-| 2d | [Rewrite Webex messages](#module-2d) | Prompt engineering | 25 min |
+### What scopes control { #m1-scopes data-toc-label="What scopes control" }
+
+!!! danger "Note"
+    **Where do these scopes come from?** The scopes listed in this section are the ones published by Webex for the **Webex Messaging MCP server**. You don't need to create or look them up yourself. You can find the same list in the **Scopes** section of the [Messaging MCP Server page](https://developer.webex.com/mcp/docs/messaging-mcp-server){:target="_blank" rel="noopener"} on developer.webex.com. Other Webex MCP servers, such as Meetings, use their own scopes.
+
+A scope is a named permission carried by the user's authorization. A tool describes an action, the scope decides whether the signed-in identity may perform that type of action. The required `spark:mcp` scope opens the MCP connection, but it does not by itself allow the client to read a message, find a space, or make a change.
+
+Scopes work together with the Collaboration Control Hub tool policy and the user's existing Webex permissions. **All three checks must pass.** A tool may therefore be visible in the client but still fail if its required scope was not granted or the signed-in user cannot access the target space.
+
+<div class="glance" markdown>
+
+| Scope | What it permits | Use in this lab |
+|---|---|---|
+| `spark:mcp` | Connect to the Webex MCP server. It is required before any MCP tool can run. | **Required** |
+| `spark:messages_read` | Get and search messages, read thread content, and retrieve file details or downloads. | Read exercises |
+| `spark:messages_write` | Create, edit, or delete messages, upload or share files, and reply in a thread. | Controlled write only |
+| `spark:rooms_read` | Get and search Webex spaces. | Find the lab space |
+| `spark:rooms_write` | Create, update, or delete Webex spaces. | Not required |
+| `spark:memberships_read` | Read space membership information. | Optional |
+| `spark:memberships_write` | Add, update, or remove space memberships. | Not required |
+| `spark:webhooks_read` | Read Webex webhook subscriptions. | Out of scope |
+| `spark:webhooks_write` | Create, update, or delete Webex webhook subscriptions. | Out of scope |
 
 </div>
 
-!!! warning "Use one Colab notebook for the whole module"
-    Each task builds on variables created in the task before it (for example, `webex_documents` from Task 1). Work through 2a → 2d **in order, in the same Google Colab notebook**, and keep the runtime connected.
+In this lab, a Webex Client Identity Token (WCIT) lets Codex begin with `spark:mcp` and request extra service scopes through **elicitation** when a selected tool needs them. For reference, a client that does not support elicitation can use a Webex OAuth Integration with its required scopes registered in advance. Grant only the scopes required for the task, and add a write scope only when you are ready for the controlled write exercise. You'll set up the WCIT in [Module 2](#module-2), and [Module 3](#module-3) explains how elicitation and OAuth work, so don't worry if these terms are new for now.
 
-<p class="eyebrow sub">Module 2a · Task 1 · ≈ 15 min</p>
+Reference: [Cisco Webex Messaging MCP server and scope list](https://developer.webex.com/mcp/docs/messaging-mcp-server){:target="_blank" rel="noopener"}
 
-### Connect LangChain to Webex Messaging { #module-2a data-toc-label="2a · Read Webex messages" data-task="2a" }
+### Administrator task in Collaboration Control Hub { #m1-admin data-toc-label="Administrator task in Collaboration Control Hub" }
 
-<p class="lede">Read Webex messages as AI context.</p>
+##### Step 1: Open Agentic Apps
 
+Sign in to Collaboration Control Hub at [admin.webex.com](https://admin.webex.com){:target="_blank" rel="noopener"}. In the left navigation, select **Apps**, then select the **Agentic Apps** tab.
 
-#### Goal
-
-In this task, we will connect to the **Webex Messaging API**, retrieve recent messages from a Webex space, and convert those messages into **LangChain Documents**.
-
-This is the foundation for everything we will build later. Before an AI assistant can summarize, answer questions, rewrite messages, or act as an agent, it first needs access to context.
-
-!!! tip "Teaching moment"
-    Before AI can reason, it first needs **context** and **data**.
-
-#### What you will learn
-
-By the end of this task, you will understand:
-
-* how to call the **Webex Messages API** from Google Colab
-* how to retrieve recent messages from a Webex space
-* how to inspect raw Webex message data
-* how to convert Webex messages into **LangChain Documents**
-
-!!! info "Already covered in Module 1"
-    A few foundations for this task were set up earlier in [Module 1: Setup your Lab Environment](#module-1). If anything below feels unfamiliar, jump back and review:
-
-    * Accessing the Webex Developer Portal, retrieving your **personal access token**, and locating your **Webex Space ID**: covered in [1a: Webex Developer Portal Setup](#module-1a).
-    * Creating a Google Colab notebook and connecting to a runtime: covered in [1b: Google Colab Setup](#module-1b).
-    * Storing API keys safely as **Colab Secrets**: covered in [1c: Managing API Keys in Colab](#module-1c).
-
-The Webex Messages API lets developers list, create, update, and delete messages. Messages include text, sender information, timestamps, and other metadata. The API requires the user to be a member of the Webex room being accessed.
-
-#### Prerequisites
-
-Before starting this task, make sure you have:
-
-* access to **Google Colab**
-* a **Webex** account
-* an **OpenAI API key** (used in later LangChain tasks)
-* a **Webex personal access token**
-
-!!! info "About personal access tokens"
-    For testing and lab use, Webex personal access tokens can be copied from the Webex Developer Portal. These tokens are short-lived and are intended for development and testing, not production applications.
-
-#### Steps
-
-##### Step 1: Open Google Colab { #t2a-step-1 }
-
-Open Google Colab and create a new notebook.
-
-In Google Colab:
-
-1. Click **File**.
-2. Click **New notebook**.
-3. Rename the notebook to `LangChain_Webex_Messaging_Task1`.
-
-![Create a new notebook from File > New notebook in Google Colab](img/module-2a-001.png){ loading=lazy }
+![Collaboration Control Hub > Apps > Agentic apps](img/mcp-09.png){ loading=lazy }
 
 /// caption
-Create a new notebook from File > New notebook in Google Colab.
+Collaboration Control Hub > Apps > Agentic apps.
 ///
 
-Make sure you are connected to a runtime. For this task, a **CPU runtime** is enough (no GPU required).
+##### Step 2: Choose the Webex tab
 
-![Confirm a runtime is connected in the top-right of the Colab notebook](img/module-2a-002.png){ loading=lazy }
+Open **Webex Messaging** for the main lab.
+
+![The Webex tab lists Webex Messaging and the other Webex MCP servers](img/mcp-10.png){ loading=lazy }
 
 /// caption
-Confirm a runtime is connected in the top-right of the Colab notebook.
+The Webex tab lists Webex Messaging and the other Webex MCP servers.
 ///
 
-##### Step 2: Add Secrets in Google Colab { #t2a-step-2 }
+##### Step 3: Review the General tab and allow access
 
-Open the **Secrets** section from the left sidebar in Colab and add the following secret:
+!!! warning "Lab starting state"
+    By default, Webex Messaging is shown as **Blocked for all users**. This is the safe starting point. The **Allowed for all users** option stays greyed out until you turn on automatic server data updates and save, so follow the steps below in order. Allowing the server does not bypass OAuth scopes or the signed-in user's normal Webex permissions.
 
-* `WEBEX_ACCESS_TOKEN`
-
-!!! note "Don't have your token yet?"
-    For now, just create the secret with the name `WEBEX_ACCESS_TOKEN` and leave the **Value** empty. You'll copy your Webex personal access token from the Developer Portal in [Step 3](#t2a-step-3) and paste it in then.
-
-![Add a new secret named WEBEX_ACCESS_TOKEN in the Colab Secrets panel](img/module-2a-003.png){ loading=lazy }
+![Webex Messaging > General: blocked for all users by default](img/mcp-11.png){ loading=lazy }
 
 /// caption
-Add a new secret named WEBEX_ACCESS_TOKEN in the Colab Secrets panel.
+Webex Messaging > General: blocked for all users by default.
 ///
 
-Optional for later tasks (you can add it now to save time):
+1. **Turn on Authorise automatic server data updates.** This switch is off at the start of the lab. When enabled, updates such as the server name, description, same-domain URL, transport type, or related server metadata can take effect without a fresh authorization. The administrator still receives an indication of the change and can reauthorize the server.
+2. **Click Save.** This unlocks the access options.
+3. **Select Allowed for all users,** which is no longer greyed out, and click **Save** again.
 
-* `OPENAI_API_KEY`
-
-We'll toggle **Notebook access** on for each secret in the next step.
-
-!!! warning "Why use Secrets?"
-    Storing your token as a Colab Secret avoids hardcoding it inside the notebook. Hardcoded tokens are easy to leak by accident: in screenshots, in shared notebooks, or when the notebook is pushed to a public repo.
-
-##### Step 3: Get Your Webex Personal Access Token { #t2a-step-3 }
-
-Open the [Webex Developer Portal](https://developer.webex.com){:target="_blank" rel="noopener"}, then:
-
-1. Sign in with your Webex account.
-2. Go to the **Getting Started** or **API Reference** section.
-3. Locate your **Personal Access Token**.
-4. Copy the token.
-
-    ![Copy your Bearer token from the Webex Developer Portal](img/module-1a-001.png){ loading=lazy }
-
-    /// caption
-    Copy your Bearer token from the Webex Developer Portal.
-    ///
-
-5. Go back to your Colab notebook, open the **Secrets** panel from the left sidebar, find the `WEBEX_ACCESS_TOKEN` secret you created in [Step 2](#t2a-step-2), and paste the token into its **Value** field. Then turn on the **Notebook access** toggle next to it so this notebook can read the secret.
-
-    ![Paste your Webex token into the WEBEX_ACCESS_TOKEN secret value and toggle Notebook access on](img/module-2a-004.png){ loading=lazy }
-
-    /// caption
-    Paste your Webex token into the WEBEX_ACCESS_TOKEN secret value and toggle Notebook access on.
-    ///
-
-Webex REST API requests must include an access token in the `Authorization` header. For lab testing, the personal access token allows API calls to be made on your own behalf.
-
-!!! warning "Tokens expire"
-    Personal access tokens are short-lived. If your code suddenly stops working later, your token may have expired. Return to the Webex Developer Portal, copy a new token, and update your Colab secret.
-
-##### Step 4: Create or Identify a Webex Space { #t2a-step-4 }
-
-You now need a Webex space that contains some messages. You can use:
-
-* the **Charles's Space** that was created as part of this lab (recommended)
-* a new space you create yourself
-* a direct space with another lab user
-
-For the best experience, post a few messages in the space so the AI assistant has something to work with. For example:
-
-```text
-Hi team, we need to prepare the WebexOne LangChain demo.
-Can someone confirm who owns the Webex API part?
-I will test the Google Colab notebook today.
-The main action item is to build a simple AMA experience.
-```
-
-These messages will become the data source for the AI assistant in later tasks.
-
-![Sample messages posted in the Webex space to seed the AI assistant](img/module-2a-005.png){ loading=lazy }
+![Allowed for all users, with automatic server data updates authorised](img/mcp-12.png){ loading=lazy }
 
 /// caption
-Sample messages posted in the Webex space to seed the AI assistant.
+Allowed for all users, with automatic server data updates authorised.
 ///
 
-##### Step 5: Install Required Libraries { #t2a-step-5 }
+##### Step 4: Review the Authentication tab
 
-In your Colab notebook, click **+ Code** to add a new cell, then run:
+!!! warning "Review, do not edit"
+    Open the **Authentication** tab. Cisco-official servers are automatically configured. Do not enter or replace the authorization endpoint, token endpoint, token authentication method, client ID, scopes, registration endpoint, or custom headers unless Cisco documentation or your organization explicitly instructs you to change the default authentication.
 
-![Add a new code cell with + Code in Colab](img/module-2a-006.png){ loading=lazy }
+![The Authentication tab: Cisco-official servers are configured automatically](img/mcp-13.png){ loading=lazy }
 
 /// caption
-Add a new code cell with + Code in Colab.
+The Authentication tab: Cisco-official servers are configured automatically.
 ///
 
-```py linenums="1"
-!pip install requests
-!pip install langchain==0.3.27 langchain-core==0.3.72 langchain-community==0.3.27 langchain-openai==0.3.28 faiss-cpu
-```
+**What this tab means.** It defines how the MCP server authenticates clients. It is not where students paste their token or client secret. The required WCIT and elicitation steps appear later in this guide, the OAuth Integration method is included there for reference only. For this step, leave the official values unchanged.
 
-For Task 1 we only need:
+##### Step 5: Review tools and their schemas
 
-* **`requests`** to call Webex APIs
-* **`langchain-core`** to create LangChain `Document` objects
+Open the **Tools** tab. This page controls which Webex actions an approved client can discover and request. For this lab, **enable the tools exactly as shown in the image below**: turn on **Allow tool** and **Allow signature change** for **Create Webex Message**, **Edit Webex Message**, **Delete Webex Message**, **Get Webex Messages** and **Create Webex Space**, and leave the rest off. A tool still remains subject to its scope, Collaboration Control Hub policy, and the signed-in user's Webex access.
 
-The other LangChain pieces (LLMs, retrievers, agents) come into play in the next tasks.
-
-![Successful pip install output in the Colab cell](img/module-2a-007.png){ loading=lazy }
+![The Tools tab: Allow tool, Allow signature change and Review for each tool](img/mcp-14.png){ loading=lazy }
 
 /// caption
-Successful pip install output in the Colab cell.
+The Tools tab: Allow tool, Allow signature change and Review for each tool.
 ///
 
-##### Step 6: Load the Webex Token from Colab Secrets { #t2a-step-6 }
+!!! note "Note"
+    You're welcome to explore the other tools and enable any of them to try your own use cases. Just leave **Get Webex Space** and **Search Webex Spaces** off for now: a later step in [Module 4](#module-4) shows what happens when Codex has no tool to find spaces, and you'll turn **Get Webex Space** on there.
 
-In a new code cell, run:
+<div class="glance" markdown>
 
-```py linenums="1"
-import os
-from google.colab import userdata
+| Control | What it does | Lab decision |
+|---|---|---|
+| Allow tool | **On** makes the tool available and discoverable to approved client users. **Off** removes it from the client-side tool list. | Enable only the tools required by the exercise. |
+| Allow signature change | **On** keeps the tool available if its input or output schema changes after authorization and marks the drift for review. **Off** withholds a changed tool until an administrator reviews and reauthorizes it. | Keep **On** for this lab. |
+| Details / Review | Opens the tool description, input schema, output schema, and annotations so the administrator can see what data the tool accepts, returns, or changes. | Review before enabling the tool and again after any reported schema change. |
 
-WEBEX_ACCESS_TOKEN = userdata.get("WEBEX_ACCESS_TOKEN")
+</div>
 
-if WEBEX_ACCESS_TOKEN:
-    print("Webex token loaded successfully.")
-else:
-    print("Webex token not found. Please check your Colab Secrets.")
-```
+#### Webex Messaging tools available
 
-`userdata.get(...)` reads the secret you stored in Step 2 without printing it to the screen. The `if/else` check is a quick sanity test so you don't move on with a missing or misnamed secret.
+The Webex Messaging MCP server currently publishes **24 tools**. Collaboration Control Hub may display friendly names, while the Developer Portal uses the protocol tool names shown below. The tool catalogue describes what the server can offer, attendees can use only the tools that the administrator has allowed and for which their authorization includes the required scope.
 
-**Expected output:**
+<div class="glance tools" markdown>
+
+| Area | Tool | What it does |
+|---|---|---|
+| Messages | `webex-create-message` | Send a message to a space or directly to a person, supports text, markdown, HTML, file URLs, and adaptive cards. |
+| | `webex-edit-message` | Edit an existing message using its message and space IDs, supports text or markdown. |
+| | `webex-delete-message` | Delete a message from a direct or group space. The deletion is irreversible. |
+| | `webex-get-message` | Retrieve one message by ID or list messages in a space with optional filters. |
+| | `webex-search-messages` | Search a space using keywords, dates, mentions, thread parent, or file filters. |
+| Spaces | `webex-create-space` | Create a Webex space with a title and optional team, lock, or announcement settings. |
+| | `webex-get-space` | Retrieve one space or list spaces by type, team, or sort order. |
+| | `webex-update-space` | Change a space title, locked state, or announcement-only setting. |
+| | `webex-delete-space` | Delete a space or remove the caller from it, depending on role. A deleted space cannot be recovered. |
+| | `webex-search-spaces` | Search spaces with type, team, and sort filters. |
+| Memberships | `webex-add-membership` | Add a person to a space by ID or email, with optional moderator privileges. |
+| | `webex-get-membership` | Retrieve one membership or list memberships by space or person. |
+| | `webex-update-membership` | Change membership properties, including moderator role or hidden-space state. |
+| | `webex-remove-membership` | Remove a member from a space using the membership ID. |
+| Webhooks | `webex-create-webhook` | Create a real-time event subscription with optional filters and an HMAC secret. |
+| | `webex-get-webhook` | Retrieve one webhook or list the authenticated user's webhooks. |
+| | `webex-update-webhook` | Change a webhook name, target URL, secret, or active status. |
+| | `webex-delete-webhook` | Delete a webhook subscription using its webhook ID. |
+| Files | `webex-share-file` | Share one or more publicly reachable file URLs through a Webex message. |
+| | `webex-upload-file` | Upload base64-encoded file content to a space with a file name and content type. |
+| | `webex-get-file-details` | Read file metadata such as type, size, and disposition from a message file URL. |
+| | `webex-download-file` | Download message-file content and return it as base64-encoded data. |
+| Threading | `webex-create-thread-reply` | Reply to a parent message using the space ID, parent message ID, and text or markdown. |
+| | `webex-get-thread` | Retrieve the replies associated with a parent message in a space. |
+
+</div>
+
+!!! note "Meetings and other Webex MCP servers"
+    Each server has its own tool catalogue, schemas, prerequisites, and OAuth scopes. The same review method used in this lab applies, but do not assume that the Messaging tool names or scopes apply to another server. For the current Meetings list, see [Webex Meetings MCP server](https://developer.webex.com/mcp/docs/meetings-mcp-server){:target="_blank" rel="noopener"}.
+
+#### What the Review details page shows
+
+Select **Review** beside a tool to inspect the contract that the AI client uses. The example below shows **Create Webex Message**. Always scroll through the complete schema, the screenshot shows only part of the JSON definition.
+
+![Select Review beside a tool on the Tools tab](img/mcp-15.png){ loading=lazy }
+
+/// caption
+Select Review beside a tool on the Tools tab.
+///
+
+![Review details for Create Webex Message: description, input schema and output schema](img/mcp-16.png){ loading=lazy }
+
+/// caption
+Review details for Create Webex Message: description, input schema and output schema.
+///
+
+#### How to review a tool schema
+
+1. **Select Review beside the tool.** Read the description first and identify whether the tool only reads data or can send, edit, delete, or otherwise change Webex content.
+2. **Inspect the input schema.** Note required fields, data types, target identifiers such as a space ID, optional fields, and any request for sensitive or unexpected data.
+3. **Inspect the output schema.** Check what identifiers, message content, file details, or other data can be returned to the AI client.
+4. **Read the annotations** for side-effect and safety hints. Treat tools that send, edit, delete, manage membership, or manage webhooks as higher risk than read-only lookups.
+5. **Choose the Allow tool and Allow signature change settings.** If Collaboration Control Hub reports a schema change, review it and reauthorize the server to establish a new approved baseline, even if the tool was allowed to remain available during the change.
+
+##### Step 6: Validate the administrator configuration
+
+![Webex Messaging allowed, with the lab tools enabled. Select Save](img/mcp-17.png){ loading=lazy }
+
+/// caption
+Webex Messaging allowed, with the lab tools enabled. Select Save.
+///
+
+!!! success "Before continuing"
+    Confirm that Webex Messaging is **allowed for all users**, the automatic server update setting matches the lab policy, the Cisco-official authentication settings remain unchanged, and the tools are enabled. When these checks are complete, select **Save**.
+
+<p class="eyebrow">Module 2 · ≈ 20 min</p>
+
+## Create credentials { #module-2 data-toc-label="Module 2 · Create credentials" data-task="2" }
+
+!!! note "Note"
+    As covered in [How Webex connects AI agents](#how-it-works), MCP in Webex works in two directions:
+
+    - **Outbound:** use Cisco's own **Webex MCP servers** in external AI tools, such as Codex.
+    - **Inbound:** bring **external MCP servers** into Webex AI, for example so the Webex AI Agent in Contact Center can use your company's tools.
+
+    This lab follows the **outbound** direction. You'll connect the **Webex Messaging MCP server**, built and hosted by Cisco, to **Codex**. The credentials you create in this module are for that connection.
+
+Before Codex can call the Webex Messaging MCP server, it needs a credential that Webex can validate. This lab follows **Path A: WCIT with elicitation**. Path B explains an OAuth Integration **for reference only**, students do not need to complete it.
+
+!!! success "Required lab path: WCIT with elicitation"
+    The WCIT starts with the `spark:mcp` scope. When a tool requires another Webex scope, the server asks the user to approve it during the tool call. Codex uses this path throughout the hands-on exercises.
+
+!!! note "Reference only: OAuth 2.0 Integration"
+    A client that does not support elicitation may require a Webex Integration with `spark:mcp`, the scopes required by the selected MCP server, and the exact redirect URI supplied by that client. This workflow is included to explain the alternative approach, it is not required for this lab.
+
+!!! info "Important distinction"
+    Elicitation is not a separate credential type. It is the MCP interaction used to request missing authorization at runtime, the credential used to start this path is the WCIT.
+
+<div class="glance" markdown>
+
+| Client scenario | Credential | Runtime behavior |
+|---|---|---|
+| Hands-on lab: Codex | **WCIT** | Starts with `spark:mcp`, Webex requests additional scopes through elicitation when a tool needs them |
+| Reference only: client without elicitation | OAuth Integration | Uses browser sign-in and consent with the exact redirect URI supplied by that client |
+
+</div>
+
+![Webex MCP supports two authentication methods: token-based (WCIT) and OAuth 2.0](img/mcp-18.png){ loading=lazy }
+
+/// caption
+Webex MCP supports two authentication methods: token-based (WCIT) and OAuth 2.0.
+///
+
+!!! warning "Lab note"
+    Path A is the required hands-on path. Generate a WCIT from the token page shown below, **do not create an Agentic App**.
+
+### Path A · Generate a WCIT (required for this lab) { #m2-path-a data-toc-label="Path A · Generate a WCIT" }
+
+##### Step 1: Open the token page
+
+Sign in to the Webex Developer Portal as **Charles Holland**, using the same credentials from `Session_Info.txt` that you used in [Part 1](../index.md#access). Then open [https://developer.webex.com/agentic-token](https://developer.webex.com/agentic-token){:target="_blank" rel="noopener"}. Select **Generate now**.
+
+![Manage Webex Agentic MCP App token: select Generate now](img/mcp-19.png){ loading=lazy }
+
+/// caption
+Manage Webex Agentic MCP App token: select Generate now.
+///
+
+##### Step 2: Name the token
+
+Enter a recognisable, temporary token name such as **Omer MCP**. Do not include a password or secret in the name. If the optional **MCP server** field is available, select **Webex Messaging** for this lab or leave it unchanged.
+
+![Generate token: enter a token name](img/mcp-20.png){ loading=lazy }
+
+/// caption
+Generate token: enter a token name.
+///
+
+!!! note "Note"
+    Once the token is created in the next step, keep it safe: Webex shows it only once. For convenience, you can paste it into this guide's **Notes** panel (the **NOTES** button in the bottom-right corner) so it's ready when you configure Codex later. Notes are saved only in this browser, so don't use the Notes panel on a shared computer.
+
+##### Step 3: Create and copy the token
+
+Select **Create token**. Copy the token and store it in a password manager or a temporary environment variable. **The token is shown only once.** The WCIT starts with the `spark:mcp` scope, additional tool scopes are requested later through elicitation.
+
+![Token generated successfully. Copy it now, you won't see it again](img/mcp-21.png){ loading=lazy }
+
+/// caption
+Token generated successfully. Copy it now, you won't see it again.
+///
+
+### Path B · Create an OAuth Integration (reference only) { #m2-path-b data-toc-label="Path B · OAuth (reference)" }
+
+<div class="ref-banner" markdown>
+<span class="ref-tag">Optional · reference only</span>
+**You do not need to do this.** Path A (WCIT) is the lab path. Do not create an OAuth Integration unless your instructor specifically asks you to test this alternative method.<br>
+[Skip to the credentials summary →](#m2-summary){ .ref-skip }
+</div>
+
+<div class="reference-only" markdown>
+
+##### Step 1: Start an Integration
+
+Open [https://developer.webex.com/my-apps/new/integration](https://developer.webex.com/my-apps/new/integration){:target="_blank" rel="noopener"} and select **Create an Integration**.
+
+![Create a New App: choose Integration](img/mcp-22.png){ loading=lazy }
+
+/// caption
+Create a New App: choose Integration.
+///
+
+##### Step 2: Complete the Integration details
+
+Complete the following fields:
+
+- **Mobile SDK:** select **No**.
+- **Integration name:** enter a recognisable name such as **Webex MCP Lab**.
+- **Icon:** choose one of the default icons.
+- **App Hub Description:** enter a short description, such as **Webex MCP laboratory client**.
+
+![The New Integration form](img/mcp-23.png){ loading=lazy }
+
+/// caption
+The New Integration form.
+///
+
+##### Step 3: Enter the exact redirect URI
+
+Copy the redirect URI from the OAuth configuration page in the client being reviewed and register it exactly as shown. The Integration and client values must match, including the scheme, host, port, path, and trailing slash. Because this is a reference-only path, do not invent or reuse a redirect URI, use the value supplied by that client.
+
+##### Step 4: Select scopes
+
+For a Messaging OAuth Integration, select `spark:mcp` plus the complete scope set required by the server. To verify the latest scopes, open **Agentic Apps**, choose **Webex Messaging**, and select **Learn More**. The scope lists below are reference information and are not required for the WCIT lab path. Do not add unrelated Webex scopes.
+
+**Messaging scope set**
 
 ```text
-Webex token loaded successfully.
+spark:mcp spark:messages_read spark:messages_write
+spark:rooms_read spark:rooms_write
+spark:memberships_read spark:memberships_write
+spark:webhooks_read spark:webhooks_write
 ```
 
-##### Step 7: Test Webex Authentication { #t2a-step-7 }
-
-Before we start reading messages, let's verify the token actually works by calling a simple endpoint that returns details about *you*.
-
-In a new code cell, run:
-
-```py linenums="1"
-import requests
-
-headers = {
-    "Authorization": f"Bearer {WEBEX_ACCESS_TOKEN}",
-    "Content-Type": "application/json"
-}
-
-response = requests.get(
-    "https://webexapis.com/v1/people/me",
-    headers=headers
-)
-
-print("Status Code:", response.status_code)
-print(response.json())
-```
-
-What's happening here:
-
-* **`headers`** carries your Bearer token in the format Webex expects.
-* **`/v1/people/me`** is a Webex endpoint that returns the user identified by the token.
-* **`response.status_code`** of `200` means the call succeeded.
-
-**Expected output:**
+**Meetings scope set**
 
 ```text
-Status Code: 200
+spark:mcp meeting:schedules_read meeting:schedules_write
+meeting:participants_read meeting:summaries_read
+meeting:recordings_read meeting:transcripts_read
 ```
 
-You'll also see a JSON object with details about the Webex user associated with the token. The example below shows what that JSON looks like for one lab pod (Charles Holland on `cb426.dc-01.com`):
+##### Step 5: Create and protect credentials
 
-```json
-{
-  "id": "Y2lzY29zcGFyazovL3VzL1BFT1BMRS9mZTNkNTQ1MC1hYmExLTRiOTUtOTNmMy1iYzMzYWVjNTNmZWI",
-  "emails": ["cholland@cb426.dc-01.com"],
-  "sipAddresses": [
-    {"type": "cloud-calling", "value": "cholland@cb42601d.calls.webex.com", "primary": true},
-    {"type": "personal-room", "value": "25346128042@cb42601.webex.com", "primary": false},
-    {"type": "personal-room", "value": "cholland@cb42601.webex.com", "primary": false}
-  ],
-  "displayName": "Charles Holland",
-  "nickName": "Charles",
-  "firstName": "Charles",
-  "lastName": "Holland",
-  "orgId": "Y2lzY29zcGFyazovL3VzL09SR0FOSVpBVElPTi9jZjQzOGI4My1hMmY0LTQ0NjktYjUxZi00NGEwMTFmYThkYzU",
-  "created": "2026-05-21T15:49:50.050Z",
-  "status": "active",
-  "type": "person",
-  "siteUrls": ["cb42601.webex.com"]
-}
-```
+Select **Add Integration**. On the next page, copy the **Client ID** and **Client Secret** and store them securely. The Client Secret cannot be viewed again after you leave the page. Do not place either credential in a prompt, screenshot, repository, slide, or shared notes.
 
-!!! info "Your output will look slightly different"
-    The values above are for example only. In your case, the `cb426` part of the email and site URLs will be replaced with **your own dCloud-assigned domain** (for example `cb123`, `cb789`, etc.). The shape of the response will be the same, only the IDs, emails, and domain will change.
+</div>
 
-If you get a `401`, your token is wrong or expired: re-do Step 3.
+### Summary { #m2-summary data-toc-label="Credentials summary" }
 
-##### Step 8: List Your Webex Spaces { #t2a-step-8 }
+**Required lab path: Path A, WCIT and elicitation**
 
-Now retrieve the list of spaces (rooms) your Webex user can see.
+<ol class="flow">
+<li><b>Developer Portal</b><span>Sign in to Webex</span></li>
+<li><b>WCIT page</b><span>Open the agentic-token page</span></li>
+<li><b>Create token</b><span>Name and generate the WCIT</span></li>
+<li><b>Store token</b><span>Copy it once and protect it</span></li>
+</ol>
 
-In a new code cell, run:
+Initial scope: `spark:mcp`. Webex can request additional scopes through elicitation.
 
-```py linenums="1"
-rooms_url = "https://webexapis.com/v1/rooms"
+**Reference only: Path B, OAuth Integration**
 
-params = {
-    "max": 20
-}
+<ol class="flow">
+<li><b>My Apps</b><span>Create an Integration</span></li>
+<li><b>App details</b><span>Set Mobile SDK to No</span></li>
+<li><b>URI and scopes</b><span>Enter the exact URI and select <code>spark:mcp</code></span></li>
+<li><b>Credentials</b><span>Copy the Client ID and Client Secret</span></li>
+</ol>
 
-response = requests.get(
-    rooms_url,
-    headers=headers,
-    params=params
-)
+Redirect URI: the callback registered in Webex must match the AI client exactly.
 
-print("Status Code:", response.status_code)
+!!! success "Validation"
+    **Required lab path:** students have a WCIT stored outside the document. **Reference only:** Path B describes the Client ID, Client Secret, redirect URI, and scope requirements of an OAuth Integration, those credentials are not required for the hands-on exercises.
 
-rooms = response.json().get("items", [])
+<p class="eyebrow">Module 3 · ≈ 10 min · optional</p>
 
-for index, room in enumerate(rooms):
-    print(index, "-", room.get("title"), "-", room.get("id"))
-```
+## Understanding OAuth and elicitation { #module-3 data-toc-label="Module 3 · OAuth & elicitation" data-task="3" }
 
-A few notes:
+This optional reference module explains the two authorization flows. **There is nothing to configure in this module:** you'll connect Codex to Webex Messaging with the WCIT from Module 2, Path A, in [Module 4](#module-4). When a tool needs another Webex scope, WCIT elicitation may still open a Webex OAuth authorization page for consent. Creating your own OAuth Integration, as shown in Path B, remains reference information only.
 
-* **`/v1/rooms`** lists spaces the authenticated user has access to.
-* **`max=20`** asks Webex to return up to 20 rooms in one call.
-* The loop prints an **index**, the **title**, and the **room ID**.
+!!! tip "Authentication vs authorization"
+    **Authentication** proves who is connecting. **Authorization** controls what the connection can do. Effective access is the intersection of Collaboration Control Hub policy, granted scopes, enabled tools, and the signed-in user's existing Webex permissions.
 
-**Example output:**
+### Elicitation with a WCIT { #m3-elicitation data-toc-label="Elicitation with a WCIT" }
 
-```text
-Status Code: 200
-0 - Charles's space - Y2lzY29zcGFyazovL3VybjpURUFNOnVzLXdlc3QtMl9yL1JPT00vMWE2NTIyNDAtNTZkZS0xMWYxLTk1ZWMtZWQ2OGY4MmM4ZjJi
-1 - Omer's - Y2lzY29zcGFyazovL3VzL1JPT00v...
-2 - Anita Perez - Y2lzY29zcGFyazovL3VzL1JPT00v...
-```
+<ol class="flow">
+<li><b>AI client</b><span>Connects using the WCIT</span></li>
+<li><b>Webex MCP</b><span>Detects a missing tool scope</span></li>
+<li><b>Consent</b><span>User reviews and approves the scope</span></li>
+<li><b>Tool call</b><span>Continues with the granted scope</span></li>
+</ol>
 
-Find the space you want to use and copy its room ID for the next step. **For this lab, we will use Charles's Space.**
+1. **Connect.** Codex sends the WCIT and establishes the MCP session with `spark:mcp`.
+2. **Trigger a scoped tool.** A prompt calls a Webex Messaging tool that needs an additional Webex scope.
+3. **Review the request.** Webex returns an elicitation request with an authorization link. Verify the Webex domain, organization, account, and scope before approving.
+4. **Return and retry.** Return to Codex after approval. Retry the same prompt, the tool can now continue with the newly authorized scope.
 
-##### Step 9: Set the Room ID { #t2a-step-9 }
+### OAuth authorization code flow (reference only) { #m3-oauth data-toc-label="OAuth code flow (reference)" }
 
-In a new code cell, paste your selected room ID:
+<ol class="flow">
+<li><b>AI client</b><span>Starts OAuth using the Client ID</span></li>
+<li><b>Webex sign-in</b><span>User signs in and approves scopes</span></li>
+<li><b>Redirect URI</b><span>Receives the authorization code</span></li>
+<li><b>MCP call</b><span>Uses the resulting access token</span></li>
+</ol>
 
-```py linenums="1"
-ROOM_ID = "PASTE-YOUR-WEBEX-ROOM-ID-HERE"
+1. **Start authentication.** The client uses the Integration's Client ID and exact redirect URI to begin sign-in.
+2. **Sign in and consent.** Webex authenticates the user and displays requested permissions. Approve only the expected organization and scopes.
+3. **Complete callback.** Webex returns an authorization code to the registered redirect URI. A mismatch stops the flow.
+4. **Use the access token.** The client exchanges the code and sends the resulting bearer token when it calls the Webex MCP server.
 
-print("Using room ID:", ROOM_ID)
-```
+<p class="eyebrow">Module 4 · ≈ 15 min</p>
 
-!!! warning "Use your own Room ID"
-    Replace `PASTE-YOUR-WEBEX-ROOM-ID-HERE` with the **room ID from your own pod** (the value you copied from the previous step's output, next to **Charles's Space**). Every dCloud pod has a different room ID, so the example below will not work in your notebook.
+## Configure Codex { #module-4 data-toc-label="Module 4 · Configure Codex" data-task="4" }
 
-##### Step 10: Read Recent Messages from the Webex Space { #t2a-step-10 }
+This module uses the WCIT generated and stored securely in Module 2, Path A. This is the required hands-on path, you do not need OAuth Integration credentials. Generating the WCIT was Step 1, so continue here with Step 2. Codex supports MCP elicitation, which allows tools to request additional Webex scopes at runtime.
 
-Now retrieve recent messages from the selected space.
+!!! warning "Before you start"
+    In Collaboration Control Hub, confirm that **Webex Messaging** is allowed for all users and that the Messaging tools required for this lab are enabled. If the server or a required tool is disabled, Codex cannot use it even when the local configuration is correct.
 
-In a new code cell, run:
+### Step 2 · Add the Webex Messaging MCP server { #m4-add data-toc-label="Add the MCP server" }
 
-```py linenums="1"
-messages_url = "https://webexapis.com/v1/messages"
+Codex provides two ways to add the Webex Messaging MCP server. **Choose one option only**: both methods update the same Codex configuration, so you do not need to complete both.
 
-params = {
-    "roomId": ROOM_ID,
-    "max": 20
-}
+=== "Option 1 · Edit config.toml manually"
 
-response = requests.get(
-    messages_url,
-    headers=headers,
-    params=params
-)
+    Open or create the user-level Codex configuration file for your platform. Replace `<username>` with your own username.
 
-print("Status Code:", response.status_code)
+    <div class="glance" markdown>
 
-data = response.json()
-messages = data.get("items", [])
+    | Platform | Configuration file | Open in a text editor |
+    |---|---|---|
+    | macOS | `/Users/<username>/.codex/config.toml` (lab example: `/Users/omer/.codex/config.toml`) | `open -e ~/.codex/config.toml` |
+    | Windows | `C:\Users\<username>\.codex\config.toml` | `notepad "$env:USERPROFILE\.codex\config.toml"` |
 
-print("Messages retrieved:", len(messages))
-```
+    </div>
 
-The Webex **List Messages** API retrieves messages from a room using the `roomId` query parameter. `max=20` keeps the lab fast: feel free to increase later.
+    Add the Webex Messaging server block below. Replace `YOUR_WCIT_TOKEN_FROM_PATH_A` with the WCIT you saved in Module 2. Keep the `Bearer` prefix and save the file.
 
-**Expected output:**
-
-```text
-Status Code: 200
-Messages retrieved: 20
-```
-
-If you see `Messages retrieved: 0`, post a few messages in your Webex space and run this cell again.
-
-##### Step 11: Inspect the Raw Message Data { #t2a-step-11 }
-
-Let's look at one message so you can see the shape of the data the API returns.
-
-In a new code cell, run:
-
-```py linenums="1"
-messages[0]
-```
-
-You should see a JSON object similar to:
-
-```json
-{
-    "id": "Y2lzY29zcGFyazovL3VzL01FU1NBR0Uv...",
-    "roomId": "Y2lzY29zcGFyazovL3VzL1JPT00v...",
-    "roomType": "group",
-    "text": "The main action item is to build a simple AMA experience.",
-    "personId": "Y2lzY29zcGFyazovL3VzL1BFT1BMRS8...",
-    "personEmail": "user@example.com",
-    "created": "2026-05-23T10:00:00.000Z"
-}
-```
-
-This matters because it shows the type of data an AI assistant can use:
-
-* **message text** (what was said)
-* **sender** (who said it)
-* **timestamp** (when)
-* **room ID** and **message ID** (for citations later)
-
-In later tasks, we'll use this information to generate summaries, answer questions, and even cite the original messages back to the user.
-
-##### Step 12: Display Messages in a Cleaner Format { #t2a-step-12 }
-
-Raw JSON is hard to read. Let's print the messages in a more human-friendly format.
-
-In a new code cell, run:
-
-```py linenums="1"
-for message in messages:
-    sender = message.get("personEmail", "Unknown sender")
-    created = message.get("created", "Unknown time")
-    text = message.get("text", "")
-
-    if text:
-        print(f"[{created}] {sender}: {text}")
-        print("-" * 80)
-```
-
-The `if text:` check skips messages with no text body (file shares, reactions, system events).
-
-**Example output:**
-
-```text
-[2026-05-23T10:00:00.000Z] anita@example.com: Can someone confirm who owns the Webex API part?
---------------------------------------------------------------------------------
-[2026-05-23T10:02:00.000Z] charles@example.com: I will test the Google Colab notebook today.
---------------------------------------------------------------------------------
-```
-
-At this point, you've successfully connected to Webex and retrieved messaging data.
-
-##### Step 13: Convert Webex Messages into LangChain Documents { #t2a-step-13 }
-
-LangChain works with a common object called a **`Document`**. A `Document` has two parts:
-
-* **`page_content`**: the main text the AI will read.
-* **`metadata`**: any extra info about where the text came from.
-
-For Webex messages, the mapping is straightforward:
-
-* `page_content` = Webex message text
-* `metadata` = sender, timestamp, message ID, room ID
-
-In a new code cell, run:
-
-```py linenums="1"
-from langchain_core.documents import Document
-
-webex_documents = []
-
-for message in messages:
-    text = message.get("text")
-
-    if text:
-        doc = Document(
-            page_content=text,
-            metadata={
-                "message_id": message.get("id"),
-                "room_id": message.get("roomId"),
-                "sender": message.get("personEmail"),
-                "created": message.get("created")
-            }
-        )
-
-        webex_documents.append(doc)
-
-print("LangChain documents created:", len(webex_documents))
-```
-
-**Expected output:**
-
-```text
-LangChain documents created: 20
-```
-
-##### Step 14: Inspect a LangChain Document { #t2a-step-14 }
-
-In a new code cell, run:
-
-```py linenums="1"
-webex_documents[0]
-```
-
-You should see something like:
-
-```text
-Document(
-    page_content='The main action item is to build a simple AMA experience.',
-    metadata={
-        'message_id': 'Y2lzY29...',
-        'room_id': 'Y2lzY29...',
-        'sender': 'user@example.com',
-        'created': '2026-05-23T10:00:00.000Z'
-    }
-)
-```
-
-!!! success "This is the moment Webex data becomes AI-ready"
-    The raw Webex messages are now structured in a format LangChain can use for:
-
-    * **RAG** (retrieval-augmented generation)
-    * **summarization**
-    * **message rewriting**
-    * **agent tools**
-    * future **UI** experiences
-
-##### Step 15: Quick Validation { #t2a-step-15 }
-
-A short final check to confirm everything is wired up correctly.
-
-In a new code cell, run:
-
-```py linenums="1"
-print("First message content:")
-print(webex_documents[0].page_content)
-
-print("\nMessage metadata:")
-print(webex_documents[0].metadata)
-```
-
-**Expected output:**
-
-```text
-First message content:
-The main action item is to build a simple AMA experience.
-
-Message metadata:
-{
-  'message_id': '...',
-  'room_id': '...',
-  'sender': 'user@example.com',
-  'created': '2026-05-23T10:00:00.000Z'
-}
-```
-
-#### Summary
-
-In this task, we connected Google Colab to Webex Messaging using the Webex APIs.
-
-We:
-
-* retrieved a Webex access token
-* stored it securely in Google Colab Secrets
-* tested authentication using `/people/me`
-* listed Webex spaces
-* selected a Webex room ID
-* retrieved recent messages from that space
-* inspected raw message JSON
-* converted Webex messages into LangChain Documents
-
-This is the **first building block** of our AI messaging system. The key idea is simple:
-
-* **Webex** provides the conversation data.
-* **LangChain** gives us the framework to transform that data into intelligent AI workflows.
-
-<p class="eyebrow sub">Module 2b · Task 2 · ≈ 30 min</p>
-
-### Ask Me Anything for Webex Spaces { #module-2b data-toc-label="2b · Ask Me Anything (RAG)" data-task="2b" }
-
-
-<p class="lede">Build a Retrieval-Augmented Question Answering experience over your Webex space.</p>
-
-#### Goal
-
-In [Task 1](#module-2a) we connected to Webex Messaging, retrieved recent messages from a Webex space, and converted those messages into LangChain Documents.
-
-Now we are going to take the next step. Instead of only displaying raw messages, we will build a simple **Ask Me Anything** experience, where a user can ask natural language questions about the conversation in their space.
-
-For example:
-
-* What was discussed in this space?
-* What are the action items?
-* Did anyone mention Cisco Live?
-* Who is responsible for testing the lab?
-
-This is similar to the native **Cisco AI Assistant** experience, where users can ask questions about recent activity in a space. The goal here is not to replace Cisco AI Assistant. The goal is to understand the building blocks behind this type of experience, so you can apply the same pattern to your own data later.
-
-We will do this using **RAG** (Retrieval-Augmented Generation): pull only the most relevant Webex messages, hand them to the LLM as context, and let the LLM answer the question using that context instead of its own memory.
-
-#### What you will learn
-
-By the end of this task, you will understand:
-
-* what **Retrieval-Augmented Generation**, or **RAG**, means
-* why raw messages need to be prepared before sending to an LLM
-* how to split Webex messages and create **embeddings**
-* how to store Webex messages in a **vector database**
-* how to retrieve relevant messages based on a user question
-* how to ask an LLM to answer **only** from Webex message context
-
-!!! info "Already covered in earlier tasks"
-    * Webex token, Space ID, and Colab Secrets: see [1a](#module-1a) and [1c](#module-1c).
-    * Calling the Webex Messages API and converting results into LangChain `Document` objects: see [2a](#module-2a).
-
-#### Prerequisites
-
-!!! danger "Stop: you must complete Task 1 in the same notebook first"
-    **Task 2 cannot be run on its own.** It builds directly on the work you did in [Task 1 (2a)](#module-2a), and it relies on the `webex_documents` variable that Task 1 created in memory.
-
-    Before you continue, make sure all of the following are true:
-
-    * You completed every step of [Task 1](#module-2a).
-    * You are working in the **same Google Colab notebook** you used for Task 1.
-    * The notebook runtime is still connected (the **Connect** indicator in the top-right shows a green check). If the runtime disconnected or you reopened the notebook in a new session, **re-run all of the Task 1 cells from top to bottom** before starting Task 2.
-
-    You can confirm everything is in place by running this in a new code cell:
-
-    ```py linenums="1"
-    print("webex_documents loaded:", len(webex_documents), "messages")
+    ```toml title="config.toml"
+    [mcp_servers.webex-messaging]
+    enabled = true
+    url = "https://mcp.webexapis.com/mcp/webex-messaging"
+    http_headers = { "Authorization" = "Bearer YOUR_WCIT_TOKEN_FROM_PATH_A" }
     ```
 
-    If you see a `NameError: name 'webex_documents' is not defined` instead of a number, go back and re-run Task 1 first.
+    !!! warning "Important"
+        Replace `YOUR_WCIT_TOKEN_FROM_PATH_A` with the WCIT saved in Module 2. Keep the word `Bearer` followed by one space.
 
-The only new thing Task 2 introduces is the **OpenAI API key**, which you already stored as `OPENAI_API_KEY` in [Module 1c](#module-1c).
+    !!! danger "Security note"
+        This method stores the WCIT in plain text inside `config.toml`.
 
-![OPENAI_API_KEY stored in Colab Secrets with Notebook access enabled](img/module-2b-001.png){ loading=lazy }
+=== "Option 2 · Add the MCP server in Codex Settings"
+
+    1. **Open the MCP settings.** In Codex Desktop, open **Settings**, select **Plugins**, and then select the **MCPs** tab.
+    2. **Start adding the server.** Select **Add**, then select **Add MCP server**.
+
+        ![Codex Settings > Plugins > MCPs > Add > Add MCP server](img/mcp-24.png){ loading=lazy }
+
+        /// caption
+        Codex Settings > Plugins > MCPs > Add > Add MCP server.
+        ///
+
+    3. **Enter the connection details.** Use the following values:
+        - **Name:** `webex-messaging`
+        - **Server type:** Streamable HTTP
+        - **URL:** `https://mcp.webexapis.com/mcp/webex-messaging`
+        - **Bearer token env var:** leave blank for this lab method.
+        - **Header key:** `Authorization`
+        - **Header value:** `Bearer YOUR_WCIT_TOKEN_FROM_PATH_A`
+
+        !!! warning "Important"
+            Replace `YOUR_WCIT_TOKEN_FROM_PATH_A` with the WCIT saved in Module 2. Keep the word `Bearer` followed by one space.
+
+        ![The Codex MCP server form with the Webex Messaging URL and Authorization header](img/mcp-25.png){ loading=lazy }
+
+        /// caption
+        The Codex MCP server form with the Webex Messaging URL and Authorization header.
+        ///
+
+    4. **Save and confirm.** Select **Save**, return to the MCPs list, and confirm that the Webex Messaging server is present and enabled.
+
+        ![The Codex MCP server list with Webex Messaging enabled. Your list may contain different entries](img/mcp-26.png){ loading=lazy }
+
+        /// caption
+        The Codex MCP server list with Webex Messaging enabled. Your list may contain different entries.
+        ///
+
+    !!! danger "Security note for the Settings option"
+        The static Authorization header is stored in your local Codex configuration. Use only the temporary lab WCIT, do not include it in screenshots or submitted work, and remove or revoke it after the lab.
+
+### Step 3 · Restart Codex { #m4-restart data-toc-label="Restart Codex" }
+
+After completing either option, restart the Codex app, or fully quit and reopen Codex. This reloads the local MCP configuration.
+
+### Step 4 · Verify discovery { #m4-verify data-toc-label="Verify discovery" }
+
+Confirm that `webex-messaging` is enabled and available. In Codex, run the command below:
+
+```bash
+codex mcp list
+```
+
+![codex mcp list shows the Webex Messaging server enabled with a bearer token](img/mcp-27.png){ loading=lazy }
 
 /// caption
-OPENAI_API_KEY stored in Colab Secrets with Notebook access enabled.
+codex mcp list shows the Webex Messaging server enabled with a bearer token.
 ///
 
-Everything else (your Webex token, the Charles's Space room ID, the Colab notebook itself) was set up during Task 1 and is reused here.
-
-#### Steps
-
-!!! warning "Quick check before you start"
-    A reminder before you run the first cell:
-
-    * You are working in the **same Google Colab notebook** you used for [Task 1](#module-2a).
-    * The notebook **runtime is connected** (the **Connect** indicator in the top-right shows a green check).
-    * Task 1 has been **run end-to-end**, so the variable `webex_documents` already exists in this notebook's memory.
-
-    If any of those are not true, scroll back up and finish [Task 1](#module-2a) first. Task 2 will not work without it.
-
-##### Step 1: Confirm `webex_documents` is available { #t2b-step-1 }
-
-Before we add any new code, let's make sure the messages we collected in Task 1 are still loaded in this notebook.
-
-In a new code cell, run:
-
-![Add a new code cell with + Code in Colab](img/module-2a-006.png){ loading=lazy }
-
-/// caption
-Add a new code cell with + Code in Colab.
-///
-
-```py linenums="1"
-webex_documents
-```
-
-You should see a Python list of `Document` objects, one per Webex message, each with `page_content` (the message text) and `metadata` (sender, timestamp, message ID, room ID). This is the data Task 2 will use as the knowledge base for our Ask Me Anything experience.
-
-!!! danger "If you see `NameError: name 'webex_documents' is not defined`"
-    The variable does not exist in this notebook's memory, which means **Task 1 has not been run** in this session. Go back to [Task 1 (2a)](#module-2a) and run every cell from the top before continuing.
-
-##### Step 2: Install the required libraries { #t2b-step-2 }
-
-Task 1 only needed `requests` and `langchain-core`. Task 2 introduces the LLM, embeddings, and a vector store, so we need a few more packages.
-
-If you already installed the LangChain packages back in Task 1 (Step 5), you do not need to install them again. Skip ahead to Step 3 of this task.
-
-In a new code cell, run:
-
-```py linenums="1"
-!pip install langchain==0.3.27 langchain-core==0.3.72 langchain-community==0.3.27 langchain-openai==0.3.28 faiss-cpu
-```
-
-When the install finishes, Colab will print a few **dependency warning** messages near the end of the output. These are safe to ignore for this lab.
-
-You will also see a banner at the bottom asking you to **restart the runtime** so the newly installed packages are picked up. Click **Restart session** (or **Restart runtime**) when prompted.
-
-![Colab prompt to restart the runtime after installing the LangChain packages](img/module-2b-002.png){ loading=lazy }
-
-/// caption
-Colab prompt to restart the runtime after installing the LangChain packages.
-///
-
-After the restart, make sure the runtime reconnects (the **Connect** indicator in the top-right shows a green check) before you continue.
-
-What we are installing and why:
-
-* **`langchain`** for chains and retrieval workflows
-* **`langchain-openai`** for OpenAI chat models and embeddings
-* **`faiss-cpu`** for local vector search inside Google Colab
-
-!!! note "Why pin the versions?"
-    For a lab environment, pinning each package to a specific version helps avoid surprises during the session. If LangChain releases a new version mid-lab and changes an API, your code keeps working because you're locked to a version we've already tested.
-
-##### Step 3: Load your OpenAI API key from Colab Secrets { #t2b-step-3 }
-
-In Task 1 we loaded the Webex token from Colab Secrets. We will do the same thing for the OpenAI API key here, except this time we also expose it as an **environment variable** called `OPENAI_API_KEY`. LangChain and the OpenAI client both read that variable automatically, so once it is set, we don't have to pass the key around in our code.
-
-In a new code cell, run:
-
-```py linenums="1"
-import os
-from google.colab import userdata
-
-os.environ["OPENAI_API_KEY"] = userdata.get("OPENAI_API_KEY")
-
-if os.environ["OPENAI_API_KEY"]:
-    print("OpenAI API key loaded successfully.")
-else:
-    print("OpenAI API key not found. Please check your Colab Secrets.")
-```
-
-What's happening here:
-
-* **`userdata.get("OPENAI_API_KEY")`** reads the secret you saved in [Module 1c](#module-1c) without printing it on screen.
-* **`os.environ["OPENAI_API_KEY"] = ...`** stores the key as an environment variable so that any LangChain or OpenAI call in this notebook can find it.
-* The `if/else` is just a quick sanity check.
-
-**Expected output:**
-
-```text
-OpenAI API key loaded successfully.
-```
-
-If you see `OpenAI API key not found. Please check your Colab Secrets.` instead, jump back to [Module 1c](#module-1c), confirm the secret name is exactly `OPENAI_API_KEY`, and make sure the **Notebook access** toggle is on for it.
-
-##### Step 4: Review the Webex documents from Task 1 { #t2b-step-4 }
-
-Before we start creating embeddings, let's take a quick look at the documents we are about to feed into the vector store. This is a sanity check, and it also makes the next steps easier to reason about.
-
-In a new code cell, run:
-
-```py linenums="1"
-print("Number of Webex documents:", len(webex_documents))
-print()
-print("First document:")
-print(webex_documents[0])
-```
-
-What's happening here:
-
-* **`len(webex_documents)`** prints how many Webex messages were converted into LangChain `Document` objects in Task 1.
-* **`webex_documents[0]`** shows the first one in detail, so you can see both the message text (`page_content`) and the metadata we attached (sender, timestamp, message ID, room ID).
-
-**Example output:**
-
-```text
-Number of Webex documents: 1
-
-First document:
-page_content='Hi team, we need to prepare the Cisco Live LangChain demo.
-Can someone confirm who owns the Webex API part?
-I will test the Google Colab notebook today.
-The main action item is to build a simple AMA experience.' metadata={'message_id': 'Y2lzY29zcGFyazovL3VybjpURUFNOnVzLXdlc3QtMl9yL01FU1NBR0UvMThkMWJiOTAtNTZkZi0xMWYxLTg1N2EtYTU5MGFhNDQzZWVk', 'room_id': 'Y2lzY29zcGFyazovL3VybjpURUFNOnVzLXdlc3QtMl9yL1JPT00vMWE2NTIyNDAtNTZkZS0xMWYxLTk1ZWMtZWQ2OGY4MmM4ZjJi', 'sender': 'cholland@cb426.dc-01.com', 'created': '2026-05-23T19:39:21.929Z'}
-```
-
-This confirms that our Webex messages are now in a format LangChain can process.
-
-!!! note "Your output will be different"
-    The example above shows **`Number of Webex documents: 1`** because that pod only had a single message in the space at the time. In your case, the count will match how many text messages exist in **Charles's Space** when you ran Task 1, so you may see `2`, `5`, `20`, or any other number. The IDs, the sender email, and the timestamps will also be specific to your dCloud pod.
-
-##### Step 5: Split the Webex messages into chunks { #t2b-step-5 }
-
-In most RAG systems, documents are split into smaller pieces before they are embedded. Each Webex message may already be small, but chunking is still worth doing because:
-
-* some messages may be long
-* future spaces may contain long pasted content (logs, code blocks, articles)
-* chunking makes retrieval more consistent
-* a small **overlap** between chunks helps preserve context across boundaries
-
-In a new code cell, run:
-
-```py linenums="1"
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=500,
-    chunk_overlap=100
-)
-
-message_chunks = text_splitter.split_documents(webex_documents)
-
-print("Original documents:", len(webex_documents))
-print("Message chunks:", len(message_chunks))
-```
-
-What's happening here:
-
-* **`RecursiveCharacterTextSplitter`** breaks each document into pieces of at most **`chunk_size=500`** characters, preferring natural splits (paragraphs, sentences, then words) before forcing a hard cut.
-* **`chunk_overlap=100`** copies the last 100 characters of each chunk into the start of the next one, so an idea split across two chunks is still readable on either side.
-* **`split_documents(webex_documents)`** runs that on every Webex `Document` we built in Task 1 and returns a flat list of chunks.
-
-**Expected output:**
-
-```text
-Original documents: 1
-Message chunks: 1
-```
-
-##### Step 6: Inspect a chunk { #t2b-step-6 }
-
-Now that we have a list of chunks, let's open one up and see what it actually looks like. This is the same shape of object we saw in Step 4, just narrower in size after the splitter ran.
-
-In a new code cell, run:
-
-```py linenums="1"
-message_chunks[0]
-```
-
-You should see a LangChain `Document` with:
-
-* **`page_content`**, the chunk text
-* **`metadata`**, carried over from the original Webex message (sender, timestamp, message ID, room ID)
-
-![A single LangChain Document chunk shown in Colab, with page_content and metadata fields](img/module-2b-003.png){ loading=lazy }
-
-/// caption
-A single LangChain Document chunk shown in Colab, with page_content and metadata fields.
-///
-
-##### Step 7: Create the embedding model { #t2b-step-7 }
-
-Embeddings convert text into numerical **vectors**. Each chunk becomes a list of numbers that represents the *meaning* of the text, not the exact words. Two pieces of text with similar meaning end up with similar vectors, even if they share no words in common. That is what lets semantic search find a relevant Webex message when the user's question is phrased completely differently.
-
-We are not embedding any text yet, just creating the embedding model object. We'll use it in the next step.
-
-In a new code cell, run:
-
-```py linenums="1"
-from langchain_openai import OpenAIEmbeddings
-
-embeddings = OpenAIEmbeddings(model="text-embedding-3-small")
-
-print("Embedding model ready.")
-```
-
-What's happening here:
-
-* **`OpenAIEmbeddings`** is the LangChain wrapper around OpenAI's embedding API. It uses the `OPENAI_API_KEY` environment variable we set in [Step 3](#t2b-step-3) automatically.
-* **`text-embedding-3-small`** is a great default for lab work and small datasets like Webex spaces.
-
-**Expected output:**
-
-```text
-Embedding model ready.
-```
-
-##### Step 8: Store the Webex messages in a FAISS vector database { #t2b-step-8 }
-
-Now we put the embedding model to work. We will run every Webex message chunk through the model, get back a vector for each one, and store all of those vectors in a local **FAISS** vector database. From that point on, we can ask "find me the chunks that are closest in meaning to this question" and FAISS will give us the best matches in milliseconds.
-
-In a new code cell, run:
-
-```py linenums="1"
-from langchain_community.vectorstores import FAISS
-
-vectorstore = FAISS.from_documents(
-    documents=message_chunks,
-    embedding=embeddings
-)
-
-print("FAISS vector database created successfully.")
-```
-
-What's happening here:
-
-* **`FAISS.from_documents(...)`** takes our list of `message_chunks` from [Step 5](#t2b-step-5), runs each chunk through the embedding model from [Step 7](#t2b-step-7), and stores the resulting vectors in a local FAISS index.
-* **`vectorstore`** is the in-memory database. It lives only in this Colab session, so we don't have to manage any external service.
-
-**Expected output:**
-
-```text
-FAISS vector database created successfully.
-```
-
-At this stage, the Webex messages are now searchable by **meaning**, not just by keyword. That's the foundation for the Ask Me Anything experience.
-
-##### Step 9: Test similarity search { #t2b-step-9 }
-
-Before we bring an LLM into the picture, let's test retrieval directly against the vector store. This is a great way to see what the AMA experience will *see* before it asks the model to write an answer.
-
-In a new code cell, run:
-
-```py linenums="1"
-query = "What are the action items?"
-
-results = vectorstore.similarity_search(query, k=3)
-
-for index, result in enumerate(results, start=1):
-    print(f"Result {index}")
-    print("Message:", result.page_content)
-    print("Metadata:", result.metadata)
-    print("-" * 80)
-```
-
-What's happening here:
-
-* **`query`** is a natural-language question, the same kind of thing a user would type into the AMA UI.
-* **`vectorstore.similarity_search(query, k=3)`** embeds the question, compares it against every chunk in FAISS, and returns the **top 3** closest matches.
-* The `for` loop just prints each match nicely with its message text and metadata.
-
-**Expected output:**
-
-```text
-Result 1
-Message: Hi team, we need to prepare the Cisco Live LangChain demo.
-Can someone confirm who owns the Webex API part?
-I will test the Google Colab notebook today.
-The main action item is to build a simple AMA experience.
-Metadata: {'message_id': 'Y2lzY29zcGFyazovL3VybjpURUFNOnVzLXdlc3QtMl9yL01FU1NBR0UvMThkMWJiOTAtNTZkZi0xMWYxLTg1N2EtYTU5MGFhNDQzZWVk', 'room_id': 'Y2lzY29zcGFyazovL3VybjpURUFNOnVzLXdlc3QtMl9yL1JPT00vMWE2NTIyNDAtNTZkZS0xMWYxLTk1ZWMtZWQ2OGY4MmM4ZjJi', 'sender': 'cholland@cb426.dc-01.com', 'created': '2026-05-23T19:39:21.929Z'}
---------------------------------------------------------------------------------
-```
-
-!!! info "The model has not answered yet"
-    At this point we are **only retrieving the most relevant Webex messages**. No LLM has been called, and no answer has been generated. The query just helps FAISS pull the chunks that are closest in meaning to the question. We'll hand those chunks to the LLM in the next step so it can write the actual answer.
-
-##### Step 10: Create a retriever { #t2b-step-10 }
-
-A **retriever** is the LangChain interface that searches the vector database. In Step 9 we called `similarity_search` directly. The retriever wraps that same idea in a standard object that the rest of LangChain (chains, agents, RAG pipelines) knows how to plug into.
-
-In a new code cell, run:
-
-```py linenums="1"
-retriever = vectorstore.as_retriever(
-    search_kwargs={"k": 5}
-)
-
-print("Retriever ready.")
-```
-
-What's happening here:
-
-* **`vectorstore.as_retriever(...)`** turns our FAISS index from [Step 8](#t2b-step-8) into a retriever object.
-* **`search_kwargs={"k": 5}`** tells the retriever to fetch the top **5** most relevant Webex message chunks every time a question is asked. We bumped this from `k=3` (used in the manual search) to give the LLM a bit more context to work with.
-
-**Expected output:**
-
-```text
-Retriever ready.
-```
-
-From here on, every time a user asks a question, LangChain will hand the question to this retriever, get back the top 5 most relevant Webex message chunks, and pass them to the LLM as context.
-
-##### Step 11: Create the LLM { #t2b-step-11 }
-
-We have data, we have a way to find the right pieces of it, and now we need the brain that will read those pieces and write the answer. That's the **chat model**, also called the **LLM**.
-
-In a new code cell, run:
-
-```py linenums="1"
-from langchain_openai import ChatOpenAI
-
-llm = ChatOpenAI(
-    model="gpt-4o",
-    temperature=0
-)
-
-print("LLM ready.")
-```
-
-!!! note "GPT-4o is used for demo purposes only"
-    OpenAI officially retired GPT-4o from ChatGPT on February 13, 2026. We use it in this lab for demo purposes only. For your own projects, switch the `model` value to one of OpenAI's current models.
-
-What's happening here:
-
-* **`ChatOpenAI`** is the LangChain wrapper around OpenAI's chat models. It uses the `OPENAI_API_KEY` environment variable we set in [Step 3](#t2b-step-3) automatically.
-* **`model="gpt-4o"`** picks the GPT-4o chat model.
-* **`temperature=0`** makes the answer more consistent and predictable. Higher temperatures make the model more creative, but in a Q&A scenario over real Webex messages, we want it to stick closely to the facts in front of it.
-
-**Expected output:**
-
-```text
-LLM ready.
-```
-
-##### Step 12: Create the RAG prompt { #t2b-step-12 }
-
-Now we tell the model **how to behave** when it answers. The retriever will hand it the most relevant Webex messages, and we want the model to answer only from those messages, not from anything it learned during training. The way we do that in LangChain is with a **prompt template**.
-
-In a new code cell, run:
-
-```py linenums="1"
-from langchain_core.prompts import ChatPromptTemplate
-
-rag_prompt = ChatPromptTemplate.from_template("""
-You are a helpful Webex messaging assistant.
-
-Answer the user's question using only the Webex message context provided below.
-
-If the answer is not available in the context, say:
-"I could not find that in the recent Webex messages."
-
-Do not make up information.
-
-Webex message context:
-<context>
-{context}
-</context>
-
-User question:
-{input}
-""")
-
-print("RAG prompt created.")
-```
-
-What's happening here:
-
-* **`ChatPromptTemplate.from_template(...)`** builds a reusable prompt with two placeholders: `{context}` for the Webex messages the retriever finds, and `{input}` for the user's question.
-* The instructions in the prompt are doing the heavy lifting. We are explicitly telling the model:
-    * use the provided Webex messages **only**
-    * do not guess
-    * say when it does not know
-
-This is what stops the model from drifting off into general knowledge or inventing facts about your space.
-
-**Expected output:**
-
-```text
-RAG prompt created.
-```
-
-##### Step 13: Create the document chain { #t2b-step-13 }
-
-The **document chain** takes the Webex message chunks the retriever finds and inserts them into the `{context}` placeholder of the prompt we just built. In other words, it's the piece that hands the right messages to the LLM in the right shape.
-
-In a new code cell, run:
-
-```py linenums="1"
-from langchain.chains.combine_documents import create_stuff_documents_chain
-
-document_chain = create_stuff_documents_chain(
-    llm=llm,
-    prompt=rag_prompt
-)
-
-print("Document chain created.")
-```
-
-What's happening here:
-
-* **`create_stuff_documents_chain`** is LangChain's built-in helper for the simplest combine-documents pattern: take all the retrieved chunks and **stuff** them straight into the prompt's `{context}` placeholder.
-* It takes two pieces we already built: the **`llm`** from [Step 11](#t2b-step-11) and the **`rag_prompt`** from [Step 12](#t2b-step-12).
-
-**Expected output:**
-
-```text
-Document chain created.
-```
-
-##### Step 14: Create the retrieval chain { #t2b-step-14 }
-
-The document chain knows how to put messages into a prompt and call the LLM, but it doesn't know how to *find* those messages. That's the retriever's job. The **retrieval chain** is the piece that connects them: take a user question, hand it to the retriever, then hand the retrieved messages to the document chain.
-
-In a new code cell, run:
-
-```py linenums="1"
-from langchain.chains import create_retrieval_chain
-
-retrieval_chain = create_retrieval_chain(
-    retriever,
-    document_chain
-)
-
-print("Retrieval chain created.")
-```
-
-What's happening here:
-
-* **`create_retrieval_chain`** wires the **`retriever`** from [Step 10](#t2b-step-10) together with the **`document_chain`** from [Step 13](#t2b-step-13).
-* The result is `retrieval_chain`, a single object that handles the **complete RAG workflow** end to end: take the question, fetch the top relevant Webex messages, build the prompt, call the LLM, return the answer.
-
-**Expected output:**
-
-```text
-Retrieval chain created.
-```
-
-##### Step 15: Ask a question about the Webex space { #t2b-step-15 }
-
-This is the moment everything we've built so far comes together. We will hand a natural-language question to the retrieval chain, and it will run the **complete RAG pipeline** for us: fetch the most relevant Webex messages, drop them into the prompt, call the LLM, and return the answer.
-
-In a new code cell, run:
-
-```py linenums="1"
-question = "What are the main action items from this space?"
-
-response = retrieval_chain.invoke({
-    "input": question
-})
-
-print(response["answer"])
-```
-
-What's happening here:
-
-* **`retrieval_chain.invoke({"input": question})`** kicks off the whole RAG workflow. Behind the scenes, the retriever pulls the top 5 closest chunks for that question, the document chain stuffs them into the prompt template, and the LLM generates the answer.
-
-##### Step 16: Ask more questions { #t2b-step-16 }
-
-One question is fine, but the real test is asking the assistant a few different things and seeing how well the answers stay grounded in your Webex messages. Some of these will have a clear answer in the space, others will not, and the prompt we wrote in [Step 12](#t2b-step-12) is what tells the model how to handle both cases.
-
-In a new code cell, run:
-
-```py linenums="1"
-questions = [
-    "What was discussed in this space?",
-    "Who is responsible for testing?",
-    "Was Cisco Live mentioned?",
-    "What decisions were made?",
-    "Are there any blockers?"
-]
-
-for question in questions:
-    print("Question:", question)
-
-    response = retrieval_chain.invoke({
-        "input": question
-    })
-
-    print("Answer:", response["answer"])
-    print("-" * 80)
-```
-
-For questions that the messages can support, you should get a focused, factual answer. For questions the messages do not cover, the model should fall back to the line we baked into the prompt: *"I could not find that in the recent Webex messages."*
-
-![AMA running over the Webex space, with the model answering the questions that have context and falling back to "I could not find that in the recent Webex messages." for the rest](img/module-2b-004.png){ loading=lazy }
-
-/// caption
-AMA running over the Webex space, with the model answering the questions that have context and falling back to "I could not find that in the recent Webex messages." for the rest.
-///
-
-##### Step 17: Create a simple reusable function { #t2b-step-17 }
-
-Let's tidy things up by wrapping the whole workflow in a small Python function.
-
-In a new code cell, run:
-
-```py linenums="1"
-def ask_webex_space(question):
-    response = retrieval_chain.invoke({
-        "input": question
-    })
-
-    answer = response["answer"]
-
-    source_docs = retriever.invoke(question)
-
-    print("Question:")
-    print(question)
-
-    print("\nAnswer:")
-    print(answer)
-
-    print("\nSources:")
-    for index, doc in enumerate(source_docs, start=1):
-        print(f"{index}. {doc.metadata.get('sender')} at {doc.metadata.get('created')}")
-        print(f"   {doc.page_content}")
-```
-
-What's happening here:
-
-* The function takes a single `question` string and runs the full RAG pipeline with **`retrieval_chain.invoke(...)`**, just like before.
-
-Now let's test it. In a new code cell, run:
-
-```py linenums="1"
-ask_webex_space("What are the key points from this conversation?")
-```
-
-You'll see the question, the model's answer, and a numbered list of source Webex messages with the sender and timestamp for each one.
-
-##### Step 18 (optional): Add a user input box in Colab { #t2b-step-18 }
-
-For a more interactive experience inside Colab, you can ask the question through an input box instead of editing the code each time.
-
-In a new code cell, run:
-
-```py linenums="1"
-user_question = input("Ask a question about your Webex space: ")
-
-ask_webex_space(user_question)
-```
-
-When the cell runs, Colab will show a small text box right under the cell. Type your question and press **Enter** to send it through the same RAG pipeline you just built.
-
-**Example:**
-
-```text
-Ask a question about your Webex space: What did the team agree to do next?
-```
-
-The notebook will then call `ask_webex_space(user_question)` for you, so you'll see the question, the answer, and the source Webex messages, exactly like the previous step.
-
-#### Summary
-
-In this task, we built a simplified **Ask Me Anything** experience for Webex messages.
-
-We:
-
-* reused the Webex messages we ingested in [Task 1](#module-2a)
-* split those messages into smaller chunks
-* turned each chunk into an embedding using OpenAI
-* stored the embeddings in a local **FAISS** vector database
-* wrote a **RAG prompt** that tells the LLM to answer only from the retrieved messages
-* connected the retriever and the LLM together with a **retrieval chain**
-* asked natural language questions about the Webex space and got back grounded answers
-* wrapped the workflow in a small `ask_webex_space(...)` helper that also shows the **source messages** behind each answer
-
-<p class="eyebrow sub">Module 2c · Task 3 · ≈ 20 min</p>
-
-### Generate Space Summaries { #module-2c data-toc-label="2c · Space summaries" data-task="2c" }
-
-
-<p class="lede">Build a Space Summary Assistant for your Webex space.</p>
-
-#### Goal
-
-In [Task 1](#module-2a) we connected to Webex Messaging and retrieved recent messages from a Webex space.
-
-In [Task 2](#module-2b) we used those messages to build a simple **Ask Me Anything** experience with RAG.
-
-Now, in **Task 3**, we will build a **Space Summary Assistant**. Instead of asking one question at a time, we will ask LangChain to **summarize** the recent Webex conversation and pull out the parts that actually matter:
-
-* Key points
-* Decisions
-* Action items
-* Risks or blockers
-* Open questions
-
-This is similar to the native **Cisco AI Assistant** space summary feature, where users can catch up on missed messages and recent conversation activity. The goal here is not to replace Cisco AI Assistant. The goal is to understand how this kind of workflow can be built using **LangChain prompt templates and chains**.
-
-#### What you will learn
-
-By the end of this task, you will understand:
-
-* how to **reuse** Webex messages retrieved in Task 1
-* how to **format** Webex messages for an LLM
-* how **prompt templates** control the structure of the output
-* how **LangChain chains** connect prompts, models, and output parsers
-* how to generate **structured summaries** from conversation data
-* how summarization differs from RAG-based question answering
-
-#### Prerequisites
-
-!!! danger "Stop: Task 1 must already be complete"
-    Task 3 reuses the `webex_documents` variable that Task 1 created. It will not work without it.
-
-    Before you continue, make sure all of the following are true:
-
-    * You completed every step of [Task 1 (2a)](#module-2a).
-    * Task 1 was run **in this same Google Colab notebook**, so `webex_documents` is still in memory.
-    * The notebook runtime is still connected (the **Connect** indicator in the top-right shows a green check).
-
-    You can confirm this with:
-
-    ```py linenums="1"
-    print("webex_documents loaded:", len(webex_documents), "messages")
-    ```
-
-    If you see a `NameError: name 'webex_documents' is not defined`, go back and re-run [Task 1](#module-2a) before continuing.
-
-You can use the **same Colab notebook** you used for [Task 2](#module-2b). Everything we built there is still valid and we'll reuse it.
-
-You should also have your **OpenAI API key** loaded from Colab Secrets, just like in Task 2.
-
-!!! note "Starting a new notebook?"
-    If you would prefer to start with a clean notebook for Task 3, that's fine, but you must run [Task 1](#module-2a) first in that new notebook so `webex_documents` exists. Without it, the cells in this task will fail.
-
-#### Steps
-
-!!! warning "Quick check before you start"
-    A reminder before you run the first cell:
-
-    * You are working in the **same Google Colab notebook** you used for [Task 1](#module-2a) and [Task 2](#module-2b).
-    * The notebook **runtime is connected** (the **Connect** indicator in the top-right shows a green check).
-    * Task 1 has been **run end-to-end**, so the variable `webex_documents` already exists in this notebook's memory.
-
-    If any of those are not true, scroll back up and finish [Task 1](#module-2a) first. Task 3 will not work without it.
-
-##### Step 1: Confirm the required libraries { #t2c-step-1 }
-
-If you already installed the LangChain packages back in [Task 2 (Step 2)](#t2b-step-2), you do not need to install them again. Skip ahead to Step 2 of this task.
-
-If you started a fresh notebook, in a new code cell, run:
-
-```py linenums="1"
-!pip install langchain==0.3.27 langchain-core==0.3.72 langchain-openai==0.3.28
-```
-
-Task 3 only needs `langchain`, `langchain-core`, and `langchain-openai`. We don't need FAISS or `langchain-community` here because we are summarizing the conversation, not running RAG.
-
-##### Step 2: Load your OpenAI API key from Colab Secrets { #t2c-step-2 }
-
-If you completed Task 2 in this notebook, the key is already loaded and you can skip ahead to Step 3.
-
-To be safe, in a new code cell, run:
-
-```py linenums="1"
-import os
-from google.colab import userdata
-
-os.environ["OPENAI_API_KEY"] = userdata.get("OPENAI_API_KEY")
-
-if os.environ["OPENAI_API_KEY"]:
-    print("OpenAI API key loaded successfully.")
-else:
-    print("OpenAI API key not found. Please check your Colab Secrets.")
-```
-
-**Expected output:**
-
-```text
-OpenAI API key loaded successfully.
-```
-
-If you see the "not found" message, jump back to [Module 1c](#module-1c), confirm the secret name is exactly `OPENAI_API_KEY`, and make sure the **Notebook access** toggle is on.
-
-##### Step 3: Review the Webex documents { #t2c-step-3 }
-
-Let's quickly inspect the messages we retrieved earlier so we know what we are about to summarize.
-
-In a new code cell, run:
-
-```py linenums="1"
-print("Total Webex documents:", len(webex_documents))
-
-print("\nFirst Webex document:")
-print(webex_documents[0])
-```
-
-Each `Document` should contain:
-
-* **`page_content`**: the message text
-* **`metadata`**: sender, created time, message ID, room ID
-
-##### Step 4: Format Webex messages for summarization { #t2c-step-4 }
-
-Right now `webex_documents` is a list of LangChain `Document` objects. The LLM needs them as a single block of text that reads like a real conversation transcript: who said what, and when.
-
-In a new code cell, run:
-
-```py linenums="1"
-def format_webex_messages_for_summary(documents):
-    formatted_messages = []
-
-    for doc in documents:
-        sender = doc.metadata.get("sender", "Unknown sender")
-        created = doc.metadata.get("created", "Unknown time")
-        text = doc.page_content
-
-        formatted_message = f"[{created}] {sender}: {text}"
-        formatted_messages.append(formatted_message)
-
-    return "\n".join(formatted_messages)
-
-
-conversation_text = format_webex_messages_for_summary(webex_documents)
-
-print(conversation_text[:2000])
-```
-
-The function turns each Webex message into a `[timestamp] sender: text` line, then joins them with newlines so the LLM sees the whole conversation in chronological order.
-
-**Example output:**
-
-```text
-[2026-05-23T19:39:21.929Z] cholland@cb426.dc-01.com: Hi team, we need to prepare the Cisco Live LangChain demo.
-Can someone confirm who owns the Webex API part?
-I will test the Google Colab notebook today.
-The main action item is to build a simple AMA experience.
-```
-
-!!! note "Your output may look slightly different"
-    If your Webex space has more messages, you'll see more `[timestamp] sender: text` lines, one per message, in the same shape as the example above.
-
-##### Step 5: Create the LLM { #t2c-step-5 }
-
-If you already created the `llm` in Task 2, you can reuse it here, no new cell needed.
-
-To be safe, in a new code cell, run:
-
-```py linenums="1"
-from langchain_openai import ChatOpenAI
-
-llm = ChatOpenAI(
-    model="gpt-4o",
-    temperature=0
-)
-
-print("LLM ready.")
-```
-
-`temperature=0` keeps the summary focused and consistent. We don't want the model getting creative with the action items.
-
-**Expected output:**
-
-```text
-LLM ready.
-```
-
-##### Step 6: Create the summary prompt template { #t2c-step-6 }
-
-This is the heart of Task 3. The prompt is what tells the model **how** to summarize, **what sections** to include, and **what to do** when information isn't in the conversation.
-
-In a new code cell, run:
-
-```py linenums="1"
-from langchain_core.prompts import ChatPromptTemplate
-
-summary_prompt = ChatPromptTemplate.from_template("""
-You are a helpful Webex space summary assistant.
-
-Your task is to summarize the recent Webex conversation provided below.
-
-Create a clear and useful summary with the following sections:
-
-1. Quick Summary
-A short paragraph explaining what the conversation was about.
-
-2. Key Points
-Bullet points covering the most important discussion points.
-
-3. Decisions
-List any decisions that were made. If there were no clear decisions, say "No clear decisions identified."
-
-4. Action Items
-List action items with owners if mentioned. If no owner is mentioned, say "Owner not specified."
-
-5. Risks or Blockers
-List any risks, blockers, or concerns. If none were mentioned, say "No risks or blockers identified."
-
-6. Open Questions
-List any unanswered questions or follow-ups. If none were mentioned, say "No open questions identified."
-
-Important rules:
-- Use only the Webex conversation below.
-- Do not invent details.
-- Keep the summary concise and easy to read.
-- If information is not available, clearly say so.
-
-Webex conversation:
-<context>
-{conversation}
-</context>
-""")
-
-print("Summary prompt created.")
-```
-
-Notice that the **structure of the output is controlled entirely by the prompt**. If we change the section names or rules in here, the answer changes shape too. That's the whole idea behind prompt engineering.
-
-**Expected output:**
-
-```text
-Summary prompt created.
-```
-
-##### Step 7: Add an output parser { #t2c-step-7 }
-
-The output parser takes whatever the model returns and converts it into a clean Python string we can print or post somewhere else.
-
-In a new code cell, run:
-
-```py linenums="1"
-from langchain_core.output_parsers import StrOutputParser
-
-output_parser = StrOutputParser()
-
-print("Output parser ready.")
-```
-
-**Expected output:**
-
-```text
-Output parser ready.
-```
-
-##### Step 8: Create the summary chain { #t2c-step-8 }
-
-Now we connect the prompt, the LLM, and the output parser using **LangChain Expression Language** (the `|` operator).
-
-In a new code cell, run:
-
-```py linenums="1"
-summary_chain = summary_prompt | llm | output_parser
-
-print("Summary chain created.")
-```
-
-The flow is simply:
-
-```text
-Prompt Template  →  LLM  →  Output Parser
-```
-
-When we call `summary_chain.invoke(...)`, the input flows through each piece in order, and we get a clean string back at the end.
-
-**Expected output:**
-
-```text
-Summary chain created.
-```
-
-##### Step 9: Generate the space summary { #t2c-step-9 }
-
-This is the moment everything comes together, hand the formatted conversation to the chain and watch it produce a structured summary.
-
-In a new code cell, run:
-
-```py linenums="1"
-summary = summary_chain.invoke({
-    "conversation": conversation_text
-})
-
-print(summary)
-```
-
-**Example output:**
-
-![Structured Webex space summary printed in Colab with Quick Summary, Key Points, Decisions, Action Items, Risks or Blockers, and Open Questions sections](img/module-2c-001.png){ loading=lazy }
-
-/// caption
-Structured Webex space summary printed in Colab with Quick Summary, Key Points, Decisions, Action Items, Risks or Blockers, and Open Questions sections.
-///
-
-Your output will be different because it depends on what's actually in your space. The shape and the section headings will match.
-
-##### Step 10: Create a reusable summary function { #t2c-step-10 }
-
-Let's wrap the whole flow into a small helper so we can call it any time without copy-pasting the same lines.
-
-In a new code cell, run:
-
-```py linenums="1"
-def summarize_webex_space(documents):
-    conversation = format_webex_messages_for_summary(documents)
-
-    summary = summary_chain.invoke({
-        "conversation": conversation
-    })
-
-    return summary
-```
-
-Now test it. In a new code cell, run:
-
-```py linenums="1"
-space_summary = summarize_webex_space(webex_documents)
-
-print(space_summary)
-```
-
-You should see the same kind of structured summary as Step 9.
-
-##### Step 11: Summarize only the most recent messages { #t2c-step-11 }
-
-A real Webex space can have hundreds or thousands of messages. For this lab and for most "catch me up" use cases, we only care about the most **recent** ones.
-
-In a new code cell, run:
-
-```py linenums="1"
-recent_documents = webex_documents[:10]
-
-recent_summary = summarize_webex_space(recent_documents)
-
-print(recent_summary)
-```
-
-This works because Task 1 retrieved messages in **most-recent-first order** from the Webex API, so `webex_documents[:10]` gives us the 10 newest.
-
-You can adjust the number to suit:
-
-```py linenums="1"
-recent_documents = webex_documents[:20]
-```
-
-or:
-
-```py linenums="1"
-recent_documents = webex_documents[:50]
-```
-
-##### Step 12: Create a more executive-style summary { #t2c-step-12 }
-
-Same Webex messages, same model, but a different prompt produces a very different summary. Let's prove it by writing a second prompt aimed at a senior leader who only has 30 seconds.
-
-In a new code cell, run:
-
-```py linenums="1"
-executive_summary_prompt = ChatPromptTemplate.from_template("""
-You are an executive assistant summarizing a Webex conversation for a senior leader.
-
-Summarize the conversation in a concise executive format.
-
-Use this structure:
-
-Executive Summary:
-Decision / Outcome:
-Actions Required:
-Concerns:
-Recommended Next Step:
-
-Rules:
-- Use only the Webex conversation provided.
-- Do not invent missing information.
-- Keep the tone professional and concise.
-
-Webex conversation:
-<context>
-{conversation}
-</context>
-""")
-
-executive_summary_chain = executive_summary_prompt | llm | output_parser
-
-executive_summary = executive_summary_chain.invoke({
-    "conversation": conversation_text
-})
-
-print(executive_summary)
-```
-
-!!! tip "Teaching moment"
-    Same Webex messages. Same model. **Different prompt.** Different output. This is the cleanest way to feel what prompt engineering actually does.
-
-##### Step 13: Create a stand-up style summary { #t2c-step-13 }
-
-One more variation. This one is shaped for a daily team stand-up.
-
-In a new code cell, run:
-
-```py linenums="1"
-standup_summary_prompt = ChatPromptTemplate.from_template("""
-You are summarizing a Webex conversation for a team stand-up.
-
-Use this format:
-
-Yesterday / Previous Discussion:
-Today / Next Steps:
-Blockers:
-Owners:
-
-Rules:
-- Use only the Webex conversation provided.
-- If owners are not clearly mentioned, say "Owner not specified."
-- Keep it short and practical.
-
-Webex conversation:
-<context>
-{conversation}
-</context>
-""")
-
-standup_summary_chain = standup_summary_prompt | llm | output_parser
-
-standup_summary = standup_summary_chain.invoke({
-    "conversation": conversation_text
-})
-
-print(standup_summary)
-```
-
-Three different chains, three different summaries, all from the same Webex space. The prompt is doing all the work.
-
-!!! note "Example, add the following to the rules in the prompt"
-    Try adding this line to the **Rules** section of the stand-up prompt to give the summary a bit of personality:
+!!! note "Note"
+    If `codex mcp list` doesn't show the list of configured MCP servers, you can ask Codex directly in the chat instead, for example:
 
     ```text
-    - Make jokes based on the content, so we can have a laugh as well.
+    Which MCP servers are configured, and is webex-messaging available?
     ```
 
-    Re-run the cell and notice how the same Webex conversation produces a noticeably different tone. Same chain, same model, just one extra rule in the prompt.
+    You can also type `/mcp` in the Codex chat to see the configured MCP servers and their tools. If `webex-messaging` still isn't listed, check your configuration in [Step 2](#m4-add) and restart Codex again.
 
-##### Step 14 (optional): Let the user choose the summary type { #t2c-step-14 }
+### Step 5 · Complete WCIT elicitation { #m4-elicit data-toc-label="Complete WCIT elicitation" }
 
-For a more interactive Colab experience, you can let the user pick which summary they want.
+Run the first read-only prompt. When the WCIT connection needs an additional Webex scope, Webex opens an authorization step as part of elicitation. Verify the Webex domain and requested scope, approve the expected request, return to Codex, and retry the same prompt.
 
-In a new code cell, run:
+#### Lab example: enable a missing read-only tool
 
-```py linenums="1"
-summary_type = input("Choose summary type: standard, executive, standup: ").strip().lower()
+This short exercise shows the difference between connecting an MCP server and allowing a specific tool. The server can be connected correctly while a tool required by the prompt is still disabled in Collaboration Control Hub.
 
-if summary_type == "executive":
-    result = executive_summary_chain.invoke({
-        "conversation": conversation_text
-    })
-elif summary_type == "standup":
-    result = standup_summary_chain.invoke({
-        "conversation": conversation_text
-    })
-else:
-    result = summary_chain.invoke({
-        "conversation": conversation_text
-    })
+1. **Run the read-only prompt.** In Codex, enter the following prompt exactly as shown:
 
-print(result)
-```
+    ```text
+    Use the `webex-messaging` MCP server. List up to five Webex spaces that I can access.
+    Return the space title and space ID only. This is a read-only request.
+    Do not create, update, delete, or send anything.
+    ```
 
-**Example:**
+    !!! note "Note"
+        `webex-messaging` is the MCP server name you added in [Step 2](#m4-add). If you gave the server a different name there, in `[mcp_servers.<name>]` in `config.toml` or in the **Name** field in the Codex app, replace `webex-messaging` in this prompt (and the prompts that follow) with your name. This is the server name, not the name of your WCIT token.
+
+2. **Review the result.** In the example below, Codex cannot complete the request because the connected server does not expose a tool for retrieving or searching spaces. No Webex data is changed.
+
+    ![Codex can't list spaces yet: no space-listing tool is enabled](img/mcp-28.png){ loading=lazy }
+
+    /// caption
+    Codex can't list spaces yet: no space-listing tool is enabled.
+    ///
+
+3. **Check the Collaboration Control Hub tool policy.** In Collaboration Control Hub, open **Apps > Agentic apps > Webex Messaging > Tools**, and locate **Get Webex Space**. In the example below, **Allow tool** for "Get Webex Space" is disabled, hence the warning above.
+
+    ![Get Webex Space is disabled in the Tools tab](img/mcp-29.png){ loading=lazy }
+
+    /// caption
+    Get Webex Space is disabled in the Tools tab.
+    ///
+
+4. **Enable the tool.** Turn on **Allow tool** for "Get Webex Space". For this lab, also turn on **Allow signature change** so approved changes to the tool input or output schema can be accepted.
+
+    ![Get Webex Space enabled, with Allow signature change on](img/mcp-30.png){ loading=lazy }
+
+    /// caption
+    Get Webex Space enabled, with Allow signature change on.
+    ///
+
+5. **Save.** Select **Save** in Collaboration Control Hub.
+6. **Restart Codex and run the prompt again.** If Webex requests an additional scope, complete the elicitation and authorization flow below.
+
+    !!! danger "Important: don't run Codex in Full access mode"
+        Before you run the prompt again, make sure Codex is set to **Ask for approval**, not **Full access** (approval policy *never*). In Full access mode, Codex can't show you the Webex authorization request, so it cancels it automatically, and you'll see an error like:
+
+        ```text
+        I couldn't list the spaces because Webex OAuth authorization was cancelled.
+        ```
+
+        **To fix it:** in the Codex app, click the approval button at the bottom left of the message box (it shows the current mode) and select **Ask for approval**, as shown below. In the Codex CLI, type `/approvals` and choose an option that asks, or start Codex with `codex -a on-request`. Then run the prompt again: this time Codex shows the **OAuth Authorization Required** request so you can approve it.
+
+        ![Codex approval modes: select Ask for approval, not Full access](img/mcp-37.png){ loading=lazy }
+
+        /// caption
+        Codex approval modes: select Ask for approval, not Full access.
+        ///
+
+7. **Review the elicitation request.** Codex displays an **OAuth Authorization Required** request. Confirm that the tool is `webex-get-space` and that the requested scope is `spark:rooms_read`.
+
+    ![Codex shows OAuth Authorization Required for webex-get-space and spark:rooms_read](img/mcp-31.png){ loading=lazy }
+
+    /// caption
+    Codex shows OAuth Authorization Required for webex-get-space and spark:rooms_read.
+    ///
+
+8. **Open the Webex authorization page.** Codex displays an **Authorize access through Webex** link. Select the link. A browser page opens, if you are asked to sign in, enter the lab administrator credentials provided for your environment.
+
+    ![Codex links to Authorize access through Webex](img/mcp-32.png){ loading=lazy }
+
+    /// caption
+    Codex links to Authorize access through Webex.
+    ///
+
+9. **Review and accept the requested permissions.** After sign-in, Webex shows the permissions requested by the MCP tool. Confirm that the request is for listing the titles of spaces you can access and for accessing MCP servers, then select **Accept**.
+
+    ![The Webex consent page lists the requested permissions](img/mcp-33.png){ loading=lazy }
+
+    /// caption
+    The Webex consent page lists the requested permissions.
+    ///
+
+10. **Complete the browser flow.** When the **You're all set!** confirmation appears, select **Return to Agent**. If the browser does not return automatically, close the browser tab and return to Codex.
+
+    ![You're all set! Select Return to Agent](img/mcp-34.png){ loading=lazy }
+
+    /// caption
+    You're all set! Select Return to Agent.
+    ///
+
+11. **Continue in Codex.** In the same Codex task, follow the instructions or enter `authorization done` and submit it.
+
+    ![Tell Codex the authorization is done](img/mcp-35.png){ loading=lazy }
+
+    /// caption
+    Tell Codex the authorization is done.
+    ///
+
+12. **Confirm the result.** Codex can now use Webex Messaging to list up to five spaces available to the signed-in lab account and return only each space title and space ID. This remains a read-only operation.
+
+    ![Codex lists space titles and space IDs](img/mcp-36.png){ loading=lazy }
+
+    /// caption
+    Codex lists space titles and space IDs.
+    ///
+
+!!! note
+    The space titles and space IDs shown in this example are from a different environment. Your results and IDs will be different.
+
+<p class="eyebrow">Module 5 · ≈ 20 min</p>
+
+## Messaging prompts { #module-5 data-toc-label="Module 5 · Messaging prompts" data-task="5" }
+
+Now that the Webex Messaging MCP is configured and authorized, use the prompts below to test some common messaging tasks. These are only examples, you can also create your own prompts to explore the MCP. **Start with read-only requests**, and use only the dedicated lab space for prompts that create, edit, delete, or send content.
+
+!!! note "Use your own space name"
+    In every prompt, replace `MCP Lab - <your name>` with the exact title of a Webex space you can access that contains messages. It can be a space you created for the lab or another existing space.
+
+### Exercise 1 · Find the space { #m5-ex1 data-toc-label="Ex 1 · Find the space" }
 
 ```text
-Choose summary type: standard, executive, standup: executive
+Use Webex Messaging. Find the space named "MCP Lab - <your name>".
+Return the exact space title and its ID. Do not send, edit, or delete anything.
 ```
 
-The notebook will run the matching chain and print the result.
+**Expected result:** one matching lab space is identified. If several spaces match, the client asks you to choose, it must not guess.
 
-![Colab cell prompting for the summary type and printing the matching chain's output](img/module-2c-002.png){ loading=lazy }
-
-/// caption
-Colab cell prompting for the summary type and printing the matching chain's output.
-///
-
-##### Step 15 (optional): Add a simple message limit { #t2c-step-15 }
-
-LLMs have a finite **context window**, which means a very long Webex space could blow past what the model can read in one shot. For a small lab dataset this isn't a problem.
-
-##### Step 16 (optional): Send the summary back to Webex { #t2c-step-16 }
-
-Since [Task 1](#module-2a) already wired us up to Webex, we can post the summary back into the same space and let the team see it.
-
-!!! warning "Only do this if your lab proctor allows posting into the lab space"
-    The cell below will send a real Webex message to the room ID you set in Task 1. Make sure you are happy posting into that space before running it.
-
-In a new code cell, run:
-
-```py linenums="1"
-import requests
-
-def send_message_to_webex(room_id, text):
-    url = "https://webexapis.com/v1/messages"
-
-    headers = {
-        "Authorization": f"Bearer {WEBEX_ACCESS_TOKEN}",
-        "Content-Type": "application/json"
-    }
-
-    payload = {
-        "roomId": room_id,
-        "text": text
-    }
-
-    response = requests.post(
-        url,
-        headers=headers,
-        json=payload
-    )
-
-    print("Status Code:", response.status_code)
-
-    if response.status_code in [200, 201]:
-        print("Summary sent to Webex successfully.")
-    else:
-        print("Failed to send summary.")
-        print(response.text)
-```
-
-Then, in a new code cell, send the summary:
-
-```py linenums="1"
-send_message_to_webex(
-    ROOM_ID,
-    "AI Generated Space Summary:\n\n" + space_summary
-)
-```
-
-You should see `Status Code: 200` (or `201`) and a confirmation, and the message will appear in **Charles's Space** in your Webex App.
-
-#### Summary
-
-In this task, we built a **Space Summary Assistant** for Webex messages.
-
-We:
-
-* reused the Webex messages we ingested in [Task 1](#module-2a)
-* formatted the messages into a clean conversation transcript
-* created a **summary prompt template** with the sections we wanted
-* connected the prompt to the LLM with **LangChain Expression Language**
-* parsed the model's response into clean text with `StrOutputParser`
-* created different **summary styles** (executive, stand-up) by changing only the prompt
-* optionally sent the summary back into the Webex space
-
-<p class="eyebrow sub">Module 2d · Task 4 · ≈ 25 min</p>
-
-### AI Rewrite Assistant { #module-2d data-toc-label="2d · Rewrite assistant" data-task="2d" }
-
-
-<p class="lede">Build an AI Rewrite Assistant that takes a draft Webex message and rewrites it in different tones.</p>
-
-#### Goal
-
-In [Task 1](#module-2a) we connected to Webex Messaging and retrieved recent messages.
-
-In [Task 2](#module-2b) we built an **Ask Me Anything** experience using RAG.
-
-In [Task 3](#module-2c) we generated structured **space summaries** using LangChain prompt chains.
-
-Now, in **Task 4**, we will build an **AI Rewrite Assistant**. This assistant will take a draft message and rewrite it in different tones, such as:
-
-* **Executive**
-* **Friendly**
-* **Technical**
-* **Customer-ready**
-* **Concise**
-
-This is similar to the native **Cisco Smart Rewrite** capability, where AI can help improve a message before it is sent. The goal here is not to replace the built-in Webex AI feature. The goal is to understand how LangChain chains can be used to build this type of experience.
-
-#### What you will learn
-
-By the end of this task, you will understand:
-
-* how **prompt engineering** changes AI output
-* how to build **reusable prompt templates**
-* how to use **LCEL** (LangChain Expression Language) to wire prompt, model, and parser together
-
-#### Prerequisites
-
-!!! danger "Stop: Tasks 1, 2, and 3 must already be complete in this notebook"
-    Task 4 builds on the work you did in Tasks 1, 2, and 3. It will not work without them.
-
-    Before you continue, make sure all of the following are true:
-
-    * You completed [Task 1](#module-2a), [Task 2](#module-2b), and [Task 3](#module-2c).
-    * You are working in the **same Google Colab notebook** you used for those tasks.
-    * The notebook runtime is still connected (the **Connect** indicator in the top-right shows a green check).
-
-You should already have the following in memory from earlier tasks:
-
-* **`WEBEX_ACCESS_TOKEN`** (loaded in [Task 1](#module-2a))
-* **`ROOM_ID`** (set in [Task 1](#module-2a))
-* **`llm`** (created in [Task 2](#module-2b))
-* **`output_parser`** (created in [Task 3](#module-2c))
-
-!!! note "Don't have `llm` and `output_parser` yet?"
-    No problem. This task re-runs the setup for you in [Step 3](#t2d-step-3) below, so you can start cleanly even if you skipped one of the earlier tasks.
-
-#### Steps
-
-!!! warning "Quick check before you start"
-    A reminder before you run the first cell:
-
-    * You are working in the **same Google Colab notebook** you used for [Task 1](#module-2a), [Task 2](#module-2b), and [Task 3](#module-2c).
-    * The notebook **runtime is connected** (the **Connect** indicator in the top-right shows a green check).
-    * Your `OPENAI_API_KEY` is loaded as an environment variable from earlier tasks.
-
-    If any of those are not true, scroll back and finish the earlier tasks first.
-
-##### Step 1: Confirm the required libraries { #t2d-step-1 }
-
-If you already installed the LangChain packages back in [Task 2 (Step 2)](#t2b-step-2) or [Task 3 (Step 1)](#t2c-step-1), you can skip this step.
-
-Otherwise, in a new code cell, run:
-
-```py linenums="1"
-!pip install langchain==0.3.27 langchain-core==0.3.72 langchain-openai==0.3.28
-```
-
-Task 4 only needs `langchain`, `langchain-core`, and `langchain-openai`.
-
-##### Step 2: Load your OpenAI API key from Colab Secrets { #t2d-step-2 }
-
-If your `OPENAI_API_KEY` was already loaded in an earlier task, you can skip this step.
-
-Otherwise, in a new code cell, run:
-
-```py linenums="1"
-import os
-from google.colab import userdata
-
-os.environ["OPENAI_API_KEY"] = userdata.get("OPENAI_API_KEY")
-
-if os.environ["OPENAI_API_KEY"]:
-    print("OpenAI API key loaded successfully.")
-else:
-    print("OpenAI API key not found. Please check your Colab Secrets.")
-```
-
-**Expected output:**
+### Exercise 2 · Summarize recent messages { #m5-ex2 data-toc-label="Ex 2 · Summarize messages" }
 
 ```text
-OpenAI API key loaded successfully.
+In the Webex space "MCP Lab - <your name>", list the 10 most recent messages.
+Summarize the discussion in five bullets and show author and timestamp for each source message.
+Do not send, edit, or delete anything.
 ```
 
-If you see the "not found" message, jump back to [Module 1c](#module-1c), confirm the secret name is exactly `OPENAI_API_KEY`, and make sure the **Notebook access** toggle is on.
+**Expected result:** a grounded summary using only messages returned by the MCP tool.
 
-##### Step 3: Create the LLM and output parser { #t2d-step-3 }
-
-If you already created `llm` and `output_parser` in [Task 3](#module-2c), you can reuse them and skip this step.
-
-Otherwise, in a new code cell, run:
-
-```py linenums="1"
-from langchain_openai import ChatOpenAI
-from langchain_core.output_parsers import StrOutputParser
-
-llm = ChatOpenAI(
-    model="gpt-4o",
-    temperature=0.3
-)
-
-output_parser = StrOutputParser()
-
-print("LLM and output parser ready.")
-```
-
-For rewrite tasks, a small amount of creativity is useful, so `temperature=0.3` is a good middle ground. It is high enough to vary phrasing, but low enough to keep the meaning faithful.
-
-**Expected output:**
+### Exercise 3 · Search for a decision { #m5-ex3 data-toc-label="Ex 3 · Search for a decision" }
 
 ```text
-LLM and output parser ready.
+Search the Webex space "MCP Lab - <your name>" for messages containing "decision"
+from the last 30 days. State the decision, owner, due date, and any ambiguity.
+Include message IDs or timestamps. Do not modify Webex.
 ```
 
-##### Step 4: Create the rewrite prompt template { #t2d-step-4 }
+**Expected result:** an evidence-backed answer or a clear statement that no matching message was found.
 
-This is the heart of Task 4. We will write **one** prompt template that can rewrite any Webex message in any tone, for any audience. The prompt is the only thing that knows how to do the rewrite. The model and parser stay the same.
-
-In a new code cell, run:
-
-```py linenums="1"
-from langchain_core.prompts import ChatPromptTemplate
-
-rewrite_prompt = ChatPromptTemplate.from_template("""
-You are a helpful Webex messaging assistant.
-
-Rewrite the message below using the requested tone and audience.
-
-Tone:
-{tone}
-
-Audience:
-{audience}
-
-Original message:
-{message}
-
-Rules:
-- Preserve the original meaning.
-- Do not add facts that are not present in the original message.
-- Make the message clear, polished, and ready to send in Webex.
-- Keep it concise unless the requested tone requires more detail.
-- Return only the rewritten message.
-""")
-
-print("Rewrite prompt created.")
-```
-
-The prompt has three variables:
-
-* **`tone`** (for example "executive", "friendly", "concise")
-* **`audience`** (for example "internal team", "customer", "Cisco Live attendees")
-* **`message`** (the draft text the user wants rewritten)
-
-Because all three are template variables, the same prompt object will work for any rewrite request.
-
-**Expected output:**
+### Exercise 4 · Draft only { #m5-ex4 data-toc-label="Ex 4 · Draft only" }
 
 ```text
-Rewrite prompt created.
+Draft a concise reply to the latest message in "MCP Lab - <your name>".
+Show the target space and exact draft. Do not send it.
 ```
 
-##### Step 5: Create the rewrite chain { #t2d-step-5 }
+**Expected result:** the client returns text only and does not call a message creation tool.
 
-Now we connect the prompt, the LLM, and the output parser using **LCEL** (LangChain Expression Language).
-
-In a new code cell, run:
-
-```py linenums="1"
-rewrite_chain = rewrite_prompt | llm | output_parser
-
-print("Rewrite chain created.")
-```
-
-The flow is:
+### Exercise 5 · Controlled write { #m5-ex5 data-toc-label="Ex 5 · Controlled write" }
 
 ```text
-Prompt Template  →  LLM  →  Output Parser
+Prepare to send exactly this message to "MCP Lab - <your name>":
+"Webex MCP lab validation complete."
+Before sending, show the resolved space title, space ID, and exact message, then ask for my confirmation.
+Do not send until I explicitly confirm.
 ```
 
-Same LCEL pattern we used for the summary chain in [Task 3](#t2c-step-8). Only the prompt is different.
+!!! warning "Write actions"
+    This is the only exercise that changes Webex. Make sure **Create Webex Message** is enabled in Collaboration Control Hub, check the resolved space and message, and confirm only when they are correct.
 
-**Expected output:**
+<p class="eyebrow">Module 6 · ≈ 5 min</p>
 
-```text
-Rewrite chain created.
-```
+## Summary and next steps { #module-6 data-toc-label="Module 6 · Summary" data-task="6" }
 
-##### Step 6: Test a simple rewrite { #t2d-step-6 }
+This concludes the Webex Messaging MCP lab. You have approved the server in Collaboration Control Hub, connected Codex with a WCIT, completed an elicitation request, and tested messaging tools. The connection is straightforward: enable the server, choose the tools, add its URL and credential to the client, then approve the scopes needed for the action you request.
 
-Let's give it something rough and see what comes back.
+Collaboration Control Hub is the **governance and control layer** for this MCP orchestration. Administrators decide who can use a server, which tools are available, and whether changes to tool definitions need review. Codex handles the conversation and invokes the approved tools, Webex still checks the granted scopes and the signed-in user's permissions.
 
-In a new code cell, run:
+To explore Webex Meetings MCP, follow the same setup pattern with the Webex Meeting server: allow it in Collaboration Control Hub, review and enable the Meeting tools you need, and use the Meeting server URL in your Codex MCP entry. When a tool needs another scope, complete the authorization request. Use the same approach for other Webex MCP servers, checking each server's own URL, tools, scopes, and prerequisites.
 
-```py linenums="1"
-draft_message = "need this done asap can someone check the webex api bit"
+For current server details, see the [Webex Meetings MCP Server guide](https://developer.webex.com/mcp/docs/meetings-mcp-server){:target="_blank" rel="noopener"} and the [AI in Webex overview](https://developer.webex.com/mcp/docs/ai-in-webex){:target="_blank" rel="noopener"} on the Webex Developer Portal.
 
-rewritten_message = rewrite_chain.invoke({
-    "tone": "professional and polite",
-    "audience": "internal project team",
-    "message": draft_message
-})
+<p class="eyebrow">Module 7 · ≈ 10 min</p>
 
-print(rewritten_message)
-```
+## Troubleshooting and cleanup { #module-7 data-toc-label="Module 7 · Troubleshoot & clean up" data-task="7" }
 
-**Example output:**
+### Troubleshooting decision table { #m7-table data-toc-label="Troubleshooting table" }
 
-```text
-Could someone please review the Webex API section at your earliest convenience? Thank you.
-```
+<div class="glance" markdown>
 
-The original meaning stayed the same. The tone changed.
+| Symptom | Likely cause | Check and recovery |
+|---|---|---|
+| Server does not connect | Wrong endpoint, blocked HTTPS, or server not enabled | Compare the endpoint character for character, test network access, ask the Collaboration Control Hub administrator to verify Agentic Apps policy |
+| 401 or not authenticated | Missing, expired, revoked, or malformed credential | Verify the WCIT in the configured Authorization header, never paste it into chat, restart Codex |
+| Tool asks for permission | Expected WCIT elicitation | Verify the Webex URL and requested scope, approve only the expected scope, return and retry |
+| "Webex OAuth authorization was cancelled" | Codex is in **Full access** mode (approval policy *never*), so it cancels the Webex authorization request automatically | Switch Codex to **Ask for approval** (the approval button at the bottom left of the message box in the app, or `/approvals` / `codex -a on-request` in the CLI), then run the prompt again and approve the request |
+| Tools are missing | Tool disabled, scope absent, or user outside policy | Check Collaboration Control Hub Tools, granted scopes, and signed-in account, reconnect after changes |
+| OAuth Integration redirect mismatch (reference only) | Integration URI differs from client callback | For the optional reference path, make the scheme, hostname, port, path, and trailing slash identical, then authenticate again |
+| Wrong space selected | Ambiguous name resolved incorrectly | Stop. Display the exact space ID, use a unique lab space, require confirmation |
 
-!!! note "Your output may look different"
-    LLMs don't produce the exact same text twice, even at low temperatures. Your rewrite will read a little differently, that's expected. What should stay the same is the **meaning** and the **tone** you asked for.
+</div>
 
-##### Step 7: Try different tones { #t2d-step-7 }
+### Cleanup checklist { #m7-cleanup data-toc-label="Cleanup checklist" }
 
-Now let's keep the message the same and only change the tone, so we can see exactly how much influence the tone variable has.
+- [ ] Remove the WCIT from the Authorization header in `config.toml`, or remove the temporary `webex-messaging` server block if your instructor does not want it retained.
+- [ ] Revoke the lab WCIT in the Webex Developer Portal when instructed, and delete any temporary local copy of the token.
+- [ ] Remove a temporary connector or MCP server entry.
 
-In a new code cell, run:
+<p class="eyebrow">Appendix A</p>
 
-```py linenums="1"
-tones = [
-    "executive",
-    "friendly",
-    "technical",
-    "customer-ready",
-    "concise"
-]
+## Quick reference { #appendix data-toc-label="Appendix A · Quick reference" }
 
-draft_message = "we are still waiting for the api token and this might delay the demo"
+<div class="glance" markdown>
 
-for tone in tones:
-    result = rewrite_chain.invoke({
-        "tone": tone,
-        "audience": "Cisco internal team",
-        "message": draft_message
-    })
+| Item | Messaging | Meetings |
+|---|---|---|
+| Endpoint | `https://mcp.webexapis.com/mcp/webex-messaging` | `https://mcp.webexapis.com/mcp/webex-meeting` |
+| Primary use | Spaces, messages, memberships, files, webhooks | Schedules, participants, summaries, recordings, transcripts |
+| Codex auth | WCIT plus elicitation | WCIT plus elicitation |
+| Content prerequisite | Dedicated space with sample messages | Eligible meeting, recording, transcript, and AI Assistant as needed |
 
-    print("Tone:", tone)
-    print(result)
-    print("-" * 80)
-```
+</div>
 
-You will see five different versions of the same message, each one shaped by the tone you asked for. Same draft, same model, same audience: only the tone variable changed.
+#### Guide scope
 
-![Five versions of the same Webex draft message rewritten in different tones (executive, friendly, technical, customer-ready, concise)](img/module-2d-001.png){ loading=lazy }
+The hands-on exercises use Webex Messaging in Codex with a WCIT. Other AI clients and the OAuth Integration path are included for reference only. Screens may look slightly different depending on the account, operating system, Codex release, and organization policy.
 
-/// caption
-Five versions of the same Webex draft message rewritten in different tones (executive, friendly, technical, customer-ready, concise).
-///
+<p class="eyebrow">Up next · Part 4</p>
 
-##### Step 8: Create a reusable rewrite function { #t2d-step-8 }
+## What's next { #next data-toc-label="Next · Part 4 (GenAI lab)" }
 
-Let's wrap the chain in a small helper so you don't have to type the dictionary every time.
+You've connected Webex Messaging to an AI client through MCP. In Part 4 you go one level deeper and build AI-powered messaging workflows yourself, with LangChain and the Webex APIs.
 
-In a new code cell, run:
-
-```py linenums="1"
-def rewrite_webex_message(message, tone="professional", audience="internal team"):
-    rewritten_message = rewrite_chain.invoke({
-        "tone": tone,
-        "audience": audience,
-        "message": message
-    })
-
-    return rewritten_message
-```
-
-Now test it. In a new code cell, run:
-
-```py linenums="1"
-result = rewrite_webex_message(
-    message="i dont think this is ready yet we need to fix the lab",
-    tone="constructive and professional",
-    audience="lab delivery team"
-)
-
-print(result)
-```
-
-You should see a polished, constructive version of the same message.
-
-##### Step 9: Add an interactive input box { #t2d-step-9 }
-
-For a more hands-on Colab experience, you can ask for the message, tone, and audience straight from an input box.
-
-In a new code cell, run:
-
-```py linenums="1"
-user_message = input("Enter the message you want to rewrite: ")
-user_tone = input("Enter the tone, for example executive, friendly, technical: ")
-user_audience = input("Enter the audience, for example manager, customer, internal team: ")
-
-result = rewrite_webex_message(
-    message=user_message,
-    tone=user_tone,
-    audience=user_audience
-)
-
-print("\nRewritten message:")
-print(result)
-```
-
-**Example:**
-
-```text
-Enter the message you want to rewrite: can you send the room id now
-Enter the tone: polite and professional
-Enter the audience: lab participant
-
-Rewritten message:
-Could you please share the room ID when you have a moment?
-```
-
-![Colab interactive rewrite flow with input boxes for the message, tone, and audience, then printing the rewritten output](img/module-2d-002.png){ loading=lazy }
-
-/// caption
-Colab interactive rewrite flow with input boxes for the message, tone, and audience, then printing the rewritten output.
-///
-
-##### Step 10: Create predefined Webex rewrite styles { #t2d-step-10 }
-
-To make this feel a little closer to a real product experience (think a "Smart Rewrite" menu), let's offer the user a numbered list of preset styles instead of asking them to type a freeform tone.
-
-In a new code cell, run:
-
-```py linenums="1"
-rewrite_styles = {
-    "1": "professional and polite",
-    "2": "executive and concise",
-    "3": "friendly and collaborative",
-    "4": "technical and precise",
-    "5": "customer-ready",
-    "6": "short and direct"
-}
-
-print("Choose a rewrite style:")
-for key, value in rewrite_styles.items():
-    print(f"{key}. {value}")
-```
-
-Then, in a new code cell, run:
-
-```py linenums="1"
-style_choice = input("Select a style number: ")
-selected_tone = rewrite_styles.get(style_choice, "professional and polite")
-
-user_message = input("Enter the message you want to rewrite: ")
-
-result = rewrite_webex_message(
-    message=user_message,
-    tone=selected_tone,
-    audience="Webex space participants"
-)
-
-print("\nSelected tone:", selected_tone)
-print("\nRewritten message:")
-print(result)
-```
-
-This is a tiny "Smart Rewrite" experience inside Colab: pick a style, paste a message, get a polished version back.
-
-![Colab Smart Rewrite menu showing the numbered list of preset styles, the user picking one, and the rewritten message printed below](img/module-2d-003.png){ loading=lazy }
-
-/// caption
-Colab Smart Rewrite menu showing the numbered list of preset styles, the user picking one, and the rewritten message printed below.
-///
-
-##### Step 11: Create a message improvement chain { #t2d-step-11 }
-
-Sometimes a user doesn't want a *new tone*. They just want their original message cleaned up: spelling, grammar, clarity. That's a different prompt.
-
-In a new code cell, run:
-
-```py linenums="1"
-improve_prompt = ChatPromptTemplate.from_template("""
-You are a Webex message improvement assistant.
-
-Improve the message below for:
-- spelling
-- grammar
-- clarity
-- readability
-- professional tone
-
-Rules:
-- Preserve the original meaning.
-- Do not add new information.
-- Keep it suitable for a Webex message.
-- Return only the improved message.
-
-Original message:
-{message}
-""")
-
-improve_chain = improve_prompt | llm | output_parser
-
-print("Message improvement chain created.")
-```
-
-Test it. In a new code cell, run:
-
-```py linenums="1"
-improved = improve_chain.invoke({
-    "message": "hi team omer here, i have craeted the lab and will test a few more things with you before we sent"
-})
-
-print(improved)
-```
-
-**Example output:**
-
-```text
-Hi team, Omer here. I have created the lab and will test a few more things with you before we send.
-```
-
-This maps cleanly to the "fix mistakes, polish wording" half of native Smart Rewrite.
-
-##### Step 12 (optional): Generate multiple rewrite options { #t2d-step-12 }
-
-In real Webex-style AI experiences, the user often gets a few rewrite options to pick from instead of just one.
-
-In a new code cell, run:
-
-```py linenums="1"
-multi_rewrite_prompt = ChatPromptTemplate.from_template("""
-You are a Webex messaging assistant.
-
-Rewrite the original message in three different ways.
-
-Original message:
-{message}
-
-Return exactly three options:
-
-Option 1 - Professional:
-Option 2 - Friendly:
-Option 3 - Concise:
-
-Rules:
-- Preserve the original meaning.
-- Do not add new facts.
-- Keep each option suitable for a Webex message.
-""")
-
-multi_rewrite_chain = multi_rewrite_prompt | llm | output_parser
-
-options = multi_rewrite_chain.invoke({
-    "message": "can someone test this today i need to know if it works"
-})
-
-print(options)
-```
-
-**Example output:**
-
-```text
-Option 1 - Professional:
-Could someone please test this today? I would like to confirm whether it is working as expected.
-
-Option 2 - Friendly:
-Could someone give this a quick test today and let me know if it works?
-
-Option 3 - Concise:
-Can someone test this today and confirm if it works?
-```
-
-!!! note "Your output may look different"
-    Because the LLM generates fresh wording every time, your three options will read a little differently. The shape (three labelled options, same meaning, different style) is what stays the same.
-
-##### Step 13 (optional): Rewrite using recent Webex context { #t2d-step-13 }
-
-Here's a nice bridge between **Task 3** and **Task 4**. We can take the **space summary** we generated in [Task 3](#module-2c) and use it as background context, so the rewrite stays consistent with what is actually happening in the space.
-
-This step assumes you still have `space_summary` in memory from Task 3. If not, jump back and re-run [Step 10 of Task 3](#t2c-step-10).
-
-In a new code cell, run:
-
-```py linenums="1"
-contextual_rewrite_prompt = ChatPromptTemplate.from_template("""
-You are a helpful Webex messaging assistant.
-
-Use the recent Webex space summary as context, then rewrite the draft message.
-
-Recent Webex space summary:
-{summary}
-
-Draft message:
-{message}
-
-Tone:
-{tone}
-
-Rules:
-- Preserve the user's intent.
-- Use the summary only for context.
-- Do not invent new commitments.
-- Keep the response suitable for Webex.
-
-Return only the rewritten message.
-""")
-
-contextual_rewrite_chain = contextual_rewrite_prompt | llm | output_parser
-
-contextual_message = contextual_rewrite_chain.invoke({
-    "summary": space_summary,
-    "message": "i will fix this and send it later",
-    "tone": "professional and clear"
-})
-
-print(contextual_message)
-```
-
-**Example output:**
-
-```text
-I will review and fix the remaining items in the lab, then share the updated version once it is ready.
-```
-
-The point of this step is to show that AI messaging workflows can chain together: the output of one task (a summary) becomes the input of the next (a context-aware rewrite).
-
-##### Step 14 (optional): Send the rewritten message to Webex { #t2d-step-14 }
-
-Since [Task 1](#module-2a) already wired us up to Webex, we can post the rewritten message back into the same space.
-
-!!! warning "Only do this if your lab proctor allows posting into the lab space"
-    The cell below will send a real Webex message to the room ID you set in Task 1. Make sure you are happy posting into that space before running it.
-
-First, in a new code cell, define the helper:
-
-```py linenums="1"
-import requests
-
-def send_message_to_webex(room_id, text):
-    url = "https://webexapis.com/v1/messages"
-
-    headers = {
-        "Authorization": f"Bearer {WEBEX_ACCESS_TOKEN}",
-        "Content-Type": "application/json"
-    }
-
-    payload = {
-        "roomId": room_id,
-        "text": text
-    }
-
-    response = requests.post(
-        url,
-        headers=headers,
-        json=payload
-    )
-
-    print("Status Code:", response.status_code)
-
-    if response.status_code in [200, 201]:
-        print("Message sent to Webex successfully.")
-    else:
-        print("Failed to send message.")
-        print(response.text)
-```
-
-Then, in a new code cell, send the rewritten message:
-
-```py linenums="1"
-send_message_to_webex(
-    ROOM_ID,
-    result
-)
-```
-
-If you want a small safety net so you don't post by accident, in a new code cell, run:
-
-```py linenums="1"
-confirm = input("Send this rewritten message to Webex? Type yes to continue: ")
-
-if confirm.lower() == "yes":
-    send_message_to_webex(ROOM_ID, result)
-else:
-    print("Message not sent.")
-```
-
-You should see `Status Code: 200` (or `201`) and a confirmation, and the rewritten message will appear in **Charles's Space** in your Webex App.
-
-#### Summary
-
-In this task, we built an **AI Rewrite Assistant** for Webex messages.
-
-We:
-
-* created a reusable **rewrite prompt template**
-* passed variables such as **tone**, **audience**, and **message** into the prompt
-* connected the prompt to an LLM and an output parser using **LCEL**
-* generated rewritten messages in different styles (executive, friendly, technical, customer-ready, concise)
-* created reusable **helper functions** like `rewrite_webex_message(...)`
-* added a separate **message improvement chain** for spelling, grammar, and clarity
-* optionally generated **multiple rewrite options** at once
-* optionally used the previous **space summary** from Task 3 as context for a smarter rewrite
-* optionally sent the rewritten message back to Webex
-
-
-<p class="eyebrow">Wrap-up</p>
-
-## You've built it { #wrap-up data-toc-label="Wrap-up" }
-
-That completes the lab. Across the three parts you went from **using** AI in Webex to **building** it:
-
-- **Part 1:** you turned on the Cisco AI Assistant and used AI across Webex Messaging, Calling and Meetings.
-- **Part 2:** you connected Webex Messaging to Codex through the **Webex MCP server**, with Control Hub deciding which tools an AI client may use.
-- **Part 3:** you read Webex messages through the API, turned them into LangChain documents, and built your own **Ask Me Anything** (RAG), **space summary** and **rewrite** assistants on top of them.
-
-The pattern you used (**get context → prepare it → prompt an LLM → return a grounded answer**) is the same one behind the native Cisco AI Assistant features. You can now apply it to your own data and workflows.
-
-!!! note "About the lab API key"
-    The OpenAI API key provided to you is for **lab use only** and is valid only for the duration of this session. To keep exploring after the lab, use your own OpenAI API key in place of the one provided here.
-
-<a class="next-card" href="../">
-  <span class="nc-k">Back to Part 1 · Lab guide</span>
-  <span class="nc-t">AI by Design for Collaboration: Webex AI</span>
-  <span class="nc-u">← Part 1</span>
+<a class="next-card" href="../part-4/">
+  <span class="nc-k">Part 4 · Lab guide</span>
+  <span class="nc-t">Building AI-Powered Messaging with LangChain &amp; Webex</span>
+  <span class="nc-u">Part 4 →</span>
 </a>

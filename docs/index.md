@@ -1,7 +1,7 @@
 ---
 title: Webex AI Lab Guide
 description: "LTRCOL-2011 Part 1: hands-on lab exploring AI across Collaboration Control Hub, Messaging, Calling and Meetings."
-chip: "Part 1 of 3"
+chip: "Part 1 of 4"
 headline: "AI by Design for Collaboration"
 standfirst: "Turn on the Cisco AI Assistant, then try AI in Webex Messaging, Calling and Meetings, one hands-on module at a time."
 meta:
@@ -12,7 +12,7 @@ meta:
   - label: LAB TIME
     value: ~114 min
   - label: UPDATED
-    value: September 2026
+    value: October 2026
 ---
 
 ## About this lab { #about data-toc-label="About this lab" }
@@ -23,7 +23,7 @@ In this hands-on lab, you will unlock the potential of **Artificial Intelligence
 
 Throughout this lab, you will gain practical experience in the following areas:
 
-- **Administration:** Setting up the Cisco AI Assistant in Control Hub for advanced management and analytics.
+- **Administration:** Setting up the Cisco AI Assistant in Collaboration Control Hub for advanced management and analytics.
 - **Communication:** Leveraging AI-powered Webex Calling features, including smart audio, live transcriptions, and automated call summaries.
 - **Collaboration:** Enhancing Webex Meetings and Messaging with real-time insights, "Catch Me Up" summaries, and smart message rewriting.
 - **Meetings:** Webex Meetings uses **AI** to provide real-time transcription, meeting summaries, and action items, helping participants stay informed without manual notetaking.
@@ -34,7 +34,7 @@ Throughout this lab, you will gain practical experience in the following areas:
 
 | | Module | Time |
 |---|---|---|
-| — | [Accessing your lab](#access) | 5 min |
+|  | [Accessing your lab](#access) | 5 min |
 | 1 | [Set up your lab environment](#module-1) | 30 min |
 | 2 | [Enhancing Messaging with Webex AI](#module-2) | 20 min |
 | 3 | [AI-powered features in Webex Calling](#module-3) | 25 min |
@@ -93,7 +93,7 @@ In this lab you will sign in to the Webex clients as two users, **Charles Hollan
 
 ### Accessing Anita Perez's workstation (Workstation 2) { #access-wkst2 data-toc-label="Anita's workstation" }
 
-1. You will access **User Workstation 2** (through **WebRDP**) for user Anita Perez, and sign in to the Webex App and Control Hub from that workstation whenever you are working as Anita.
+1. You will access **User Workstation 2** (through **WebRDP**) for user Anita Perez, and sign in to the Webex App and Collaboration Control Hub from that workstation whenever you are working as Anita.
 2. To access Workstation 2 over **WebRDP**, click the **Workstation 2** icon on the topology page. When the fly-out opens on the left, click **Remote Access > Web RDP**. A new browser tab opens and connects you to **Workstation 2**.
 
     ![Remote Access > Web RDP opens Workstation 2 in a new browser tab](img/access-03.png){ loading=lazy }
@@ -102,7 +102,7 @@ In this lab you will sign in to the Webex clients as two users, **Charles Hollan
     Remote Access > Web RDP opens Workstation 2 in a new browser tab.
     ///
 
-3. Once you are connected to Workstation 2, you will see a text file called `Session_Info.txt` on the desktop. Open it and keep it handy. It contains all the credentials you need to complete this lab, such as for Control Hub and the Webex App.
+3. Once you are connected to Workstation 2, you will see a text file called `Session_Info.txt` on the desktop. Open it and keep it handy. It contains all the credentials you need to complete this lab, such as for Collaboration Control Hub and the Webex App.
 
     ![Session_Info.txt on the Workstation 2 desktop](img/access-04.png){ loading=lazy }
 
@@ -112,10 +112,10 @@ In this lab you will sign in to the Webex clients as two users, **Charles Hollan
 
 4. While you are on **Anita Perez's** workstation, copy the credentials from `Session_Info.txt`. You only need the **Collaboration Control Hub Username**, **Collaboration Control Hub Password** and **Domain**. For **Charles Holland**, the **Collaboration Control Hub** and **Webex App** credentials are the same. We will save these credentials on the physical/attendee workstation for easier access.
 
-    ![Copy the Control Hub username, password and domain](img/access-05.png){ loading=lazy }
+    ![Copy the Collaboration Control Hub username, password and domain](img/access-05.png){ loading=lazy }
 
     /// caption
-    Copy the Control Hub username, password and domain.
+    Copy the Collaboration Control Hub username, password and domain.
     ///
 
     !!! tip "Tip: save them in the Notes panel"
@@ -130,7 +130,7 @@ In this lab you will sign in to the Webex clients as two users, **Charles Hollan
 Before you can experience the transformative power of AI-driven collaboration, administrators must first lay the groundwork. This module focuses on the essential steps:
 
 - Activating and configuring the **Cisco AI Assistant** and its associated features within **Collaboration Control Hub**
-- The **AI Assistant** in Control Hub
+- The **AI Assistant** in Collaboration Control Hub
 - Ordering phone numbers (DIDs) for users with the **Cisco Calling Plan** in Collaboration Control Hub
 - Assigning a **Webex Calling license** and a phone number to users
 - Signing in to the **Webex** clients
@@ -147,18 +147,18 @@ Collaboration Control Hub is the central command center for **Webex AI**. As an 
     !!! warning "Very important"
         Every session/pod has its own credentials. The screenshot below is for **reference** only. Use the credentials from your own session/pod.
 
-    ![Example Session_Info.txt. Use the Control Hub credentials from your own pod](img/module-1a-01.png){ loading=lazy }
+    ![Example Session_Info.txt. Use the Collaboration Control Hub credentials from your own pod](img/module-1a-01.png){ loading=lazy }
 
     /// caption
-    Example Session_Info.txt. Use the Control Hub credentials from your own pod.
+    Example Session_Info.txt. Use the Collaboration Control Hub credentials from your own pod.
     ///
 
-3. For security reasons, **Collaboration Control Hub** signs you out after 20 minutes of inactivity by default. For this lab, make the idle timeout longer so Control Hub doesn't keep signing you out. Go to **MANAGEMENT > Organization Settings > Control Hub's idle timeout**. Open the **Control Hub idle timeout** drop-down, select **12 hours** or **No timeout**, and click **Save**.
+3. For security reasons, **Collaboration Control Hub** signs you out after 20 minutes of inactivity by default. For this lab, make the idle timeout longer so Collaboration Control Hub doesn't keep signing you out. Go to **MANAGEMENT > Organization Settings > Collaboration Control Hub's idle timeout**. Open the **Collaboration Control Hub idle timeout** drop-down, select **12 hours** or **No timeout**, and click **Save**.
 
-    ![Organization Settings: set Control Hub's idle timeout to 12 hours](img/module-1a-02.png){ loading=lazy }
+    ![Organization Settings: set Collaboration Control Hub's idle timeout to 12 hours](img/module-1a-02.png){ loading=lazy }
 
     /// caption
-    Organization Settings: set Control Hub's idle timeout to 12 hours.
+    Organization Settings: set Collaboration Control Hub's idle timeout to 12 hours.
     ///
 
 4. Next, turn on AI features, including the Cisco AI Assistant, for your pod's Webex tenant. Still on the **Organization Settings** page, scroll down to **Cisco AI Assistant & AI features** and click **Customize AI Assistant & AI features**, as shown below.
@@ -204,15 +204,15 @@ Collaboration Control Hub is the central command center for **Webex AI**. As an 
 
 <p class="eyebrow sub">Module 1b · ≈ 5 min</p>
 
-### AI Assistant in Control Hub { #module-1b data-toc-label="1b · AI Assistant in Control Hub" data-task="1b" }
+### AI Assistant in Collaboration Control Hub { #module-1b data-toc-label="1b · AI Assistant in Collaboration Control Hub" data-task="1b" }
 
-One of the toggles you enabled in the previous module is called **Allow the Assistant in Control Hub**.
+One of the toggles you enabled in the previous module is called **Allow the Assistant in Collaboration Control Hub**.
 
 This AI Assistant lets you ask **"how can I…"** questions about setting up and configuring the **Webex Suite**.
 
 You can also see your previous conversation history, play it back, and ask follow-up questions, while keeping the full context of your previous interactions.
 
-The Cisco AI Assistant in Control Hub can answer questions about the **Webex Suite**, which includes products such as **Messaging**, **Meetings**, **Calling**, and **Contact Center**. The AI Assistant searches all of the Webex help pages to give you an accurate answer.
+The Cisco AI Assistant in Collaboration Control Hub can answer questions about the **Webex Suite**, which includes products such as **Messaging**, **Meetings**, **Calling**, and **Contact Center**. The AI Assistant searches all of the Webex help pages to give you an accurate answer.
 
 Let's quickly explore how to use this AI Assistant in Collaboration Control Hub.
 
@@ -230,10 +230,10 @@ Let's quickly explore how to use this AI Assistant in Collaboration Control Hub.
 
 3. The **AI Assistant** fly-out opens on the right. Ask any Collaboration Control Hub question, for example: **how do I configure a registration-based trunk?**
 
-    ![Asking the Control Hub AI Assistant how to configure a registration-based trunk](img/module-1b-02.png){ loading=lazy }
+    ![Asking the Collaboration Control Hub AI Assistant how to configure a registration-based trunk](img/module-1b-02.png){ loading=lazy }
 
     /// caption
-    Asking the Control Hub AI Assistant how to configure a registration-based trunk.
+    Asking the Collaboration Control Hub AI Assistant how to configure a registration-based trunk.
     ///
 
 4. Now let's try **Add context**. With context, you can ask questions about specific data, explore reports, diagnose workspaces, and investigate issues across technology domains. This reduces the effort it takes to move from question to insight, and from issue to action. Click **Add context** above the question box to see the options: **Data**, **Reports** and **Workspaces**.
@@ -268,9 +268,9 @@ Let's quickly explore how to use this AI Assistant in Collaboration Control Hub.
 
     Depending on your region, some resources, such as available phone numbers, may occasionally be limited. If something doesn't match what you expect, check with your proctor.
 
-In this module you will order new DID numbers with **Cisco Calling Plan**, and then assign one of them as the **Main number** for the location in Control Hub.
+In this module you will order new DID numbers with **Cisco Calling Plan**, and then assign one of them as the **Main number** for the location in Collaboration Control Hub.
 
-In customer environments that already have a PSTN provider and DID numbers, you can import all your DID numbers into Control Hub and assign them as the Main number and/or to any user for Webex Calling.
+In customer environments that already have a PSTN provider and DID numbers, you can import all your DID numbers into Collaboration Control Hub and assign them as the Main number and/or to any user for Webex Calling.
 
 1. Continuing on the physical/attendee workstation, go back to the browser where you are logged in to **Collaboration Control Hub**.
 2. In Collaboration Control Hub, navigate to **SERVICES > PSTN & Routing**. Open the **Manage** drop-down and choose **Add**.
@@ -446,7 +446,7 @@ In this lab, we will explore the **Professional** license option only.
     Calling tab: Webex Calling with a Professional license.
     ///
 
-6. On the **Calling Configuration – Assign numbers** page, open the **Location** drop-down and choose **dCloud**. Then open the **Phone Number** drop-down and choose one of the available phone numbers **other than** the location's **Main number**. For **Extension**, enter the last 4 digits of the phone number assigned to the user. Click **Save**.
+6. On the **Calling Configuration > Assign numbers** page, open the **Location** drop-down and choose **dCloud**. Then open the **Phone Number** drop-down and choose one of the available phone numbers **other than** the location's **Main number**. For **Extension**, enter the last 4 digits of the phone number assigned to the user. Click **Save**.
 
     ![Assign a phone number and extension in the dCloud location](img/module-1d-03.png){ loading=lazy }
 
@@ -799,10 +799,10 @@ In this lab, you will enable CC and call transcription for **the user Charles Ho
 1. Continuing on the physical/attendee workstation, bring up the browser where you are logged in to **Collaboration Control Hub**.
 2. In Collaboration Control Hub, navigate to **MANAGEMENT > Users**. Select the user **Charles Holland**, and on the user page go to the **Calling** tab.
 
-    ![Control Hub > Users > Charles Holland > Calling](img/module-3b-01.png){ loading=lazy }
+    ![Collaboration Control Hub > Users > Charles Holland > Calling](img/module-3b-01.png){ loading=lazy }
 
     /// caption
-    Control Hub > Users > Charles Holland > Calling.
+    Collaboration Control Hub > Users > Charles Holland > Calling.
     ///
 
 3. On the **Calling** page, go to **User call experience > In-call feature access** and scroll to the **Captions for Webex Calling** section at the bottom of the page.
@@ -869,7 +869,7 @@ You can configure automatic transcription for recorded calls. Users can see the 
 
 First, enable call recording at the user level for the user **Charles Holland** in your organization.
 
-1. Continuing on the physical/attendee workstation, in Control Hub navigate to **MANAGEMENT > Users**. Select the user **Charles Holland** and go to the **Calling** tab. On the **Calling** page, scroll down to **User call experience** and select **Call recording**.
+1. Continuing on the physical/attendee workstation, in Collaboration Control Hub navigate to **MANAGEMENT > Users**. Select the user **Charles Holland** and go to the **Calling** tab. On the **Calling** page, scroll down to **User call experience** and select **Call recording**.
 
     ![User call experience > Call recording](img/module-3d-01.png){ loading=lazy }
 
@@ -896,7 +896,7 @@ First, enable call recording at the user level for the user **Charles Holland** 
     ///
 
     !!! note
-        If you don't see the **Recordings** tab, exit Webex (click your profile picture and select **Exit**), then relaunch it. Recordings can take a while to show up. If you still don't see the recording of your call after 2–3 minutes, continue with the next modules and come back to the next two steps later.
+        If you don't see the **Recordings** tab, exit Webex (click your profile picture and select **Exit**), then relaunch it. Recordings can take a while to show up. If you still don't see the recording of your call after 2 or 3 minutes, continue with the next modules and come back to the next two steps later.
 
 6. On the **Recordings** page, select the available recording. Within a few seconds, the **AI-generated** summary of the recording appears. Once you have reviewed the summary, click the play button for the recording.
 
@@ -987,13 +987,13 @@ In this lab you'll use the newest method to schedule a Webex meeting: the Cisco 
 
 In AI-powered Webex Meetings, Webex automatically detects the language being spoken, so you don't have to set or guess it yourself. Once the speech is recognized, real-time closed captions appear on screen, helping everyone follow along, even if the audio is unclear or there is background noise. When participants speak different languages, Webex AI can instantly translate what's being said, so everyone sees the conversation in a language they understand. That keeps communication smooth and inclusive, wherever participants are in the world.
 
-1. Continuing on the physical/attendee workstation, go back to the browser tab where you are logged in to Control Hub. Navigate to **SERVICES > Meetings** and select your site (`cbXXXYY.webex.com`).
+1. Continuing on the physical/attendee workstation, go back to the browser tab where you are logged in to Collaboration Control Hub. Navigate to **SERVICES > Meetings** and select your site (`cbXXXYY.webex.com`).
 2. On the meeting site, go to **Common Settings > Site Options**.
 
-    ![Control Hub > meeting site > Common Settings > Site Options](img/module-4b-01.png){ loading=lazy }
+    ![Collaboration Control Hub > meeting site > Common Settings > Site Options](img/module-4b-01.png){ loading=lazy }
 
     /// caption
-    Control Hub > meeting site > Common Settings > Site Options.
+    Collaboration Control Hub > meeting site > Common Settings > Site Options.
     ///
 
 3. On the **Site Options** page, scroll down to **Closed captioning configuration**, turn on **Allow real-time translation and transcription in multiple languages**, and click **Save**.
@@ -1095,7 +1095,7 @@ Now add the Cisco AI Assistant to this meeting and see how it automatically capt
 3. The **AI Assistant** starts for this meeting and plays an announcement that "this meeting is being transcribed and summarized."
 
     !!! info
-        In Control Hub, the administrator can enable automatic AI Assistant summarization for recordings, so the AI Assistant starts summarizing automatically whenever a recording starts.
+        In Collaboration Control Hub, the administrator can enable automatic AI Assistant summarization for recordings, so the AI Assistant starts summarizing automatically whenever a recording starts.
 
 4. Now click the **Record** button in the meeting window to start recording the meeting. A pop-up shows the recording options. Leave all the defaults and click **Record** again in the pop-up.
 
@@ -1195,12 +1195,12 @@ When a **Webex meeting** is recorded with the **AI Assistant** enabled, AI proce
 
 <p class="eyebrow">Up next · Part 2</p>
 
-## What's next { #next data-toc-label="Next · Part 2 (MCP lab)" }
+## What's next { #next data-toc-label="Next · Part 2 (AI Receptionist lab)" }
 
-This completes Module 4 and the Webex AI portion of the lab. Next, look behind the scenes: in **Part 2** you connect Webex Messaging to an AI client through the **Webex MCP server**, and in **Part 3** you use LangChain and the Webex APIs to build AI-powered messaging workflows yourself.
+This completes Module 4 and the Webex AI portion of the lab. Next, in **Part 2** you build a Webex Calling **AI Receptionist** and **Customer Assist** queues. Then look behind the scenes: in **Part 3** you connect Webex Messaging to an AI client through the **Webex MCP server**, and in **Part 4** you use LangChain and the Webex APIs to build AI-powered messaging workflows yourself.
 
 <a class="next-card" href="part-2/">
   <span class="nc-k">Part 2 · Lab guide</span>
-  <span class="nc-t">Webex MCP for AI Clients</span>
+  <span class="nc-t">Webex Calling AI Receptionist &amp; Customer Assist</span>
   <span class="nc-u">Part 2 →</span>
 </a>
