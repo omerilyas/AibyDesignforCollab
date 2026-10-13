@@ -165,7 +165,7 @@ Copy your Bearer token from the Webex Developer Portal.
 
 ##### Step 3: Log in to the Webex App { #t1a-step-3 }
 
-Use your assigned Charles Holland account (`cholland@cbXXX.dc-YY.com`) to log in to the **Webex App** that is pre-installed on your laptop.
+Use your assigned Charles Holland account (`cholland@cbXXX.dc-YY.com`) to log in to the **Webex App** that is pre-installed on your Laptop.
 
 ##### Step 4: Create a Webex Space { #t1a-step-4 }
 
