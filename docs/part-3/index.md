@@ -277,7 +277,7 @@ Webex Meetings MCP: bringing meeting intelligence to AI agents.
 
 ## Understand MCP and enable a Webex MCP server { #module-1 data-toc-label="Module 1 · Understand & enable" data-task="1" }
 
-Before you configure Webex, take a minute to understand what MCP is doing. MCP is not another AI model and it does not replace the Webex API. It is a common way for an AI application to discover approved capabilities and call them in a structured way. In this lab, your AI client connects to a Webex MCP server, and the server works with Webex on behalf of the signed-in user.
+Before you configure Webex take a minute to understand what MCP is doing. MCP is not another AI model and it does not replace the Webex API. It is a common way for an AI application to discover approved capabilities and call them in a structured way. In this lab, your AI client connects to a Webex MCP server, and the server works with Webex on behalf of the signed-in user.
 
 ### How MCP fits together { #m1-parts data-toc-label="How MCP fits together" }
 
