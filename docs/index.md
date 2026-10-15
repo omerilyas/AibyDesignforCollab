@@ -69,9 +69,7 @@ Need help? Raise your hand or reach out to me.
 
 1. Open a browser on your laptop and go to [https://dcloud.cisco.com](https://dcloud.cisco.com){:target="_blank" rel="noopener"}.
 2. Click **Login** at the top-right corner and log in with your Cisco.com credentials.
-3. Once logged in, open a new browser tab and paste the **event URL** for your lab:
-   [https://dcloud2-sjc.cisco.com/event/399490/access](https://dcloud2-sjc.cisco.com/event/399490/access){:target="_blank" rel="noopener"}
-4. You will be automatically assigned to a lab pod and taken to the **Lab topology** page, as shown below.
+3. Log in to your **dCloud session**: open the lab session assigned to you. The session's **Lab topology** page opens, as shown below.
 
     ![The dCloud lab topology. User Workstation 2 (Anita Perez) is highlighted](img/access-01.png){ loading=lazy }
 
@@ -79,7 +77,7 @@ Need help? Raise your hand or reach out to me.
     The dCloud lab topology. User Workstation 2 (Anita Perez) is highlighted.
     ///
 
-5. Click the **User Workstation 2** icon on the topology page. The **Info** fly-out opens on the left with Workstation 2 details. Expand the **Remote Access** section to see Workstation 2's **IP address**, **username**, and **password**, as shown below.
+4. Click the **User Workstation 2** icon on the topology page. The **Info** fly-out opens on the left with Workstation 2 details. Expand the **Remote Access** section to see Workstation 2's **IP address**, **username**, and **password**, as shown below.
 
     ![Info fly-out for User Workstation 2, with its Remote Access details](img/access-02.png){ loading=lazy }
 
@@ -87,7 +85,8 @@ Need help? Raise your hand or reach out to me.
     Info fly-out for User Workstation 2, with its Remote Access details.
     ///
 
-6. Similarly, you can click any other virtual machine on the topology page to see its details.
+5. Similarly, you can click any other virtual machine on the topology page to see its details.
+6. Connect to **Workstation 2** over **WebRDP**, as described in [Accessing Anita Perez's workstation](#access-wkst2) below.
 
 In this lab you will sign in to the Webex clients as two users, **Charles Holland** and **Anita Perez**, to complete all the modules. Some modules need a working microphone. So **Charles Holland** uses the **attendee workstation** (the physical laptop in front of you), where the microphone is available. **Anita Perez** signs in on **User Workstation 2** (a virtual workstation reached over remote desktop) in the demo.
 
