@@ -8,7 +8,7 @@ meta:
   - label: SESSION
     value: Delivered by Omer Ilyas
   - label: STACK
-    value: Python · LangChain · Google Colab
+    value: Python · LangChain · Google Colab · Webex
   - label: LAB TIME
     value: ~120 min
   - label: REVISION
