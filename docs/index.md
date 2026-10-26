@@ -19,7 +19,7 @@ meta:
 
 <p class="tagline"><del>From using AI</del> <span>to working with AI.</span></p>
 
-In this hands-on lab, you will unlock the potential of **Artificial Intelligence (AI)** across the entire **Webex Suite**. As **AI** continues to redefine the modern workplace, this lab shows you how these technologies transform collaboration, communication, and customer interactions. You will explore how **Webex AI** gives administrators better oversight, makes employees more productive through smarter workflows, and delights customers with more personalized experiences.
+In this hands-on lab, you will unlock the potential of **Artificial Intelligence (AI)** across the entire **Webex Suite**. As **AI** continues to evolve the modern workplace, this lab shows you how these technologies transform collaboration, communication, and customer interactions. You will explore how **Webex AI** gives administrators better oversight, makes employees more productive through smarter workflows, and delights customers with more personalized experiences.
 
 Throughout this lab, you will gain practical experience in the following areas:
 
